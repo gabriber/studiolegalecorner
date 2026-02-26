@@ -1,0 +1,4320 @@
+:root{
+  --brand: clamp(165px, 18vh, 206px);
+  --bg: #0f1115;
+  --panel: rgba(255,255,255,0.06);
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.70);
+  --shadow: rgba(0,0,0,0.45);
+}
+
+/* sc19: iOS webviews can report a shorter vh, shrinking the logo; use vw on iOS to match Android sizing */
+@media (hover: none) and (pointer: coarse){
+  @supports (-webkit-touch-callout: none){
+    :root{ --brand: clamp(165px, 46vw, 206px); }
+  }
+}
+
+/* sc19: prevent iOS font boosting that can distort perceived logo size */
+@supports (-webkit-touch-callout: none){
+  html{
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* sc19: iOS mobile – force Roboto webfont to match Android */
+@media (hover: none) and (pointer: coarse){
+  @supports (-webkit-touch-callout: none){
+    body{ font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  }
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(circle at 50% 10%, rgba(120,160,255,0.16), rgba(0,0,0,0) 55%),
+              var(--bg);
+  color: var(--text);
+}
+
+.bg-video{ display: none; }
+
+
+.hero{
+  padding: clamp(28px, 4.6vh, 56px) 20px clamp(16px, 3.0vh, 34px);
+  text-align: center;
+}
+
+/* sc19 perf: hint compositor layers for the hero (logo + subtitle) to reduce jank during auto-scroll */
+.hero{ will-change: transform; }
+.hero .badge,
+.hero .logo,
+.hero .subtitle{
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+}
+
+
+.badge{
+  width: var(--brand);
+  height: var(--brand);
+  margin: 0 auto 14px;
+  border-radius: 999px;
+  background: transparent;
+  border: 0;
+pointer-events: none;
+  box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+}
+
+/* brand-home: keep logo fully static, no tap/hover lift */
+@media (hover: hover) and (pointer: fine){
+.brand-home,
+.brand-home:active,
+.brand-home:hover{
+  transform: none !important;
+}
+}
+
+
+@media (hover: hover) and (pointer: fine){
+.brand-home:active .logo,
+.brand-home:hover .logo{
+  transform: none !important;
+}
+}
+
+
+.logo{
+  width: var(--brand);
+  height: auto;
+  display: block;
+  margin: calc((var(--brand) + 14px) * -1) auto 14px;
+  filter: invert(1) brightness(1.2);
+}
+
+h1{
+  margin: 10px 0 10px;
+  font-size: clamp(31px, 3.5vw, 38px);
+  letter-spacing: 0.2px;
+}
+
+.subtitle{
+  max-width: 860px;
+  margin: 0 auto;
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 16px;
+  font-weight: 700;
+  /* controlli distanza icona→testo (studio) */
+  --studio-gap-common: 6px;
+  --studio-gap-address: -3px;
+  --studio-gap-phone: 3px;
+  --studio-address-shift: 0px;
+}
+
+.subtitle .subline{
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.subtitle .subline + .subline{
+  margin-top: 4px;
+}
+
+.subtitle .phone{
+  font-weight: 700;
+}
+
+.subtitle .studio-iconwrap{
+  display: inline-block;
+  width: 24px;
+  height: 1em;
+  margin-right: var(--studio-gap-common);
+  position: relative;
+  vertical-align: text-bottom;
+  overflow: visible;
+}
+
+.subtitle .subline.address .studio-iconwrap{
+  margin-right: var(--studio-gap-address);
+}
+
+.subtitle .subline.phone .studio-iconwrap{
+  margin-right: var(--studio-gap-phone);
+}
+
+.subtitle .phone .studio-phone-icon,
+.subtitle .address .studio-address-icon{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* studio header icons: keep column width, reduce visual size for harmony with 16px text */
+  width: 20px;
+  height: auto;
+  display: block;
+  transform: translateX(var(--studio-address-shift));
+}
+
+/* studio header: address icon height matches phone icon */
+.subtitle .address .studio-address-icon{
+  height: 20px;
+  width: auto;
+  left: 0;
+  right: auto;
+}
+
+.subtitle .phone .studio-phone-text{
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+
+/* sc19: studio phone – icon-only trigger + fast y-spin feedback */
+.subtitle .studio-phone-iconlink{
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.subtitle .phone .studio-phone-icon{
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.subtitle .phone .studio-phone-icon.sc19-spin-y{
+  animation: sc19PhoneWiggle 200ms ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .subtitle .phone .studio-phone-icon.sc19-spin-y{
+    animation: none;
+  }
+}
+
+/* sc19: studio address – icon-only trigger + fast y-spin feedback */
+.subtitle .studio-address-iconlink{
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.subtitle .address .studio-address-icon{
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.subtitle .address .studio-address-icon.sc19-spin-y{
+  animation: sc19AddressWiggle 200ms ease-in-out 1;
+}
+
+@keyframes sc19AddrSpinY{
+  0%{
+    transform: translateX(var(--studio-address-shift)) perspective(600px) rotateY(0deg);
+  }
+  100%{
+    transform: translateX(var(--studio-address-shift)) perspective(600px) rotateY(360deg);
+  }
+}
+
+/* sc19: phone wiggle (studio header) */
+@keyframes sc19PhoneWiggle{
+  0%{ transform: translateX(var(--studio-address-shift)) rotate(0deg); }
+  20%{ transform: translateX(var(--studio-address-shift)) rotate(-40deg); }
+  40%{ transform: translateX(var(--studio-address-shift)) rotate(40deg); }
+  60%{ transform: translateX(var(--studio-address-shift)) rotate(-32deg); }
+  80%{ transform: translateX(var(--studio-address-shift)) rotate(32deg); }
+  100%{ transform: translateX(var(--studio-address-shift)) rotate(0deg); }
+}
+
+/* sc19: address wiggle, double amplitude vs phone */
+@keyframes sc19AddressWiggle{
+  0%{ transform: translateX(var(--studio-address-shift)) rotate(0deg); }
+  20%{ transform: translateX(var(--studio-address-shift)) rotate(-80deg); }
+  40%{ transform: translateX(var(--studio-address-shift)) rotate(80deg); }
+  60%{ transform: translateX(var(--studio-address-shift)) rotate(-64deg); }
+  80%{ transform: translateX(var(--studio-address-shift)) rotate(64deg); }
+  100%{ transform: translateX(var(--studio-address-shift)) rotate(0deg); }
+}
+
+
+@keyframes sc19TapLift{
+  0%{ transform: translateY(0); }
+  35%{ transform: translateY(-2px); }
+  100%{ transform: translateY(0); }
+}
+
+
+@media (prefers-reduced-motion: reduce){
+  .subtitle .address .studio-address-icon.sc19-spin-y{
+    animation: none;
+  }
+}
+
+/* sc19: member phones (mobile) – icon-only trigger + fast y-spin feedback */
+.mobile-member-data .member-phone-iconlink{
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-member-data .member-phone-icon{
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.mobile-member-data .member-phone-icon.sc19-member-spin-y{
+  animation: sc19MemberSpinY 200ms ease-in-out 1;
+}
+
+@keyframes sc19MemberSpinY{
+  0%{ transform: rotate(0deg); }
+  20%{ transform: rotate(-40deg); }
+  40%{ transform: rotate(40deg); }
+  60%{ transform: rotate(-32deg); }
+  80%{ transform: rotate(32deg); }
+  100%{ transform: rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .mobile-member-data .member-phone-icon.sc19-member-spin-y{
+    animation: none;
+  }
+}
+
+/* sc19: iOS mobile – align header vertical rhythm with Android (ver. 275) */
+@media (hover: none) and (pointer: coarse){
+  @supports (-webkit-touch-callout: none){
+    .hero .logo{ margin-bottom: 8px; }
+    .hero h1{ margin-top: 4px; margin-bottom: 8px; line-height: 1.05; }
+    .hero .subtitle{ line-height: 1.45; transform: translateY(4px); 
+    --studio-gap-address: 0px;
+    --studio-address-shift: 3px;
+}
+    .hero .subtitle .subline + .subline{ margin-top: 2px; }
+  }
+}
+
+
+.container{
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 20px 70px;
+}
+
+.card{
+  background: var(--panel);
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.30);
+  padding: 20px;
+}
+
+h2{
+  margin: 0 0 14px;
+  font-size: 20px;
+  color: rgba(255,255,255,0.88);
+}
+
+/* ==========================================================
+   Servizi (ver. 129) – riquadro unico, sempre visibile
+   ========================================================== */
+
+.services-card{
+  margin-bottom: 22px;
+}
+
+.services-section-title{
+  margin: 0 0 12px;
+  font-size: 17px;
+  line-height: 1.7;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+.services-section-title span{
+  font-weight: 400;
+  color: rgba(255,255,255,0.85);
+}
+
+.services-list{
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255,255,255,0.85);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.services-list li{
+  break-inside: avoid;
+  margin: 0;
+}
+.services-list li.nowrap{
+  white-space: nowrap;
+}
+
+.services-list li:last-child{
+  margin-bottom: 0;
+}
+
+.services-note{
+  margin: 14px 0 0;
+  color: rgba(255,255,255,0.70);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Desktop layout: 4 colonne totali (2 Civile, 2 Penale) + separatore centrale */
+@media (min-width: 901px){
+
+  :root{ --pc-accent-fade: 260ms; }
+
+  .container{ max-width: 1260px; }
+
+  .services-card{
+    border-width: 2px;
+  }
+
+  .services-wrap{
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    column-gap: 22px;
+    align-items: start;
+  }
+
+  .services-divider{
+    background: var(--pc-sep, rgba(255,255,255,0.10));
+    border-radius: 999px;
+    align-self: stretch;
+  }
+
+  .services-list{
+    column-count: 2;
+    column-gap: 18px;
+  }
+}
+
+/* Mobile: Civile in colonna, poi Penale, senza separatore verticale */
+@media (max-width: 900px){
+  .services-card{ display: none; }
+
+  .services-wrap{
+    display: block;
+  }
+
+  .services-divider{
+    display: none;
+  }
+
+  .services-block + .services-block{
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+  }
+  .services-list{
+    column-count: 1;
+  }
+}
+
+/* Light theme tuning for the new services card */
+html[data-theme="light"] .services-section-title{
+  color: rgba(18,22,28,0.88);
+}
+
+html[data-theme="light"] .services-section-title span{
+  color: rgba(18,22,28,0.88);
+}
+
+html[data-theme="light"] .services-list{
+  color: rgba(18,22,28,0.82);
+}
+
+html[data-theme="light"] .services-note{
+  color: rgba(18,22,28,0.62);
+}
+
+.icons{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.icons img{
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 0;
+  padding: 8px;
+}
+
+.brand-home{
+  display: inline-block;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: default;
+  user-select: none;
+  transition: transform 160ms ease;
+  will-change: transform;
+}
+
+.brand-home:hover{
+  transform: none;
+}
+/* brand-home hover only when it performs an action (a profile is selected) */
+body:has(#view-mauro:checked, #view-nicola:checked, #view-micaela:checked, #view-agostino:checked, #view-gabriele:checked) .brand-home{
+  cursor: pointer;
+}
+.brand-wrap{
+  position: relative;
+  display: inline-block;
+}
+
+.theme-toggle{
+  position: absolute;
+  top: 5px;
+  left: 100%;
+  right: auto;
+
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  background: rgba(255,255,255,0.05);
+  border: 0;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+
+  cursor: pointer;
+  user-select: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.theme-toggle img{
+  width: 22px;
+  height: 22px;
+  display: block;
+  filter: invert(1) brightness(1.35);
+  opacity: 0.86;
+}
+
+.theme-toggle:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,235,200,0.65);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 36px rgba(255,205,120,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.theme-toggle:hover img{
+  opacity: 0.98;
+  filter: invert(1) brightness(1.55) drop-shadow(0 0 18px rgba(255,205,120,0.18));
+}
+
+.theme-toggle:focus-visible{
+  outline: none;
+  border-color: rgba(255,235,200,0.85);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 0 6px rgba(255,205,120,0.18);
+}
+
+/* brand-home selected hover */
+.team{
+  position: relative;
+}
+
+.team-view{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.team-grid{
+  display: grid;
+  grid-template-columns: 390px 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.team-grid .team-list.card,
+.team-grid .team-detail.card{
+  border-radius: 14px;
+}
+
+.team-grid .team-list .member-row{
+  border-radius: 10px;
+}
+
+/* PC borders: 2px (selected and unselected) */
+.team-grid .team-list.card,
+.team-grid .team-detail.card{
+  border-width: 2px;
+}
+
+.team-grid .team-list .member-row{
+  border-width: 2px;
+}
+
+.member-row{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 0;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+  will-change: transform;
+}
+
+.member-row + .member-row{
+  margin-top: 12px;
+}
+
+.member-row:hover{
+  transform: translateY(-2px);
+
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
+    linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+  border-color: rgba(255,255,255,0.16);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
+  z-index: 10;
+}
+
+.member-row:hover .member-role{
+  color: rgba(255,255,255,0.74);
+}
+
+.member-row:hover .avatar{
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+    rgba(255,255,255,0.04);
+  border: 0;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+}
+
+.avatar{
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+}
+
+.avatar img{
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  object-fit: cover;
+  filter: invert(1) brightness(1.35) contrast(1.05);
+  opacity: 1;
+}
+
+.member-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.member-name{
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.15;
+}
+
+.member-role{
+  font-size: 14px;
+  color: rgba(255,255,255,0.70);
+}
+
+.team-detail{
+  position: relative;
+  z-index: 2;
+}
+
+.team-detail .panel{
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  will-change: transform, opacity;
+  z-index: 4;
+
+}
+
+@keyframes panelEnter{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+
+/* Premium feedback on selection: micro-lift on the right panel + pulse on the connector line */
+@keyframes detailLiftMauro{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(0,0,0,0.20)) drop-shadow(0 0 28px rgba(255,205,120,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+@keyframes detailLiftNicola{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(0,0,0,0.20)) drop-shadow(0 0 28px rgba(255,205,120,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+@keyframes detailLiftMicaela{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(0,0,0,0.20)) drop-shadow(0 0 28px rgba(255,205,120,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+@keyframes detailLiftAgostino{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(0,0,0,0.20)) drop-shadow(0 0 28px rgba(255,205,120,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+@keyframes detailLiftGabriele{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(0,0,0,0.20)) drop-shadow(0 0 28px rgba(255,205,120,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+@keyframes connectorPulseMauro{
+  0%{ opacity: 0.72; box-shadow: none; }
+  45%{ opacity: 1; box-shadow: 0 0 34px rgba(255,205,120,0.40); }
+  100%{ opacity: 0.92; box-shadow: 0 0 18px rgba(255,205,120,0.18); }
+}
+
+@keyframes connectorPulseNicola{
+  0%{ opacity: 0.72; box-shadow: none; }
+  45%{ opacity: 1; box-shadow: 0 0 34px rgba(255,205,120,0.40); }
+  100%{ opacity: 0.92; box-shadow: 0 0 18px rgba(255,205,120,0.18); }
+}
+
+@keyframes connectorPulseMicaela{
+  0%{ opacity: 0.72; box-shadow: none; }
+  45%{ opacity: 1; box-shadow: 0 0 34px rgba(255,205,120,0.40); }
+  100%{ opacity: 0.92; box-shadow: 0 0 18px rgba(255,205,120,0.18); }
+}
+
+@keyframes connectorPulseAgostino{
+  0%{ opacity: 0.72; box-shadow: none; }
+  45%{ opacity: 1; box-shadow: 0 0 34px rgba(255,205,120,0.40); }
+  100%{ opacity: 0.92; box-shadow: 0 0 18px rgba(255,205,120,0.18); }
+}
+
+@keyframes connectorPulseGabriele{
+  0%{ opacity: 0.72; box-shadow: none; }
+  45%{ opacity: 1; box-shadow: 0 0 34px rgba(255,205,120,0.40); }
+  100%{ opacity: 0.92; box-shadow: 0 0 18px rgba(255,205,120,0.18); }
+}
+
+#view-mauro:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+#view-nicola:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+#view-micaela:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+#view-agostino:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+#view-gabriele:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after{ animation: none; }
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after{ animation: none; }
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after{ animation: none; }
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after{ animation: none; }
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{ animation: none; }
+
+#view-mauro:checked ~ .team-grid .team-detail #panel-mauro{ display: flex; }
+#view-nicola:checked ~ .team-grid .team-detail #panel-nicola{ display: flex; }
+#view-micaela:checked ~ .team-grid .team-detail #panel-micaela{ display: flex; }
+#view-agostino:checked ~ .team-grid .team-detail #panel-agostino{ display: flex; }
+#view-gabriele:checked ~ .team-grid .team-detail #panel-gabriele{ display: flex; }
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+  z-index: 1;
+
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255,245,220,0.18), rgba(255,245,220,0) 52%),
+    linear-gradient(135deg, rgba(255,210,140,0.18), rgba(255,210,140,0) 42%),
+    linear-gradient(180deg, rgba(255,205,120,0.22), rgba(255,205,120,0.10));
+
+  border-color: rgba(255,235,200,0.95);
+
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.46),
+    0 0 0 4px rgba(255,205,120,0.18),
+    0 0 64px rgba(255,205,120,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,245,220,0.22), rgba(255,245,220,0) 60%),
+    rgba(255,255,255,0.06);
+  border-color: rgba(255,235,200,0.92);
+  box-shadow:
+    0 0 0 3px rgba(255,205,120,0.16),
+    0 12px 24px rgba(0,0,0,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* PC: trattino di congiunzione con accensione e spegnimento morbidi (come le 5 schede) */
+@media (min-width: 901px){
+  .team-grid .team-list label.member-row::after{
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 47px;
+    height: 1px;
+    background: rgba(255,235,200,0.78);
+    transform: translateY(-50%);
+    border-radius: 999px;
+    box-shadow: none;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--pc-accent-fade, 260ms) ease, box-shadow var(--pc-accent-fade, 260ms) ease;
+  }
+}
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 47px;
+  height: 1px;
+  background: rgba(255,235,200,0.78);
+  transform: translateY(-50%);
+  border-radius: 999px;
+  box-shadow: none;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 1;
+}
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::before,
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::before,
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::before,
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::before,
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::before{
+  content: none;
+}
+
+#view-mauro:checked ~ .team-grid .team-detail,
+#view-nicola:checked ~ .team-grid .team-detail,
+#view-micaela:checked ~ .team-grid .team-detail,
+#view-agostino:checked ~ .team-grid .team-detail,
+#view-gabriele:checked ~ .team-grid .team-detail{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  border-color: rgba(255,235,200,0.95);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.30);
+}
+
+#view-mauro:checked ~ .team-grid .team-detail::after,
+#view-nicola:checked ~ .team-grid .team-detail::after,
+#view-micaela:checked ~ .team-grid .team-detail::after,
+#view-agostino:checked ~ .team-grid .team-detail::after,
+#view-gabriele:checked ~ .team-grid .team-detail::after{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  border: 2px solid rgba(255,235,200,0.00);
+  box-shadow: 0 0 0 0 rgba(255,205,120,0.00);
+}
+
+#view-mauro:checked ~ .team-grid .team-detail::after{ animation: edgePulseMauro 240ms ease both; }
+#view-nicola:checked ~ .team-grid .team-detail::after{ animation: edgePulseNicola 240ms ease both; }
+#view-micaela:checked ~ .team-grid .team-detail::after{ animation: edgePulseMicaela 240ms ease both; }
+#view-agostino:checked ~ .team-grid .team-detail::after{ animation: edgePulseAgostino 240ms ease both; }
+#view-gabriele:checked ~ .team-grid .team-detail::after{ animation: edgePulseGabriele 240ms ease both; }
+
+@keyframes edgePulseMauro{
+  0%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+  35%{ opacity: 1; border-color: rgba(255,235,200,0.55); box-shadow: 0 0 0 6px rgba(255,205,120,0.10), 0 0 48px rgba(255,205,120,0.10); }
+  100%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+}
+@keyframes edgePulseNicola{
+  0%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+  35%{ opacity: 1; border-color: rgba(255,235,200,0.55); box-shadow: 0 0 0 6px rgba(255,205,120,0.10), 0 0 48px rgba(255,205,120,0.10); }
+  100%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+}
+@keyframes edgePulseMicaela{
+  0%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+  35%{ opacity: 1; border-color: rgba(255,235,200,0.55); box-shadow: 0 0 0 6px rgba(255,205,120,0.10), 0 0 48px rgba(255,205,120,0.10); }
+  100%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+}
+@keyframes edgePulseAgostino{
+  0%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+  35%{ opacity: 1; border-color: rgba(255,235,200,0.55); box-shadow: 0 0 0 6px rgba(255,205,120,0.10), 0 0 48px rgba(255,205,120,0.10); }
+  100%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+}
+@keyframes edgePulseGabriele{
+  0%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+  35%{ opacity: 1; border-color: rgba(255,235,200,0.55); box-shadow: 0 0 0 6px rgba(255,205,120,0.10), 0 0 48px rgba(255,205,120,0.10); }
+  100%{ opacity: 0; border-color: rgba(255,235,200,0.00); box-shadow: 0 0 0 0 rgba(255,205,120,0.00); }
+}
+
+#view-mauro:checked ~ .team-grid .team-detail::before,
+#view-nicola:checked ~ .team-grid .team-detail::before,
+#view-micaela:checked ~ .team-grid .team-detail::before,
+#view-agostino:checked ~ .team-grid .team-detail::before,
+#view-gabriele:checked ~ .team-grid .team-detail::before{
+  content: none;
+}
+
+#view-mauro:checked ~ .team-grid .team-detail::after,
+#view-nicola:checked ~ .team-grid .team-detail::after,
+#view-micaela:checked ~ .team-grid .team-detail::after,
+#view-agostino:checked ~ .team-grid .team-detail::after,
+#view-gabriele:checked ~ .team-grid .team-detail::after{
+  content: none;
+}
+
+.panel p{
+  margin: 0 0 14px;
+  color: rgba(255,255,255,0.85);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.panel p:last-child{
+  margin-bottom: 0;
+}
+
+.panel-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.panel-controls{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 92px;
+  justify-content: flex-start;
+}
+
+.panel-controls .next-profile{
+  margin-left: auto;
+}
+.panel:not(#panel-team) .panel-head{
+  transform: translateY(2px);
+}
+
+.panel:not(#panel-team) p{
+  transform: translateY(2px);
+}
+
+.panel:not(#panel-team) .panel-head .close{
+  margin-top: -4px;
+}
+.close{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)),
+    rgba(15,17,21,0.92);
+  border: 0;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.close-x{
+  position: relative;
+  width: 18px;
+  height: 27px;
+  display: inline-block;
+}
+
+.close-x::before,
+.close-x::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 2.6px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+.close-v{
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  border-right: 2.6px solid rgba(255,255,255,0.92);
+  border-bottom: 2.6px solid rgba(255,255,255,0.92);
+  transform: rotate(45deg);
+  position: relative;
+  top: -1px;
+}
+
+.close-v.close-up{
+  transform: rotate(-135deg);
+  top: 0px;
+}
+
+.close-v.close-down{
+  transform: rotate(45deg);
+  top: -2px;
+}
+
+.close-x::before{ transform: translate(-50%,-50%) rotate(45deg); }
+.close-x::after{ transform: translate(-50%,-50%) rotate(-45deg); }
+
+.close-icon{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.close.is-hidden{
+  display: none !important;
+}
+
+.close:hover{
+  transform: translateY(-1px);
+
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
+    linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03)),
+    rgba(15,17,21,0.92);
+
+  border-color: rgba(255,235,200,0.98);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.42), 0 0 46px rgba(255,205,120,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.close:hover .close-x::before,
+.close:hover .close-x::after{
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 0 18px rgba(255,205,120,0.22);
+}
+
+.profile-footer{
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.contact{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: rgba(255,255,255,0.82);
+  font-size: 15px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)),
+    rgba(15,17,21,0.92);
+  border: 0;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+}
+
+/* ==========================================================
+   v406  PC ONLY  contatti: baseline icone + slot fisso + gap
+   Importante: applicato solo su desktop per non influenzare il mobile
+   ========================================================== */
+@media (min-width: 901px){
+  .profile-footer{ align-items: flex-end; }
+  .profile-footer .contact{
+    --pc-contact-slot: 36px;
+    --pc-contact-gap: 6px;
+  }
+
+  .profile-footer .contact .contact-row{
+    display: flex;
+    align-items: flex-end;
+    gap: var(--pc-contact-gap);
+  }
+
+  .profile-footer .contact .contact-icon{
+    flex: 0 0 var(--pc-contact-slot);
+    width: var(--pc-contact-slot);
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    line-height: 1;
+
+  }
+
+  .profile-footer .contact .contact-icon .contact-svg{
+    width: 27px;
+    height: auto;
+    display: block;
+
+  }
+
+  .profile-footer .contact .contact-value{
+    display: inline-block;
+    line-height: 1.35;
+  }
+}
+}
+
+
+.contact a{
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,235,200,0.20);
+  padding-bottom: 1px;
+}
+
+.contact a:hover{
+  border-bottom-color: rgba(255,235,200,0.55);
+}
+
+.contact-icons{
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.linkedin{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.12);
+  border: 2px solid rgba(255,255,255,0.92);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+  overflow: hidden;
+}
+
+.linkedin img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.linkedin:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,235,200,0.62);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 28px rgba(255,205,120,0.14), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.team-detail > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================
+   Light theme, alluminio satinato, accento blu acciaio
+   ========================================================== */
+
+.theme-toggle .icon-sun{
+  display: none;
+}
+
+html[data-theme="light"]{
+  --bg: #F4F6F9;
+  --panel: rgba(255,255,255,0.90);
+  --text: rgba(18,22,28,0.92);
+  --muted: rgba(18,22,28,0.64);
+  --shadow: rgba(10,16,28,0.14);
+}
+
+html[data-theme="light"] body{
+  background: #ffffff;
+}
+
+html[data-theme="light"] .badge{
+  background: transparent;
+  border: 0;
+box-shadow:
+    0 18px 44px rgba(0,0,0,0.22),
+    0 0 30px rgba(0,0,0,0.14),
+    inset 0 0 24px rgba(0,0,0,0.10);
+}
+
+html[data-theme="light"] .logo{
+  filter: none;
+}
+
+html[data-theme="light"] h2{
+  color: rgba(18,22,28,0.88);
+}
+
+html[data-theme="light"] .card{
+  border-color: rgba(18,22,28,0.10);
+  box-shadow: 0 18px 40px rgba(10,16,28,0.12);
+}
+
+html[data-theme="light"] .theme-toggle{
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(18,22,28,0.14);
+  box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.70);
+}
+
+html[data-theme="light"] .theme-toggle img{
+  filter: none;
+  opacity: 0.82;
+}
+
+html[data-theme="light"] .theme-toggle:hover{
+  background: rgba(0,0,0,0.04);
+  border-color: rgb(236, 246, 255);
+  box-shadow: 0 12px 26px rgba(10,16,28,0.16), inset 0 1px 0 rgba(255,255,255,0.75);
+}
+html[data-theme="light"] .theme-toggle .icon-moon{
+  display: none;
+}
+
+html[data-theme="light"] .theme-toggle .icon-sun{
+  display: block;
+}
+
+/* brand-home selected hover, light tuning */
+html[data-theme="light"] html[data-theme="light"] html[data-theme="light"] .member-row{
+  background:
+    radial-gradient(circle at 18% 18%, rgba(18,22,28,0.03), rgba(18,22,28,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.74));
+  border-color: rgba(18,22,28,0.08);
+  box-shadow: 0 14px 34px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.80), inset 0 -1px 0 rgba(18,22,28,0.04);
+}
+
+html[data-theme="light"] .member-row:hover{
+  background:
+    radial-gradient(circle at 18% 14%, rgba(18,22,28,0.04), rgba(18,22,28,0) 58%),
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.78));
+  border-color: rgba(18,22,28,0.10);
+  box-shadow: 0 18px 44px rgba(10,16,28,0.16), inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+html[data-theme="light"] .member-name{
+  color: rgba(18,22,28,0.92);
+}
+
+html[data-theme="light"] .member-role{
+  color: rgba(18,22,28,0.62);
+}
+
+html[data-theme="light"] .member-row:hover .member-role{
+  color: rgba(18,22,28,0.70);
+}
+
+html[data-theme="light"] .avatar{
+  background: rgba(18,22,28,0.02);
+  border-color: rgba(18,22,28,0.12);
+}
+
+html[data-theme="light"] .avatar img{
+  filter: none;
+  opacity: 0.92;
+}
+
+html[data-theme="light"] .member-row:hover .avatar{
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+}
+
+html[data-theme="light"] .panel p{
+  color: rgba(18,22,28,0.82);
+}
+
+html[data-theme="light"] .profile-footer{
+  border-top-color: rgba(18,22,28,0.08);
+}
+
+html[data-theme="light"] .contact{
+  color: rgba(18,22,28,0.78);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(18,22,28,0.03), rgba(18,22,28,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.78));
+  border-color: rgba(18,22,28,0.12);
+  box-shadow: 0 14px 34px rgba(10,16,28,0.14), inset 0 1px 0 rgba(255,255,255,0.80);
+}
+
+html[data-theme="light"] .contact a{
+  border-bottom-color: rgba(236, 246, 255,0.22);
+}
+
+html[data-theme="light"] .contact a:hover{
+  border-bottom-color: rgba(236, 246, 255,0.45);
+}
+
+html[data-theme="light"] .close{
+  background:
+    radial-gradient(circle at 18% 18%, rgba(18,22,28,0.03), rgba(18,22,28,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.78));
+  border-color: rgba(18,22,28,0.12);
+  box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.80);
+}
+
+html[data-theme="light"] .close:hover{
+  transform: translateY(-1px);
+
+  background:
+    radial-gradient(circle at 18% 18%, rgba(236, 246, 255,0.10), rgba(236, 246, 255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.80));
+
+  border-color: rgba(236, 246, 255,0.55);
+  box-shadow: 0 12px 26px rgba(10,16,28,0.18), 0 0 32px rgba(236, 246, 255,0.10), inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+html[data-theme="light"] .close-v{
+  border-right-color: rgba(18,22,28,0.82);
+  border-bottom-color: rgba(18,22,28,0.82);
+}
+
+html[data-theme="light"] .close:hover .close-v{
+  border-right-color: rgba(18,22,28,0.92);
+  border-bottom-color: rgba(18,22,28,0.92);
+}
+
+html[data-theme="light"] .close:hover .close-x::before,
+html[data-theme="light"] .close:hover .close-x::after{
+  background: rgba(18,22,28,0.95);
+  box-shadow: 0 0 14px rgba(236, 246, 255,0.14);
+}
+
+html[data-theme="light"] .close-x::before,
+html[data-theme="light"] .close-x::after{
+  background: rgba(18,22,28,0.82);
+}
+
+html[data-theme="light"] .linkedin{
+  background: rgba(18,22,28,0.02);
+  border-color: rgba(18,22,28,0.72);
+  box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+html[data-theme="light"] .linkedin:hover{
+  border-color: rgba(236, 246, 255,0.55);
+  box-shadow: 0 12px 26px rgba(10,16,28,0.16), 0 0 28px rgba(236, 246, 255,0.10), inset 0 1px 0 rgba(255,255,255,0.70);
+}
+
+/* Right panel lift, light tuning */
+@keyframes detailLiftMetalLight{
+  0%{ transform: translateY(0); filter: none; }
+  50%{ transform: translateY(-4px); filter: drop-shadow(0 12px 22px rgba(10,16,28,0.14)) drop-shadow(0 0 28px rgba(236, 246, 255,0.10)); }
+  100%{ transform: translateY(0); filter: none; }
+}
+
+html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail{ transform-origin: center; animation: none; }
+
+/* selected state, light theme tuning */
+html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+  background:
+    radial-gradient(circle at 16% 12%, rgba(236, 246, 255,0.10), rgba(236, 246, 255,0) 52%),
+    linear-gradient(135deg, rgba(236, 246, 255,0.08), rgba(236, 246, 255,0) 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.78));
+  border-color: rgba(236, 246, 255,0.55);
+  box-shadow:
+    0 18px 44px rgba(10,16,28,0.16),
+    0 0 0 4px rgba(236, 246, 255,0.10),
+    0 0 64px rgba(236, 246, 255,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.85);
+}
+
+html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+  height: 2px;
+  background: rgb(236, 246, 255);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+  margin-top: -1px;
+}
+
+html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail{
+  border-color: rgba(236, 246, 255,0.55);
+  box-shadow:
+    0 18px 40px rgba(10,16,28,0.12),
+    0 0 0 4px rgba(236, 246, 255,0.10),
+    0 0 64px rgba(236, 246, 255,0.10);
+}
+
+html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail::before,
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail::before,
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail::before,
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail::before,
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail::before{
+  background:
+    radial-gradient(circle at 16% 12%, rgba(236, 246, 255,0.08), rgba(236, 246, 255,0) 52%),
+    linear-gradient(135deg, rgba(236, 246, 255,0.06), rgba(236, 246, 255,0) 42%),
+    linear-gradient(180deg, rgba(255,255,255,0.26), rgba(255,255,255,0.00));
+  opacity: 1;
+}
+
+/* v93, PC: resa più moderna, ombre più aderenti, senza glow */
+
+@media (min-width: 901px){
+  .badge{
+  border: 0;
+
+    box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+  }
+
+  .card{
+    box-shadow: 0 14px 30px rgba(0,0,0,0.30);
+  }
+
+  .member-row{
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    box-shadow: 0 10px 22px rgba(0,0,0,0.28);
+  }
+
+  .member-row:hover{
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    box-shadow: 0 12px 24px rgba(0,0,0,0.30);
+  }
+
+  .contact{
+    background: rgba(15,17,21,0.92);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.30);
+  }
+
+  .close{
+    box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+  }
+
+  .theme-toggle{
+    box-shadow: 0 8px 18px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .theme-toggle:hover{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .theme-toggle:hover img{
+    filter: invert(1) brightness(1.55);
+  }
+
+  .linkedin{
+    box-shadow: 0 8px 18px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .linkedin:hover{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* v99 PC: hover logo studio, ring esterno come icona tema, senza ombre o inversioni */
+  .badge{
+  border: 0;
+
+    position: relative;
+  
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+}
+
+  .badge::after{
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 999px;
+    border: 0;
+    opacity: 0;
+    transition: opacity 160ms ease, border-color 160ms ease;
+    pointer-events: none;
+  }
+
+#view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    box-shadow: 0 12px 24px rgba(0,0,0,0.32);
+  }
+
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+#view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+#view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+#view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+#view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    background: rgba(255,255,255,0.06);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.28);
+  }
+
+  html[data-theme="light"] .badge{
+  background: transparent;
+  border: 0;
+box-shadow:
+    0 18px 44px rgba(0,0,0,0.22),
+    0 0 30px rgba(0,0,0,0.14),
+    inset 0 0 24px rgba(0,0,0,0.10);
+}
+
+  html[data-theme="light"] .card{
+    box-shadow: 0 14px 30px rgba(10,16,28,0.10);
+  }
+
+  html[data-theme="light"] .member-row{
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82));
+    box-shadow: 0 10px 22px rgba(10,16,28,0.10);
+  }
+
+  html[data-theme="light"] .member-row:hover{
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.86));
+    box-shadow: 0 12px 24px rgba(10,16,28,0.12);
+  }
+
+  html[data-theme="light"] .contact{
+    background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82));
+    box-shadow: 0 10px 22px rgba(10,16,28,0.10);
+  }
+
+  html[data-theme="light"] .close{
+    background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.82));
+    box-shadow: 0 8px 18px rgba(10,16,28,0.10);
+  }
+
+  html[data-theme="light"] .theme-toggle{
+    background: rgba(0,0,0,0.03);
+    box-shadow: 0 8px 18px rgba(10,16,28,0.10), inset 0 1px 0 rgba(255,255,255,0.70);
+  }
+
+  html[data-theme="light"] .theme-toggle:hover{
+    box-shadow: 0 10px 20px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.70);
+  }
+  html[data-theme="light"] .linkedin{
+    box-shadow: 0 8px 18px rgba(10,16,28,0.10), inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+
+  html[data-theme="light"] .linkedin:hover{
+    box-shadow: 0 10px 20px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+
+html[data-theme="light"] html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.86));
+    box-shadow: 0 12px 24px rgba(10,16,28,0.12);
+  }
+
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    background: rgba(18,22,28,0.02);
+    box-shadow: 0 10px 18px rgba(10,16,28,0.12);
+  }
+
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail,
+html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail{
+    box-shadow: 0 16px 34px rgba(10,16,28,0.10);
+  }
+
+  /* v98 PC: trattino di congiunzione coerente con il bordo della scheda selezionata, tema scuro */
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+    background: rgba(255,235,200,0.95);
+  }
+
+}
+
+/* ================== MOBILE (stack + accordion) ================== */
+.mobile-stack{
+  display: none;
+}
+
+@media (max-width: 900px){
+  /* Mobile: evita salti da scroll anchoring durante apertura e chiusura */
+  html, body { overflow-anchor: none; }
+  .mobile-stack, #mobile-team, details.mobile-member { overflow-anchor: none; }
+
+  .mobile-stack details, details.mobile-member { will-change: auto; }
+.mobile-stack .sc19-animwrap {
+  will-change: height;
+  /* Match inner cards' radius to avoid seam/clip artifacts during height animation */
+  border-radius: 16px;
+  overflow: visible;
+  display: flow-root;
+  position: relative;
+  z-index: 2;
+}
+
+/* Durante l’animazione: ombra unica sul wrapper, evitando artefatti “a spigoli” tra i riquadri interni */
+details.sc19-animating > .sc19-animwrap{
+  box-shadow: 0 14px 34px rgba(0,0,0,0.22);
+}
+
+/* Evita il "riquadro interno" durante l’animazione in "Le nostre competenze" */
+details.mobile-competences.sc19-animating > .sc19-animwrap{
+  box-shadow: none !important;
+}
+
+/* v201, mobile: allinea le 5 schede team a "I nostri servizi": niente ombra wrapper durante apertura e chiusura */
+details.mobile-member.sc19-animating > .sc19-animwrap,
+details.mobile-member.sc19-closing > .sc19-animwrap{
+  box-shadow: none !important;
+}
+details.sc19-animating .mobile-member-body,
+details.sc19-animating .mobile-member-data,
+details.sc19-animating .mobile-competences-body{
+  box-shadow: none;
+}
+
+  /* v197, mobile scuro: performance, congela il blur durante apertura e chiusura per ridurre il lag */
+    /* v197, mobile scuro: performance, congela il blur durante apertura e chiusura (senza !important, evita stati persistenti) */
+  html[data-theme="dark"] details.card.mobile-competences.sc19-animating[open],
+  html[data-theme="dark"] details.card.mobile-competences.sc19-closing[open]{
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html[data-theme="dark"] details.card.mobile-competences.sc19-closing:not([open]){
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+  /* v86, mobile chiaro: evita artefatto del wrapper, mantenendo l’ombra del contenuto anche durante l’animazione */
+/* Durante l’animazione NON unire "descrizione" + "dati": mantieni il distacco costante ed evita scatti a fine transizione. */
+
+/* Wrapper usato per l’animazione (evita il box-shadow “a spigoli” durante l’apertura/chiusura) */
+details.mobile-member > .sc19-animwrap { padding-top: 0; }
+/* v66, su mobile l'ombra della scheda-nome deve restare dietro alla scheda descrittiva aperta */
+details.mobile-member > summary.member-row{ z-index: 1; }
+
+  /* v83, dissolvenza feedback scheda durante la chiusura */
+  details.mobile-member.sc19-closing > summary.member-row{
+    transition: transform 160ms ease, box-shadow 520ms ease, border-color 520ms ease, background 520ms ease;
+  }
+
+  /* v84, mobile chiaro: transizioni sempre attive sul feedback della scheda, così la chiusura sfuma senza stacchi */
+  /* v202, mobile scuro: transizione sempre attiva sul feedback delle 5 schede, ritorno graduale solo a chiusura completata */
+  html[data-theme="dark"] .mobile-stack details.mobile-member > summary.member-row{
+    transition: transform 160ms ease, box-shadow 520ms ease, border-color 520ms ease, background 520ms ease;
+    /* v211, fix glitch line: force stable compositing without altering look */
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    filter: saturate(1);
+  }
+
+  /* v80, mobile chiaro: ombre più marcate per schede e loghi */
+  /* v191, mobile scuro: le schede team devono tornare allo stato base dopo la chiusura (evita residui di stato durante/ dopo animazione) */
+  html[data-theme="dark"] .mobile-stack details.mobile-member:not([open]) > summary.member-row{
+    background:
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.24), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.090), rgba(255,255,255,0.022)),
+      rgba(0,0,0,0.16);
+    border-color: rgba(255,255,255,0.24);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.32);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    }
+
+  /* v202, mobile scuro: durante la chiusura mantieni il feedback della scheda finché la chiusura è completata */
+    /* v193, mobile scuro, scheda team aperta: feedback attivo visibile ma stabile */
+  html[data-theme="dark"] .mobile-stack details.mobile-member[open] > summary.member-row{
+    background:
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.26), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.110), rgba(255,255,255,0.028)),
+      rgba(0,0,0,0.14);
+    border-color: rgba(255,248,240,0.46);
+    box-shadow:
+      0 24px 66px rgba(0,0,0,0.52),
+      0 0 0 1px rgba(255,248,240,0.16),
+      0 0 46px rgba(255,248,240,0.035),
+      inset 0 1px 0 rgba(255,255,255,0.16),
+      inset 0 -1px 0 rgba(0,0,0,0.34);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+
+  /* v202, mobile scuro: durante l’animazione mantieni il feedback aperto fino al termine effettivo */
+  html[data-theme="dark"] .mobile-stack details.mobile-member.sc19-animating > summary.member-row{
+    background:
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.26), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.110), rgba(255,255,255,0.028)),
+      rgba(0,0,0,0.14);
+    border-color: rgba(255,255,255,0.44);
+    box-shadow:
+      0 24px 66px rgba(0,0,0,0.52),
+      0 0 0 1px rgba(255,255,255,0.14),
+      0 0 22px rgba(255,255,255,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.16),
+      inset 0 -1px 0 rgba(0,0,0,0.34);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+
+  html[data-theme="dark"] .mobile-stack details.mobile-member[open] > summary.member-row .member-name,
+  html[data-theme="dark"] .mobile-stack details.mobile-member[open] > summary.member-row .member-role{
+    text-shadow: 0 1px 10px rgba(0,0,0,0.52), 0 0 16px rgba(255,255,255,0.06);
+  }
+  :root{
+    --brand: clamp(112px, 24vw, 150px);
+    --m-header-gap: 11px;
+  }
+
+  body{
+    background:
+      linear-gradient(180deg, #000000 0%, rgba(0,0,0,0) 160px),
+      radial-gradient(circle at 50% 12%, rgba(120,160,255,0.12), rgba(0,0,0,0) 55%),
+      var(--bg);
+  }
+  /* v51, evita salti di scroll quando si chiudono le schede mobile */
+  html, body{
+    overflow-anchor: none;
+  }
+
+  .hero{
+    padding: 18px 14px var(--m-header-gap);
+  }
+
+  .container{
+    padding: 0 14px 84px;
+  }
+
+  .badge{
+  border: 0;
+
+    margin: 0 auto 11px;
+  
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+}
+
+  .logo{
+    margin: calc((var(--brand) + 10px) * -1) auto var(--m-header-gap);
+  }
+
+  h1{
+    font-size: clamp(26px, 6.4vw, 32px);
+    margin: 0 0 11px;
+  }
+
+  .subtitle{
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .brand-wrap{
+    width: 100%;
+    display: block;
+  }
+
+  .theme-toggle{
+    width: 40px;
+    height: 40px;
+  left: calc(50% + (var(--brand) / 2) + 5px);
+  right: auto;
+  top: 2px;
+
+  }
+
+  .theme-toggle img{
+    width: 22px;
+    height: 22px;
+  }
+
+  .team-grid{
+    display: none;
+  }
+
+  .mobile-stack{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  
+
+  
+/* Touch devices can keep :hover after tap; avoid persistent lift on mobile */
+.mobile-stack .member-row:hover{
+  transform: none;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border-color: rgba(255,255,255,0.11);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+}
+
+.mobile-stack .member-row:hover .member-role{
+  color: rgba(255,255,255,0.70);
+}
+
+.mobile-stack .member-row:hover .avatar{
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+    rgba(255,255,255,0.04);
+  border: 0;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+}
+.mobile-competences{
+    margin-top: 10px;
+    padding: 0;
+  }
+
+  .mobile-competences-summary{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  .mobile-competences-summary::-webkit-details-marker{
+    display: none;
+  }
+
+  .mobile-competences-summary::marker{
+    content: "";
+  }
+
+  .mobile-competences-summary h2{
+    margin: 0;
+  }
+
+    .mobile-competences-body{
+  margin: 7px 18px 18px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.mobile-competences[open] .mobile-chevron{
+    transform: rotate(-135deg);
+  }
+.mobile-competences p{
+    margin: 0 0 11px;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+.mobile-competences p.mserv-heading{
+    margin-bottom: 6px;
+  }
+
+  .mobile-competences-body > p:nth-of-type(2){
+    margin-bottom: 21px;
+  }
+
+  .mobile-competences p:last-child{
+    margin-bottom: 0;
+  }
+
+  .mobile-team{
+    padding: 18px;
+  }
+
+  .mobile-team-head{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 11px;
+  }
+
+  .mobile-team-head h2{
+    margin: 0;
+  }
+
+  .mobile-team-close{
+    margin-left: auto;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 12px;
+    color: var(--text);
+    position: relative;
+    left: 4px;
+    cursor: pointer;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: transform 160ms ease, opacity 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .mobile-team.has-open .mobile-team-close,
+  .mobile-team:has(details.mobile-member[open]) .mobile-team-close{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-team-close:active{
+    transform: translateY(-1px);
+  }
+
+    .mobile-team-x{
+    position: relative;
+    width: 18px;
+    height: 18px;
+    display: block;
+    transition: transform 260ms ease;
+  }
+
+  .mobile-team-x::before,
+  .mobile-team-x::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 0;
+    opacity: 0.85;
+    transform-origin: center;
+  }
+
+  .mobile-team-x::before{ transform: translate(-50%,-50%) rotate(45deg); }
+  .mobile-team-x::after{ transform: translate(-50%,-50%) rotate(-45deg); }
+
+.mobile-team-close.is-rotating .mobile-team-x{
+    transform: rotate(180deg);
+  }
+
+  .mobile-member{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .mobile-team .mobile-member + .mobile-member{
+    margin-top: 11px;
+  }
+
+  .mobile-member-summary{
+    list-style: none;
+  }
+
+  .mobile-member-summary::-webkit-details-marker{
+    display: none;
+  }
+
+  .mobile-member-summary::marker{
+    content: "";
+  }
+
+  .mobile-member-summary::marker{
+    content: "";
+  }
+
+  .mobile-member-summary::-webkit-details-marker{
+    display: none;
+  }
+
+    .mobile-member .avatar{
+    flex: 0 0 auto;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+      rgba(255,255,255,0.04);
+    border: 0;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+  /* v44, ombra sempre presente dietro ai loghi in mobile, scuro e chiaro */
+  .mobile-member .avatar img{
+    filter: invert(1) brightness(1.35) contrast(1.05) drop-shadow(0 6px 10px rgba(0,0,0,0.55));
+  }
+  .mobile-chevron{
+    margin-left: auto;
+    width: 10px;
+    height: 10px;
+    opacity: 0.85;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 160ms ease;
+  }
+
+  .mobile-member[open] .mobile-chevron{
+    transform: rotate(-135deg);
+  }
+.mobile-member-body{
+    margin-top: 11px;
+    padding: 14px 14px 16px;
+    border-radius: 16px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .mobile-member-body p{
+    margin: 0 0 11px;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .mobile-member-body p:last-of-type{
+    margin-bottom: 0;
+  }
+
+  
+.mobile-member-divider{
+  display: block;
+  height: 0;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  margin: 12px 0;
+}
+.mobile-member-data{
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobile-member-data .contact-row{
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.mobile-member-data .contact-row strong{
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+
+/* sc19: contact icons – increase contrast without changing layout */
+.contact-icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1;
+}
+.contact-icon .contact-svg{
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+
+.contact-icon.phone{
+  color: rgba(255,70,70,0.95);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.45));
+}
+.contact-icon.mail{
+  color: rgba(255,214,102,0.95);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.45));
+}
+
+
+/* sc19: contact icon column – 34px width, keep vertical rhythm identical */
+.mobile-member-data .contact-row strong.contact-icon{
+  width: 34px;
+  flex: 0 0 34px;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  line-height: 1;
+}
+/* sc19: contact icon sizing – uniform width, preserve aspect ratio */
+.mobile-member-data .contact-row strong.contact-icon .contact-svg{
+  position: static;
+  width: 24px;
+  height: auto;
+  display: block;
+}
+
+.contact-icon.pec{
+  --pec-envelope: rgba(88,176,255,0.95);
+--pec-shield: rgba(0,123,255,0.95);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.45));
+}
+
+/* sc19: contact icons – external SVG already colored, keep clean rendering on mobile */
+.mobile-member-data .contact-icon.phone,
+.mobile-member-data .contact-icon.mail,
+.mobile-member-data .contact-icon.pec{
+  color: inherit;
+  filter: none;
+}
+.mobile-member-data .contact-value{
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+.mobile-member-data a.linkedin{
+  align-self: flex-end;
+  margin-top: 10px;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Prevent border clipping on some mobile browsers */
+.mobile-member-data .linkedin{
+  overflow: visible;
+}
+
+.mobile-member-data .linkedin img{
+  border-radius: 12px;
+}
+/* v48, LinkedIn mobile: contorno aderente all’icona */
+.mobile-stack .linkedin{
+  border: 0;
+  padding: 0;
+  background: rgba(255,255,255,0.04);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.mobile-stack .linkedin img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border: 2px solid rgba(255,255,255,0.92);
+  border-radius: 12px;
+}
+.mobile-member-data a.linkedin{
+  align-self: flex-end;
+  margin-top: 10px;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.mobile-member-data a.linkedin{
+  margin-top: 11px;
+}
+
+  /* Prevent border clipping on some mobile browsers */
+  .mobile-member-data .linkedin{
+    overflow: visible;
+  }
+
+  .mobile-member-data .linkedin img{
+    border-radius: 12px;
+  }
+
+  .mobile-member-data a.linkedin:hover{
+  border-bottom-color: transparent;
+}
+
+  /* v63, tap feedback uniforme su mobile */
+  .theme-toggle,
+  .brand-home,
+  .mobile-stack .linkedin,
+  .mobile-competences-summary,
+  #mobile-team-close,
+  .mobile-stack summary,
+  .mobile-stack summary *{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    touch-action: manipulation;
+  }
+
+  .theme-toggle:focus,
+  .theme-toggle:focus-visible,
+  .brand-home:focus,
+  .brand-home:focus-visible,
+  .mobile-stack .linkedin:focus,
+  .mobile-stack .linkedin:focus-visible,
+  .mobile-competences-summary:focus,
+  .mobile-competences-summary:focus-visible,
+  #mobile-team-close:focus,
+  #mobile-team-close:focus-visible,
+  .mobile-stack summary:focus,
+  .mobile-stack summary:focus-visible{
+    outline: none;
+  }
+
+	  /* Mobile: alcuni browser (es. Samsung Internet) mantengono il focus dopo il tap,
+	     generando anelli/circoli attorno all’icona sole/luna. Manteniamo l’estetica
+	     “normale” anche in stato focus. */
+	  .theme-toggle:focus,
+	  .theme-toggle:focus-visible{
+	    border-color: rgba(255,255,255,0.14);
+	    box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+	  }
+  .theme-toggle,
+  .brand-home,
+  .mobile-stack .linkedin,
+  .mobile-competences-summary,
+  #mobile-team-close,
+  .mobile-stack summary,
+  .mobile-stack summary.member-row{
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .tap-lift{
+    animation: sc19TapLift 180ms ease-out both;
+    will-change: transform;
+  }
+  .tap-lift-fast{
+    animation: sc19TapLift 120ms ease-out both;
+    will-change: transform;
+  }
+  /* v123, mobile: ibrido pulito + premium vetro */
+  .mobile-stack .card{
+    background:
+      radial-gradient(circle at 18% 16%, rgba(255,255,255,0.10), rgba(255,255,255,0) 54%),
+      linear-gradient(180deg, rgba(255,255,255,0.060), rgba(255,255,255,0.030));
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.06);
+    -webkit-backdrop-filter: blur(10px) saturate(125%);
+    backdrop-filter: blur(10px) saturate(125%);
+  }
+
+  /* v173, mobile scuro: pannelli principali più scuri, senza sfocatura */
+  html[data-theme="dark"] details.card.mobile-competences,
+  html[data-theme="dark"] section.card.mobile-team{
+    background:
+      radial-gradient(circle at 18% 16%, rgba(255,255,255,0.05), rgba(255,255,255,0) 54%),
+      linear-gradient(180deg, rgba(0,0,0,0.56), rgba(0,0,0,0.36));
+    border-color: rgba(255,255,255,0.16);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.06);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+
+  /* v209, mobile scuro: bordo base più leggibile e glow attivo più ampio e delicato */
+  html[data-theme="dark"] details.card.mobile-competences[open]{
+    border-color: rgba(255,248,240,0.20);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.38), 0 0 46px rgba(255,248,240,0.020), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  }
+
+  .mobile-stack summary.member-row{
+    background:
+      radial-gradient(circle at 22% 18%, rgba(255,255,255,0.12), rgba(255,255,255,0) 56%),
+      linear-gradient(180deg, rgba(255,255,255,0.070), rgba(255,255,255,0.025));
+    border-color: rgba(255,255,255,0.13);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.24);
+    -webkit-backdrop-filter: blur(10px) saturate(125%);
+    backdrop-filter: blur(10px) saturate(125%);
+  }
+
+  /* Touch devices can keep :hover after tap; keep identical look */
+  .mobile-stack .member-row:hover{
+    transform: none;
+    background:
+      radial-gradient(circle at 22% 18%, rgba(255,255,255,0.12), rgba(255,255,255,0) 56%),
+      linear-gradient(180deg, rgba(255,255,255,0.070), rgba(255,255,255,0.025));
+    border-color: rgba(255,255,255,0.13);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.24);
+  }
+
+  .mobile-member-body{
+    background: transparent;
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Extra mobile compaction for shorter screens */
+@media (max-width: 900px) and (max-height: 760px){
+  :root{
+    --brand: clamp(96px, 22vw, 130px);
+  }
+
+  /* sc19: iOS in-app browsers can under-report viewport height; keep logo size consistent with Android */
+  @supports (-webkit-touch-callout: none){
+    :root{ --brand: clamp(112px, 24vw, 150px); }
+  }
+
+  .hero{
+    padding: 14px 12px 10px;
+  }
+
+  h1{
+    font-size: clamp(24px, 6.3vw, 30px);
+    margin: 8px 0 6px;
+  }
+
+  .subtitle{
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .theme-toggle{
+    width: 38px;
+    height: 38px;
+    left: calc(50% + (var(--brand) / 2) + 5px);
+    right: auto;
+    top: 0px;
+
+}
+
+  .theme-toggle img{
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-stack{
+    gap: 13px;
+  }
+}
+
+@media (max-width: 900px) and (hover: none){
+  /* Avoid persistent :hover on touch devices */
+  .theme-toggle:hover,
+  .brand-home:hover,
+  .linkedin:hover,
+  .mobile-stack .member-row:hover{
+    transform: none;
+  }
+
+  /* v45, su mobile touch la pseudo-hover non deve lasciare ombre o variazioni dopo il tap */
+  .mobile-stack details.mobile-member:not([open]) > summary.member-row:hover{
+    transform: none;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border-color: rgba(255,255,255,0.11);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+  }
+  .mobile-stack .linkedin:hover{
+    transform: none;
+    background: rgba(255,255,255,0.04);
+    box-shadow:
+      0 10px 22px rgba(0,0,0,0.34),
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 0 0 2px rgba(255,255,255,0.92);
+  }
+  /* On touch devices, avoid "selected" border/glow state on the theme toggle */
+  .theme-toggle:hover{
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .theme-toggle:hover img{
+    filter: invert(1) brightness(1.35);
+    opacity: 0.86;
+  }
+  /* Premium micro-lift on tap, always returns on release */
+  .theme-toggle:active,
+  .brand-home:active,
+  .linkedin:active,
+  .mobile-stack summary.member-row:active{
+    transform: translateY(-1px);
+  }
+
+/* v48, su touch evita che :hover resti "incollato" sulla LinkedIn in mobile */
+.mobile-stack .linkedin:hover{
+  transform: none;
+  border: 0;
+  padding: 0;
+  background: rgba(255,255,255,0.04);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.34),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+}
+
+/* ==========================================================
+   PC tuning (ver.92): light logo shadows more concentrated,
+   remove inner glows on selected cards and right panel
+   ========================================================== */
+
+@media (min-width: 901px){
+
+  /* 1) Light PC: tighter (less diffused) shadows around the studio logo badge */
+  html[data-theme="light"] .badge{
+  background: transparent;
+  border: 0;
+box-shadow:
+    0 18px 44px rgba(0,0,0,0.22),
+    0 0 30px rgba(0,0,0,0.14),
+    inset 0 0 24px rgba(0,0,0,0.10);
+}
+
+  /* Light PC: also tighten hover feedback on logo (avoid overly diffused look) */
+  html[data-theme="light"] html[data-theme="light"] /* 2) Dark PC: remove golden inner background glow on selected left cards (keep borders/shadows) */
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  }
+
+  /* Light PC: remove bluish inner background glow on selected left cards (keep borders/shadows) */
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background:
+      radial-gradient(circle at 18% 18%, rgba(18,22,28,0.03), rgba(18,22,28,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.74));
+  }
+
+  /* Dark + Light PC: remove inner background glow in the right detail panel when a member is selected */
+  #view-mauro:checked ~ .team-grid .team-detail::before,
+  #view-nicola:checked ~ .team-grid .team-detail::before,
+  #view-micaela:checked ~ .team-grid .team-detail::before,
+  #view-agostino:checked ~ .team-grid .team-detail::before,
+  #view-gabriele:checked ~ .team-grid .team-detail::before,
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail::before,
+  html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail::before,
+  html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail::before,
+  html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail::before,
+  html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail::before{
+    content: none;
+  }
+}
+/* ==========================================================
+   PC ONLY - TEST ACCENT COLOR (ver. 101)
+   Replace gold accents with RGB(94, 117, 255) on selected/active borders
+   IMPORTANT: wrapped in @media to keep MOBILE unchanged.
+   ========================================================== */
+
+@media (min-width: 901px){
+  html[data-theme="dark"], html[data-theme="light"]{
+    --pc-accent-95: rgba(236, 246, 255,0.95);
+    --pc-accent-85: rgba(236, 246, 255,0.85);
+    --pc-accent-78: rgba(236, 246, 255,0.78);
+    --pc-accent-65: rgba(236, 246, 255,0.65);
+    --pc-accent-62: rgba(236, 246, 255,0.62);
+    --pc-accent-55: rgba(236, 246, 255,0.55);
+    --pc-accent-45: rgba(236, 246, 255,0.45);
+    --pc-accent-40: rgba(236, 246, 255,0.40);
+    --pc-accent-22: rgba(236, 246, 255,0.22);
+    --pc-accent-20: rgba(236, 246, 255,0.20);
+    --pc-accent-18: rgba(236, 246, 255,0.18);
+    --pc-accent-16: rgba(236, 246, 255,0.16);
+    --pc-accent-14: rgba(236, 246, 255,0.14);
+    --pc-accent-12: rgba(236, 246, 255,0.12);
+    --pc-accent-10: rgba(236, 246, 255,0.10);
+    --pc-accent-solid: rgb(236, 246, 255);
+      --pc-accent-stroke: 2px;
+}
+
+  html[data-theme="light"]{
+    /* Align hover rings (logo + theme toggle) with panel border tone in light PC */
+    --pc-accent-solid: rgb(236, 246, 255);
+  }
+
+  html[data-theme="dark"]{ --pc-sep: rgba(255,255,255,0.10); }
+  html[data-theme="light"]{ --pc-sep: rgba(18,22,28,0.08); }
+
+  /* Ring around moon/sun button */
+  .theme-toggle:hover{
+    border-width: var(--pc-accent-stroke);
+    border-color: var(--pc-accent-solid);
+    box-shadow: 0 12px 26px rgba(10,16,28,0.16), 0 0 36px var(--pc-accent-12), inset 0 1px 0 rgba(255,255,255,0.75);
+  }
+  html[data-theme="dark"] .theme-toggle:hover{
+    box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 36px var(--pc-accent-12), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .theme-toggle:hover img{
+    filter: drop-shadow(0 0 18px var(--pc-accent-14));
+  }
+  html[data-theme="dark"] .theme-toggle:hover img{
+    filter: invert(1) brightness(1.55) drop-shadow(0 0 18px var(--pc-accent-18));
+  }
+  .theme-toggle:focus-visible{
+    border-width: var(--pc-accent-stroke);
+    border-color: var(--pc-accent-85);
+    box-shadow: 0 12px 26px rgba(10,16,28,0.16), 0 0 0 6px var(--pc-accent-18);
+  }
+  html[data-theme="dark"] .theme-toggle:focus-visible{
+    box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 0 6px var(--pc-accent-18);
+    border-color: var(--pc-accent-85);
+  }
+
+  /* Ring around studio logo badge on hover (only when a profile is selected) */
+  html[data-theme="light"] /* Fix: ensure the hover ring around the studio logo uses the PC accent color (was still gold via ::after). */
+/* Selected left cards (all five) */
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    border-width: var(--pc-accent-stroke);
+    border-color: var(--pc-accent-95);
+    box-shadow:
+      0 18px 44px rgba(0,0,0,0.46),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    box-shadow:
+      0 18px 44px rgba(0,0,0,0.46),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* Fix: remove the bright inner reflection on selected left cards (dark PC) by dropping the extra radial highlight. */
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  }
+
+  /* Selected avatar frame (all five) */
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+  #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+  #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+  #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+  #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    border-color: var(--pc-accent-95);
+    box-shadow:
+      0 0 0 3px var(--pc-accent-16),
+      0 12px 24px rgba(0,0,0,0.38),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    box-shadow:
+      0 12px 24px rgba(0,0,0,0.38),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* Connector line */
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+  #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+  #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+  #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+  #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+    height: var(--pc-accent-stroke);
+    background: var(--pc-accent-95);
+  }
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+    background: var(--pc-accent-solid);
+  }
+
+  /* Right panel selected border */
+  #view-mauro:checked ~ .team-grid .team-detail,
+  #view-nicola:checked ~ .team-grid .team-detail,
+  #view-micaela:checked ~ .team-grid .team-detail,
+  #view-agostino:checked ~ .team-grid .team-detail,
+  #view-gabriele:checked ~ .team-grid .team-detail{
+    border-width: var(--pc-accent-stroke);
+    border-color: var(--pc-accent-95);
+  }
+  /* Data box (contact) and X box (close) borders: match the separator line */
+  .team-grid .contact{
+    border-color: var(--pc-sep);
+  }
+
+  /* Fix (dark PC): make the contact box fill match the right panel fill */
+  html[data-theme="dark"] .team-grid .contact{
+    background: var(--panel);
+  }
+
+  .contact a{
+    border-bottom-width: var(--pc-accent-stroke);
+    border-bottom-color: var(--pc-accent-20);
+  }
+  .contact a:hover{
+    border-bottom-color: var(--pc-accent-55);
+  }
+  .team-grid .close{
+    border-color: var(--pc-sep);
+  }
+  .close:hover{
+    border-color: var(--pc-sep);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  html[data-theme="light"] .close:hover{
+    box-shadow: 0 12px 26px rgba(10,16,28,0.18), inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+  .close:hover .close-x::before,
+  .close:hover .close-x::after{
+    box-shadow: none;
+  }
+  html[data-theme="light"] .close:hover .close-x::before,
+  html[data-theme="light"] .close:hover .close-x::after{
+    box-shadow: none;
+  }
+
+  /* Light theme: ensure selected borders also use the same RGB */
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    border-color: var(--pc-accent-95);
+  }
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+  html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+  html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+  html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+  html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+    height: 2px;
+    background: var(--pc-accent-solid);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  html[data-theme="light"] #view-mauro:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] #view-nicola:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] #view-micaela:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] #view-agostino:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail{
+    border-color: var(--pc-accent-95);
+  }
+}
+/* ==========================================================
+   MOBILE: allineamento estetico al target (v124)
+   Solo estetica, nessuna modifica geometrica
+========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .card{
+    background: var(--panel);
+    border-color: rgba(255,255,255,0.10);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.30);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html[data-theme="dark"] .member-row{
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border-color: rgba(255,255,255,0.11);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html[data-theme="dark"] details.mobile-member[open] > summary.member-row{
+    box-shadow: 0 20px 50px rgba(10,16,28,0.20), 0 7px 18px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+}
+
+/* Mobile touch: evita lo “sticky hover/focus” (es. Samsung Internet) sul pulsante tema */
+@media (hover: none) and (pointer: coarse){
+  .theme-toggle{
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .theme-toggle:hover{
+    transform: none;
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .theme-toggle:hover img{
+    opacity: 0.86;
+    filter: invert(1) brightness(1.35);
+  }
+
+  .theme-toggle:focus,
+  .theme-toggle:focus-visible{
+    outline: none;
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .theme-toggle:active{
+    transform: translateY(0) scale(0.98);
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,235,200,0.55);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 36px rgba(255,205,120,0.10), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  html[data-theme="light"] .theme-toggle:hover{
+    background: rgba(0,0,0,0.03);
+    border-color: rgba(18,22,28,0.14);
+    box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.70);
+  }
+  html[data-theme="light"] .theme-toggle:focus,
+  html[data-theme="light"] .theme-toggle:focus-visible{
+    outline: none;
+    border-color: rgba(18,22,28,0.14);
+    box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.70);
+  }
+
+  html[data-theme="light"] .theme-toggle:active{
+    transform: translateY(0) scale(0.98);
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(236, 246, 255,0.55);
+    box-shadow: 0 12px 26px rgba(10,16,28,0.16), inset 0 1px 0 rgba(255,255,255,0.75);
+  }
+}
+/* FIX: touch sticky hover (pointer: coarse) */
+/* FIX: touch sticky hover (pointer: coarse)
+   Some mobile browsers (es. Samsung Internet) keep :hover 'stuck' after tap.
+   On touch devices we neutralize the hover look for the theme toggle so it behaves consistently. */
+@media (pointer: coarse){
+  .theme-toggle{
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .theme-toggle:hover{
+    transform: none !important;
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.14) !important;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+  }
+
+  .theme-toggle:hover img{
+    opacity: 0.86 !important;
+    filter: invert(1) brightness(1.35) !important;
+  }
+
+  html[data-theme="light"] .theme-toggle:hover{
+    background: rgba(0,0,0,0.03) !important;
+    border-color: rgba(18,22,28,0.14) !important;
+    box-shadow: 0 10px 22px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.70) !important;
+  }
+}
+
+/* ==========================================================
+   ver. 133 – PC: hover-gated blue accents + chevrons centering
+   (Mobile unchanged)
+   ========================================================== */
+
+@media (min-width: 901px){
+
+  /* Top services card: blue border only on hover (premium, no layout jump) */
+  .services-card.card{
+    border-width: 2px;
+    transition: border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  .services-card.card:hover,
+  .services-card.card.sc19-services-hover{
+    border-width: var(--pc-accent-stroke);
+    border-color: var(--pc-accent-95);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.30);
+    transition: border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  html[data-theme="light"] .services-card.card:hover,
+  html[data-theme="light"] .services-card.card.sc19-services-hover{
+    border-color: var(--pc-accent-solid);
+    box-shadow: 0 18px 40px rgba(10,16,28,0.12);
+  }
+
+  /* Sync border animations between left selected card and right detail card */
+  .team-grid .team-list.card,
+  .team-grid .team-detail.card{
+    transition: border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+
+  /* Ensure simultaneous accent appearance: remove border transition while the bottom area is active */
+  body.pc-bottom-hover .team-grid .team-list.card,
+  body.pc-bottom-hover .team-grid .team-detail.card{
+    transition: border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  /* Hovered team card: show the same blue border while the bottom area is active */
+  body.pc-bottom-hover .team-grid .team-list .member-row:hover{
+    border-color: var(--pc-accent-95);
+  }
+
+  /* Bottom labels + connector: smooth fade-out when leaving the bottom hover zone (no delay timer) */
+  .team-grid .team-list .member-row{
+    transition: transform 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  body.pc-bottom-hover .team-grid .team-list .member-row{
+    transition: transform 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  .team-grid .team-list .member-row::after{
+    transition: opacity var(--pc-accent-fade) ease, background-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  body.pc-bottom-hover .team-grid .team-list .member-row::after{
+    transition: opacity var(--pc-accent-fade) ease, background-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+
+  /* Bottom zone: blue borders only while pointer is inside (team + detail, including the gap) */
+  body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    border-color: rgba(255,255,255,0.11);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+  }
+  /* pc-bottom-hover instant selected border: avoids perceived delay vs the right panel */
+  body.pc-bottom-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  body.pc-bottom-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  body.pc-bottom-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  body.pc-bottom-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  body.pc-bottom-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    transition: transform 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  /* pc-bottom-hover selected team card: enforce blue border (fix Mauro Poncini border) */
+  body.pc-bottom-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  body.pc-bottom-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  body.pc-bottom-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  body.pc-bottom-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  body.pc-bottom-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    border-color: var(--pc-accent-95);
+    box-shadow:
+      0 18px 44px rgba(0,0,0,0.46),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    border-color: rgba(18,22,28,0.08);
+    box-shadow: 0 14px 34px rgba(10,16,28,0.12), inset 0 1px 0 rgba(255,255,255,0.80), inset 0 -1px 0 rgba(18,22,28,0.04);
+  }
+
+  body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]::after,
+  body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]::after,
+  body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]::after,
+  body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]::after,
+  body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]::after{
+    background: transparent;
+    box-shadow: none;
+    opacity: 0;
+  }
+
+  body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+  body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+  body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+  body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+  body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: none;
+  }
+
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] .avatar,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] .avatar,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] .avatar,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] .avatar,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] .avatar{
+    border-color: rgba(18,22,28,0.12);
+  }
+
+  body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-detail,
+  body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-detail,
+  body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-detail,
+  body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-detail,
+  body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-detail{
+    border-color: rgba(255,255,255,0.10);
+  }
+
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-mauro:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-nicola:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-micaela:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-agostino:checked ~ .team-grid .team-detail,
+  html[data-theme="light"] body:not(.pc-bottom-hover) #view-gabriele:checked ~ .team-grid .team-detail{
+    border-color: rgba(18,22,28,0.10);
+  }
+}
+
+/* Chevron micro-centering (desktop cyclers) */
+.close-v.close-down{ top: -3px; }
+.close-v.close-up{ top: 3px; }
+
+/* ==========================================================
+   v167  Mobile scuro  sfondo.webp a larghezza piena, nessun taglio
+   v203  Step 1 Mockup A: velo ambientale leggero sul solo sfondo (overlay)
+   Pannelli I nostri servizi e Il team quasi trasparenti, nessun blur
+   Solo estetica, nessuna modifica geometrica o JS
+   ========================================================== */
+@media (max-width: 900px){
+/* Point 2 Mockup A: filtro leggero sullo sfondo (più luce, meno contrasto) */
+html[data-theme="dark"] body{
+  background: var(--bg);
+  position: relative;
+  z-index: 0;
+}
+
+/* v254: stack unico per sfondo (fallback webp + video + overlay) in un solo layer fixed,
+   senza z-index negativi e con altezza ancorata al visual viewport per evitare micro-shift su swipe. */
+html[data-theme="dark"] .bg-video{
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(var(--vvw, 1vw) * 100);
+  height: calc(var(--vvh, 1vh) * 100);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  background: var(--bg);
+  transform: translate3d(var(--vv-left, 0px), var(--vv-top, 0px), 0);
+  will-change: transform, height, width;
+}
+
+html[data-theme="dark"] .bg-video::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("assets/sfondo.webp") top center / 100% auto no-repeat;
+  filter: brightness(1.10) contrast(0.92);
+  transform: translateZ(0);
+}
+
+html[data-theme="dark"] .bg-video video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(1.10) contrast(0.92);
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+html[data-theme="dark"] .bg-video::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.14));
+  pointer-events: none;
+}
+
+/* contenuti sopra lo sfondo */
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] main.container,
+html[data-theme="dark"] .team{
+  position: relative;
+  z-index: 1;
+}
+
+  html[data-theme="dark"] #mobile-competences.card,
+  html[data-theme="dark"] #mobile-team.card{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.09), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.042), rgba(255,255,255,0.012)),
+      linear-gradient(180deg, rgba(0,0,0,0.58), rgba(0,0,0,0.42));
+    border-color: rgba(255,255,255,0.22);
+    box-shadow:
+      0 18px 44px rgba(0,0,0,0.44),
+      inset 0 1px 0 rgba(255,255,255,0.10),
+      inset 0 -1px 0 rgba(0,0,0,0.32);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* ==========================================================
+   v168  Mobile scuro  testata più leggibile (logo, titolo, contatti)
+   Solo estetica, nessuna modifica geometrica o JS
+   Nessuna sfocatura, nessuna interferenza con tap/click
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .hero{
+    position: relative;
+    isolation: isolate;
+  }
+
+  html[data-theme="dark"] .hero::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.58) 0%,
+      rgba(0,0,0,0.24) 62%,
+      rgba(0,0,0,0.00) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  html[data-theme="dark"] .hero .brand-wrap,
+  html[data-theme="dark"] .hero h1,
+  html[data-theme="dark"] .hero .subtitle{
+    position: relative;
+    z-index: 1;
+  }
+
+  html[data-theme="dark"] .badge{
+  background: transparent;
+  border: 0;
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+}
+
+  html[data-theme="dark"] .logo{
+    filter: invert(1) brightness(1.35)
+      drop-shadow(0 10px 22px rgba(0,0,0,0.60))
+      drop-shadow(0 0 18px rgba(255,255,255,0.14));
+  }
+
+  html[data-theme="dark"] .hero h1{
+    color: rgba(255,255,255,0.96);
+    text-shadow: 0 3px 16px rgba(0,0,0,0.72), 0 1px 0 rgba(0,0,0,0.55);
+  }
+
+  html[data-theme="dark"] .hero .subtitle{
+    color: rgba(255,255,255,0.94);
+    text-shadow: 0 2px 14px rgba(0,0,0,0.72);
+  }
+
+  html[data-theme="dark"] .hero .subtitle .phone{
+    color: rgba(255,255,255,0.97);
+    text-shadow: 0 2px 16px rgba(0,0,0,0.78);
+  }
+}
+
+/* ==========================================================
+   v170  Mobile scuro  contatti leggibili senza artefatti
+   Solo estetica: solo ombre del testo, nessun overlay aggiuntivo
+   Nessuna sfocatura, nessuna interferenza con tap/click
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .hero .subtitle{
+    color: rgba(255,255,255,0.96);
+    text-shadow: 0 3px 22px rgba(0,0,0,0.86), 0 1px 0 rgba(0,0,0,0.80), 0 0 2px rgba(0,0,0,0.95);
+  }
+
+  html[data-theme="dark"] .hero .subtitle .subline{
+    color: rgba(255,255,255,0.98);
+    text-shadow: 0 3px 24px rgba(0,0,0,0.88), 0 1px 0 rgba(0,0,0,0.82), 0 0 2px rgba(0,0,0,0.96);
+  }
+
+  html[data-theme="dark"] .hero .subtitle .phone{
+    color: rgba(255,255,255,1.00);
+    text-shadow: 0 3px 26px rgba(0,0,0,0.90), 0 1px 0 rgba(0,0,0,0.84), 0 0 2px rgba(0,0,0,0.97);
+  }
+}
+
+/* ==========================================================
+   v171  Mobile scuro  ombre soffuse ma intense su logo e testata
+   Solo estetica: solo ombre (no overlay), nessuna modifica geometrica o JS
+   Nessuna sfocatura, nessuna interferenza con tap/click
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .hero::before{
+    content: none;
+  }
+
+  html[data-theme="dark"] .badge{
+  background: transparent;
+  border: 0;
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+
+box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+}
+
+  html[data-theme="dark"] .logo{
+    filter: invert(1) brightness(1.35)
+      drop-shadow(0 18px 40px rgba(0,0,0,0.86))
+      drop-shadow(0 0 78px rgba(0,0,0,0.74))
+      drop-shadow(0 0 120px rgba(0,0,0,0.56));
+  }
+
+  html[data-theme="dark"] .hero h1{
+    text-shadow:
+      0 4px 18px rgba(0,0,0,0.90),
+      0 10px 34px rgba(0,0,0,0.78),
+      0 0 86px rgba(0,0,0,0.62);
+  }
+
+  html[data-theme="dark"] .hero .subtitle,
+  html[data-theme="dark"] .hero .subtitle .subline,
+  html[data-theme="dark"] .hero .subtitle .phone{
+    text-shadow:
+      0 3px 14px rgba(0,0,0,0.90),
+      0 8px 28px rgba(0,0,0,0.78),
+      0 0 64px rgba(0,0,0,0.56);
+  }
+}
+
+/* ==========================================================
+   v180  Mobile scuro  effetto vetro per pannelli e schede
+   Solo estetica: gradienti, bordi come colore/opacita, ombre, filtri (backdrop-filter)
+   Nessuna modifica geometrica o JS, nessuna interferenza con tap/click
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] details.card.mobile-competences,
+  html[data-theme="dark"] section.card.mobile-team{
+    background:
+      radial-gradient(circle at 18% 16%, rgba(255,255,255,0.10), rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
+      rgba(0,0,0,0.34);
+    border-color: rgba(255,255,255,0.20);
+    box-shadow: 0 22px 58px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.34);
+    -webkit-backdrop-filter: blur(12px) saturate(118%);
+    backdrop-filter: blur(12px) saturate(118%);
+    position: relative;
+    isolation: isolate;
+  }
+
+  html[data-theme="dark"] details.card.mobile-competences::before,
+  html[data-theme="dark"] section.card.mobile-team::before{
+    content:"";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 22% 12%, rgba(255,255,255,0.22), rgba(255,255,255,0) 52%),
+      linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0) 48%);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  html[data-theme="dark"] #mobile-competences > *,
+  html[data-theme="dark"] #mobile-team > *{
+    position: relative;
+    z-index: 1;
+  }
+
+  html[data-theme="dark"] .mobile-stack summary.member-row{
+    background:
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.22), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.020)),
+      rgba(0,0,0,0.16);
+    border-color: rgba(255,255,255,0.22);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.32);
+    -webkit-backdrop-filter: blur(14px) saturate(125%);
+    backdrop-filter: blur(14px) saturate(125%);
+  }
+
+  /* Touch devices can keep :hover after tap; keep identical look */
+  html[data-theme="dark"] .mobile-stack .member-row:hover{
+    transform: none;
+    background:
+      radial-gradient(circle at 20% 16%, rgba(255,255,255,0.22), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.020)),
+      rgba(0,0,0,0.16);
+    border-color: rgba(255,255,255,0.22);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.32);
+  }
+}
+
+/* ==========================================================
+   v182  Mobile scuro  pannelli con stile v181
+   Solo pannelli "I nostri servizi" e "Il team"
+   Le cinque schede professionisti restano invariate (stile v180)
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] details.card.mobile-competences,
+  html[data-theme="dark"] section.card.mobile-team{
+    background:
+      radial-gradient(120% 90% at 18% 12%, rgba(255,255,255,0.16), rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+      rgba(0,0,0,0.22);
+    border-color: rgba(255,255,255,0.26);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -1px 0 rgba(0,0,0,0.30);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  html[data-theme="dark"] details.card.mobile-competences::before,
+  html[data-theme="dark"] section.card.mobile-team::before{
+    opacity: 0.28;
+    background: radial-gradient(120% 110% at 15% 10%, rgba(255,255,255,0.22), rgba(255,255,255,0) 62%);
+  }
+}
+
+/* ==========================================================
+   v183  Mobile scuro  target: vignettatura, pannelli più netti, icone più leggibili
+   Solo estetica, nessuna modifica geometrica o JS
+   ========================================================== */
+@media (max-width: 900px){
+  /* 1) Vignettatura leggerissima ai bordi */
+  html[data-theme="dark"] body::after{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 140% at 50% 30%, rgba(0,0,0,0) 58%, rgba(0,0,0,0.24) 100%),
+      radial-gradient(120% 120% at 50% 110%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.16) 100%);
+    opacity: 1;
+  }
+
+  /* 3) Pannelli più definiti ma sempre quasi trasparenti, vetro pulito */
+  html[data-theme="dark"] details.card.mobile-competences,
+  html[data-theme="dark"] section.card.mobile-team{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015)),
+      rgba(0,0,0,0.24);
+    border-color: rgba(255,255,255,0.30);
+    box-shadow: 0 18px 46px rgba(0,0,0,0.44), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.32);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  html[data-theme="dark"] details.card.mobile-competences::before,
+  html[data-theme="dark"] section.card.mobile-team::before{
+    opacity: 0.22;
+    background: radial-gradient(150% 120% at 15% 10%, rgba(255,255,255,0.20), rgba(255,255,255,0) 66%);
+  }
+
+  /* 5) Icone freccia e icona luna: contrasto leggermente maggiore */
+  html[data-theme="dark"] .mobile-chevron{
+    opacity: 0.96;
+    filter: drop-shadow(0 2px 7px rgba(0,0,0,0.72));
+  }
+
+  html[data-theme="dark"] .theme-toggle img{
+    opacity: 0.96;
+    filter: invert(1) brightness(1.45) drop-shadow(0 3px 10px rgba(0,0,0,0.78));
+  }
+}
+
+/* ==========================================================
+   v184  Mobile scuro  ombra più scura su indirizzo e telefono
+   Solo estetica: solo text-shadow, nessun overlay, nessuna modifica geometrica o JS
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .hero .subtitle .subline{
+    text-shadow:
+      0 2px 10px rgba(0,0,0,0.98),
+      0 10px 32px rgba(0,0,0,0.88),
+      0 0 96px rgba(0,0,0,0.72);
+  }
+
+  html[data-theme="dark"] .hero .subtitle .phone{
+    text-shadow:
+      0 2px 12px rgba(0,0,0,0.99),
+      0 11px 34px rgba(0,0,0,0.90),
+      0 0 102px rgba(0,0,0,0.74);
+  }
+}
+
+
+  html[data-theme="dark"] .hero .subtitle .subline .studio-address-icon{
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.60)) drop-shadow(0 2px 14px rgba(0,0,0,0.72));
+  }
+
+  html[data-theme="dark"] .hero .subtitle .phone .studio-phone-icon{
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.65)) drop-shadow(0 2px 16px rgba(0,0,0,0.78));
+  }
+/* ==========================================================
+   v194  Mobile scuro  performance: hint per fluidità pannelli (no changes)
+   Solo performance: nessun cambio estetico, nessuna geometria, nessun JS
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] details.card.mobile-competences,
+  html[data-theme="dark"] section.card.mobile-team,
+  html[data-theme="dark"] .mobile-stack summary.member-row{
+    will-change: backdrop-filter, box-shadow;
+  }
+
+  html[data-theme="dark"] .mobile-stack .sc19-animwrap{
+    will-change: height, backdrop-filter, box-shadow;
+  }
+}
+
+/* ==========================================================
+   Mobile dark performance: promote animated glass panels to composited layers
+   (no visual changes intended; aims to reduce lag during open/close)
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] .mobile-competences,
+  html[data-theme="dark"] .mobile-team,
+  html[data-theme="dark"] .mobile-member,
+  html[data-theme="dark"] .mobile-competences-summary,
+  html[data-theme="dark"] .mobile-competences-body,
+  html[data-theme="dark"] .mobile-member-body{
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Keep team summary composited only while the card is actually open to avoid seam artifacts on closed cards */
+  html[data-theme="dark"] details.mobile-member[open] > summary.mobile-member-summary{
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* If glass overlays are implemented via pseudo-elements, ensure they also composite cleanly */
+  html[data-theme="dark"] .mobile-competences::before,
+  html[data-theme="dark"] .mobile-team::before,
+  html[data-theme="dark"] .mobile-member::before,
+  html[data-theme="dark"] .mobile-competences::after,
+  html[data-theme="dark"] .mobile-team::after,
+  html[data-theme="dark"] .mobile-member::after{
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
+/* v2016 PATCH: keep studio logo shadow always visible (mobile dark) */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-wrap{
+    position: relative;
+  }
+
+  /* Shadow rendered by a static layer, not affected by tap transforms on the button */
+  html[data-theme="dark"] .brand-wrap::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: var(--brand);
+    height: var(--brand);
+    margin: 0 auto;
+    border-radius: 999px;
+    box-shadow: 0 18px 40px var(--shadow);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  html[data-theme="dark"] .brand-home{
+    position: relative;
+    z-index: 1;
+  }
+
+  html[data-theme="dark"] .theme-toggle{
+    z-index: 2;
+  }
+
+  /* Prevent the original shadow from disappearing, we now render it on brand-wrap::before */
+  html[data-theme="dark"] .brand-home .badge{
+  border: 0;
+
+    box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16);
+  }
+}
+
+
+/* v232: natural ambient shadow for logo (outer + inner) via brand-wrap::before; remove SVG drop-shadow */
+@media (max-width: 900px){
+  /* Keep logo white, but remove 'medallion' (no drop-shadow on the SVG strokes) */
+  html[data-theme="dark"] .brand-home .logo{
+    filter: invert(1) brightness(1.2) !important;
+  }
+
+  /* Create a purely-shadow layer behind the SVG: no fill, no gradient, no border */
+  html[data-theme="dark"] .brand-wrap{
+    position: relative;
+  }
+  html[data-theme="dark"] .brand-wrap::before{
+    content: "";
+    position: absolute;
+    width: var(--brand);
+    height: var(--brand);
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    pointer-events: none;
+    background: transparent;
+
+    /* Natural diffusion: outside + subtle inside shading */
+    box-shadow:
+      0 26px 64px rgba(0,0,0,0.55),
+      0 10px 22px rgba(0,0,0,0.38),
+      inset 0 0 42px rgba(0,0,0,0.28);
+  }
+
+  /* Ensure SVG stays above the shadow layer */
+  html[data-theme="dark"] .brand-home{
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* logo badge final clamp: no circle, stable natural shadow only */
+.brand-wrap .badge{
+  background: transparent !important;
+  border: 0;
+pointer-events: none !important;
+  box-shadow:
+    0 18px 52px rgba(0,0,0,0.36),
+    0 0 40px rgba(0,0,0,0.22),
+    inset 0 0 28px rgba(0,0,0,0.16) !important;
+}
+
+html[data-theme="light"] .brand-wrap .badge{
+  border: 0;
+box-shadow:
+    0 18px 44px rgba(0,0,0,0.22),
+    0 0 30px rgba(0,0,0,0.14),
+    inset 0 0 24px rgba(0,0,0,0.10) !important;
+}
+
+.brand-wrap .badge::after{
+  content: none !important;
+  display: none !important;
+}
+
+.brand-wrap .brand-home,
+.brand-wrap .brand-home:hover,
+.brand-wrap .brand-home:active{
+  transform: none !important;
+}
+
+.brand-wrap .brand-home:hover .logo,
+.brand-wrap .brand-home:active .logo{
+  transform: none !important;
+}
+
+/* v234: center the logo shadow on .brand-home (avoid brand-wrap centering shift) */
+@media (max-width: 900px){
+  /* Disable shadow layer centered on the whole brand-wrap (it shifts because of theme-toggle) */
+  html[data-theme="dark"] .brand-wrap::before{
+    content: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep ONLY the SVG visible, remove any leftover badge material */
+  html[data-theme="dark"] .brand-home .badge{
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  html[data-theme="dark"] .brand-home .badge::before,
+  html[data-theme="dark"] .brand-home .badge::after{
+    content: none !important;
+    opacity: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  /* Shadow perfectly centered on the clickable logo button */
+  html[data-theme="dark"] .brand-home{
+    position: relative;
+  }
+  html[data-theme="dark"] .brand-home::before{
+    content: "";
+    position: absolute;
+    width: var(--brand);
+    height: var(--brand);
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    pointer-events: none;
+    background: transparent;
+    box-shadow: 0 18px 40px var(--shadow);
+    z-index: 0;
+  }
+  html[data-theme="dark"] .brand-home .logo{
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* v235: stabilize logo compositing on tap (prevent flicker) */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-home{
+    /* Avoid tap highlight repaint glitches on mobile browsers */
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+  }
+
+  html[data-theme="dark"] .brand-home .logo{
+    /* Keep the logo on a stable composited layer */
+    transform: translateZ(0);
+    will-change: transform, filter, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Ensure no transient state changes on tap */
+  html[data-theme="dark"] .brand-home:active .logo,
+  html[data-theme="dark"] .brand-home:focus .logo,
+  html[data-theme="dark"] .brand-home:focus-visible .logo{
+    transform: translateZ(0);
+    opacity: 1 !important;
+  }
+}
+
+/* v240: mobile dark, elimina bagliore bianco al primo tap sul logo (solo CSS, nessuna geometria) */
+@media (max-width: 900px){
+  /* Remove any UA button styling that can "flash" on first activation */
+  html[data-theme="dark"] .brand-wrap .brand-home{
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent !important;
+  }
+
+  /* JS adds .tap-lift: block any animation/transform on the BUTTON itself (move only the logo) */
+  html[data-theme="dark"] .brand-wrap .brand-home.tap-lift{
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  /* Keep the SVG on a stable compositing layer to prevent first-time flash */
+  html[data-theme="dark"] .brand-wrap .brand-home > img.logo{
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  /* Extra safety for focus glow */
+  html[data-theme="dark"] .brand-wrap .brand-home:focus,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* v241: mobile dark, remove white halo on first tap (Samsung A71) by removing the white drop-shadow component on the header logo */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-wrap .brand-home > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:active > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home.tap-lift > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus-visible > img.logo{
+    /* keep depth, remove any light halo */
+    filter: invert(1) brightness(1.35)
+      drop-shadow(0 10px 22px rgba(0,0,0,0.60)) !important;
+  }
+}
+
+/* v242: soluzione 1, elimina bagliore bianco al primo tap sul logo (mobile scuro, solo CSS)
+   Strategia: nessun drop-shadow via filter sul logo, nessuna variazione di filter negli stati,
+   layer compositing solo su transform. */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-wrap .brand-home > img.logo,
+  html[data-theme="dark"] .brand-home > img.logo,
+  html[data-theme="dark"] .brand-home img.logo,
+  html[data-theme="dark"] .brand-home .logo,
+  html[data-theme="dark"] img.logo{
+    filter: invert(1) brightness(1.2) contrast(1.05) !important;
+    -webkit-filter: invert(1) brightness(1.2) contrast(1.05) !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+    will-change: transform;
+  }
+
+  html[data-theme="dark"] .brand-wrap .brand-home:active > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus-visible > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home.tap-lift > img.logo{
+    filter: invert(1) brightness(1.2) contrast(1.05) !important;
+    -webkit-filter: invert(1) brightness(1.2) contrast(1.05) !important;
+  }
+}
+
+
+/* v239R: mobile dark – logo tap nudge, fast and consistent (JS adds .tap-lift on pointerdown) */
+@keyframes sc19LogoTapQuick{
+  0%{ transform: translate3d(0, 0, 0); }
+  35%{ transform: translate3d(0, -2px, 0); }
+  100%{ transform: translate3d(0, 0, 0); }
+}
+
+@media (max-width: 900px){
+  /* Allow transform animation on the header logo */
+  html[data-theme="dark"] .brand-wrap .brand-home > img.logo{
+    will-change: transform;
+  }
+
+  /* Animate ONLY the logo when JS toggles .tap-lift (the button itself is kept static by v240) */
+  html[data-theme="dark"] .brand-wrap .brand-home.tap-lift > img.logo{
+    animation: sc19LogoTapQuick 120ms cubic-bezier(0.2, 0.9, 0.2, 1) both !important;
+    transition: none !important;
+  }
+
+  /* Safety: if :active happens without .tap-lift, keep the same nudge */
+  html[data-theme="dark"] .brand-wrap .brand-home:active > img.logo{
+    transform: translate3d(0, -3px, 0) !important;
+  }
+}
+/* v243: mobile dark logo anti-flicker (Samsung A71) – stabilize compositing, keep filter constant */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-wrap{
+    isolation: isolate;
+  }
+
+  html[data-theme="dark"] .brand-home{
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html[data-theme="dark"] .brand-home:focus,
+  html[data-theme="dark"] .brand-home:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep logo filter identical in every state (prevents first-tap filter pipeline flash) */
+  html[data-theme="dark"] .brand-home .logo,
+  html[data-theme="dark"] .brand-home:active .logo,
+  html[data-theme="dark"] .brand-home.tap-lift .logo{
+    filter: invert(1) brightness(1.2) !important;
+    will-change: transform, filter;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    contain: paint;
+  }
+}
+
+/* [sc19] mobile: tema chiaro dismesso, toggle disattivato */
+@media (max-width: 900px){
+  .theme-toggle{
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+/* Touch: elimina highlight nativo e flash di compositing sul primo tap del logo */
+@media (hover: none) and (pointer: coarse){
+  .brand-home,
+  .brand-home *{
+    -webkit-tap-highlight-color: rgba(0,0,0,0.001) !important;
+    -webkit-touch-callout: none;
+  }
+
+  .brand-home:focus,
+  .brand-home:focus-visible,
+  .brand-home:active{
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    filter: none !important;
+  }
+
+  /* evita qualsiasi "flash" dal layer badge durante tap-lift */
+  .brand-home:active .badge,
+  .brand-home.tap-lift .badge{
+    filter: none !important;
+    box-shadow: inherit !important;
+  }
+
+  /* il logo non deve mai cambiare filtro durante tap */
+  .brand-home:active .logo,
+  .brand-home.tap-lift .logo{
+    filter: invert(1) brightness(1.2) !important;
+  }
+}
+/* === end sc19 mobile dark only + anti-flash === */
+
+
+/* === mobile dark: hard reset for logo button (anti flash) [sc19] === */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-home,
+  html[data-theme="dark"] .brand-home:active,
+  html[data-theme="dark"] .brand-home:focus,
+  html[data-theme="dark"] .brand-home:focus-visible,
+  html[data-theme="dark"] .brand-home.tap-lift{
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+    -webkit-touch-callout: none;
+  }
+
+  html[data-theme="dark"] .brand-home::before,
+  html[data-theme="dark"] .brand-home::after{
+    content: none !important;
+  }
+}
+/* === end hard reset [sc19] === */
+
+
+/* v248: mobile dark logo materialita, ombra esterna sul logo, ombra interna nel medaglione (badge), senza scatti */
+@media (max-width: 900px){
+  /* Ombra esterna: shape-based, solo nera, filtro costante in ogni stato */
+  html[data-theme="dark"] .brand-home .logo,
+  html[data-theme="dark"] .brand-home:active .logo,
+  html[data-theme="dark"] .brand-home:focus .logo,
+  html[data-theme="dark"] .brand-home:focus-visible .logo,
+  html[data-theme="dark"] .brand-home.tap-lift .logo{
+    /* manteniamo invert/brightness per il logo SVG e aggiungiamo solo ombre scure */
+    -webkit-filter: invert(1) brightness(1.2)
+      drop-shadow(0 18px 44px rgba(0,0,0,0.62))
+      drop-shadow(0 6px 14px rgba(0,0,0,0.50)) !important;
+    filter: invert(1) brightness(1.2)
+      drop-shadow(0 18px 44px rgba(0,0,0,0.62))
+      drop-shadow(0 6px 14px rgba(0,0,0,0.50)) !important;
+  }
+
+  /* Evita micro-jitter: nessuna transition sul transform del logo, l'animazione resta solo via .tap-lift */
+  html[data-theme="dark"] .brand-home .logo{
+    transition: none !important;
+    will-change: transform;
+  }
+
+  /* Ombra interna soffusa: rinforzo dell'inset sul badge (stabile, niente pseudo-elementi) */
+  html[data-theme="dark"] .badge{
+    background: radial-gradient(circle at 50% 40%,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0.00) 46%,
+      rgba(0,0,0,0.10) 70%,
+      rgba(0,0,0,0.22) 100%);
+    box-shadow:
+      0 18px 52px rgba(0,0,0,0.36),
+      0 0 40px rgba(0,0,0,0.22),
+      inset 0 0 40px rgba(0,0,0,0.26),
+      inset 0 12px 26px rgba(0,0,0,0.22);
+  }
+}
+/* === sc19 mobile dark: logo shadow esterna (solo nera, nessun glow) === */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-home .logo,
+  html[data-theme="dark"] .brand-home:active .logo,
+  html[data-theme="dark"] .brand-home:focus .logo,
+  html[data-theme="dark"] .brand-home:focus-visible .logo,
+  html[data-theme="dark"] .brand-home.tap-lift .logo{
+    -webkit-filter: invert(1) brightness(1.2)
+      drop-shadow(0 14px 34px rgba(0,0,0,0.72))
+      drop-shadow(0 0 14px rgba(0,0,0,0.55)) !important;
+    filter: invert(1) brightness(1.2)
+      drop-shadow(0 14px 34px rgba(0,0,0,0.72))
+      drop-shadow(0 0 14px rgba(0,0,0,0.55)) !important;
+  }
+}
+/* === end sc19 logo shadow === */
+/* v250: mobile dark – force visible external shadow on header logo SVG (constant across states, overrides v242 resets) */
+@media (max-width: 900px){
+  html[data-theme="dark"] .brand-wrap .brand-home > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:active > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home.tap-lift > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus > img.logo,
+  html[data-theme="dark"] .brand-wrap .brand-home:focus-visible > img.logo{
+    filter: invert(1) brightness(1.2) contrast(1.05)
+      drop-shadow(0 10px 22px rgba(0,0,0,0.55))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.60)) !important;
+    -webkit-filter: invert(1) brightness(1.2) contrast(1.05)
+      drop-shadow(0 10px 22px rgba(0,0,0,0.55))
+      drop-shadow(0 2px 6px rgba(0,0,0,0.60)) !important;
+  }
+}
+
+
+/* ==========================================================
+   v261  PATCH  mobile: elimina flash "linea bianca" a fine chiusura
+   Nessuna modifica geometrica: interviene solo nell'ultimo frame di chiusura
+   ========================================================== */
+@media (max-width: 900px){
+  html[data-theme="dark"] details.sc19-preclose > .sc19-animwrap{
+    opacity: 0 !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    contain: paint;
+  }
+
+  /* Evita che eventuali riattivazioni del blur in stati intermedi creino una "riga" */
+  html[data-theme="dark"] details.card.mobile-competences.sc19-preclose{
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+/* v263 – mobile auto-scroll helper (spacer is collapsed by default; JS may expand it to allow bringing the opened card into view) */
+@media (max-width: 900px) {
+  #sc19-mobile-spacer {
+    height: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+}
+
+/* sc19: disable auto-link styling for phones/emails (iOS/Android) */
+a[x-apple-data-detectors],
+a[x-apple-data-detectors-type],
+a[href^="tel:"],
+a[href^="mailto:"],
+a[href^="sms:"],
+a[href^="facetime:"],
+a[href^="facetime-audio:"]{
+  color: inherit !important;
+  text-decoration: none !important;
+  text-decoration-color: inherit !important;
+  -webkit-text-decoration-color: inherit !important;
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+
+/* PC: disabilita cambio tema e nasconde icona sole/luna */
+@media (min-width: 901px){
+  .theme-toggle{ display: none !important; }
+}
+
+/* ==========================================================
+   PC ONLY: restore visible borders on panels/cards (v232 behavior)
+   IMPORTANT: wrapped in @media to keep MOBILE unchanged.
+   ========================================================== */
+@media (min-width: 901px){
+  .card{
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .member-row{
+    border: 1px solid rgba(255,255,255,0.11);
+  }
+}
+
+/* ==========================================================
+   PC ONLY – center panel navigation chevrons inside buttons
+   (restores v232 alignment, mobile untouched)
+   ========================================================== */
+@media (min-width: 901px){
+  /* v417 – PC only: frecce affiancate in un unico riquadro con separatore sottile */
+  .team-grid .panel-controls{
+    gap: 0;
+    width: 92px;
+    height: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+
+    /* glass look like left team cards */
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255,255,255,0.10), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    backdrop-filter: blur(10px) saturate(120%);
+    border: 0;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.11);
+  }
+
+  .team-grid .panel-controls .close{
+    flex: 1 1 50%;
+    width: auto;
+    height: 40px;
+    border-radius: 0;
+
+    justify-content: center;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+
+    transform: none;
+    transition: background 160ms ease, opacity 160ms ease;
+  }
+
+  .team-grid .panel-controls .next-profile{
+    margin-left: 0;
+    border-left: 1px solid rgba(255,255,255,0.14);
+  }
+
+  .team-grid .panel-controls .close:hover:not(.is-disabled):not(:disabled){
+    transform: none;
+    background: rgba(255,255,255,0.08);
+    box-shadow: none;
+  }
+
+  .team-grid .panel-controls .close.is-disabled,
+  .team-grid .panel-controls .close:disabled{
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .team-grid .panel-controls .close.is-disabled:hover,
+  .team-grid .panel-controls .close:disabled:hover{
+    background: transparent;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================
+   v412 – PC only: align to mobile (video background + glass panels)
+   Solo estetica, nessuna modifica geometrica, MOBILE invariato
+   ========================================================== */
+@media (min-width: 901px){
+  /* Use video background (same asset used on mobile) */
+  html[data-theme="dark"] body{
+    background: var(--bg);
+  }
+
+  html[data-theme="dark"] .bg-video{
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--bg);
+  }
+
+  html[data-theme="dark"] .bg-video::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("assets/sfondo.webp") top center / cover no-repeat;
+    filter: brightness(1.10) contrast(0.92);
+    transform: translateZ(0);
+  }
+
+  html[data-theme="dark"] .bg-video video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: brightness(1.10) contrast(0.92);
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  html[data-theme="dark"] .bg-video::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.34));
+    pointer-events: none;
+  }
+
+  /* Subtle vignette like mobile (readability) */
+  html[data-theme="dark"] body::after{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 140% at 50% 30%, rgba(0,0,0,0) 58%, rgba(0,0,0,0.20) 100%),
+      radial-gradient(120% 120% at 50% 110%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.14) 100%);
+    opacity: 1;
+  }
+
+  /* Header readability like mobile, without layout changes */
+  html[data-theme="dark"] .hero{
+    position: relative;
+    isolation: isolate;
+  }
+  html[data-theme="dark"] .hero::before{
+    content: none;
+  }
+  html[data-theme="dark"] .hero .brand-wrap,
+  html[data-theme="dark"] .hero h1,
+  html[data-theme="dark"] .hero .subtitle{
+    position: relative;
+    z-index: 1;
+  }
+
+
+  /* PC: shadows behind header elements (logo, title, address, phone), like mobile */
+  html[data-theme="dark"] .hero .logo{
+    filter: invert(1) brightness(1.2)
+      drop-shadow(0 18px 46px rgba(0,0,0,0.62))
+      drop-shadow(0 0 22px rgba(0,0,0,0.38));
+  }
+
+  html[data-theme="dark"] .hero h1{
+    text-shadow:
+      0 14px 40px rgba(0,0,0,0.70),
+      0 3px 12px rgba(0,0,0,0.55);
+  }
+
+  html[data-theme="dark"] .hero .subtitle{
+    text-shadow:
+      0 12px 34px rgba(0,0,0,0.68),
+      0 2px 10px rgba(0,0,0,0.52);
+  }
+
+  html[data-theme="dark"] .hero .studio-address-icon,
+  html[data-theme="dark"] .hero .studio-phone-icon{
+    filter:
+      drop-shadow(0 12px 28px rgba(0,0,0,0.70))
+      drop-shadow(0 2px 8px rgba(0,0,0,0.55));
+  }
+
+  /* Glass panels (keep geometry) */
+  html[data-theme="dark"] .card{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.012)),
+      rgba(0,0,0,0.10);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  html[data-theme="dark"] .member-row{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)),
+      rgba(0,0,0,0.08);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    backdrop-filter: blur(14px) saturate(135%);
+  }
+
+  html[data-theme="dark"] .contact{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.012)),
+      rgba(0,0,0,0.12);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    backdrop-filter: blur(14px) saturate(135%);
+  }
+
+  html[data-theme="dark"] .close{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.10), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.012)),
+      rgba(0,0,0,0.10);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+    backdrop-filter: blur(14px) saturate(135%);
+  }
+}
+
+/* === PC fix (v413): do not keep left team cards in "selected" look after hover leaves.
+   Keep selection logic + right panel unchanged; only visuals revert when pointer leaves the card. === */
+@media (min-width: 901px){
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]:not(:hover):not(.sc19-simhover),
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]:not(:hover):not(.sc19-simhover),
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]:not(:hover):not(.sc19-simhover),
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover),
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover){
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)),
+      rgba(0,0,0,0.08);
+    border-color: rgba(255,255,255,0.11);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
+    z-index: auto;
+  }
+
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]:not(:hover):not(.sc19-simhover) .avatar,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]:not(:hover):not(.sc19-simhover) .avatar,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]:not(:hover):not(.sc19-simhover) .avatar,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover) .avatar,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover) .avatar{
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+    rgba(255,255,255,0.04);
+    border: 0;
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]:not(:hover):not(.sc19-simhover)::after,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]:not(:hover):not(.sc19-simhover)::after,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]:not(:hover):not(.sc19-simhover)::after,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover)::after,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover)::after{
+    opacity: 0;
+  }
+}
+
+
+
+/* PC: when hovering the right detail card, mirror the hover look on the selected left row */
+@media (min-width: 901px){
+  body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover{
+    transform: translateY(-2px);
+    background:
+      radial-gradient(circle at 18% 14%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    border-color: var(--pc-accent-95);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 10;
+  }
+
+  body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover .member-role{
+    color: rgba(255,255,255,0.74);
+  }
+
+  body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover .avatar{
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), rgba(255,255,255,0) 60%),
+      rgba(255,255,255,0.04);
+    border: 0;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+/* v426 – PC only: aumenta trasparenza elementi vetro (nessuna modifica mobile, nessuna modifica geometria) */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  :root{
+    /* base pannelli */
+    --panel: rgba(255,255,255,0.03);
+  }
+
+  /* schede team a sinistra */
+  .member-row{
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.05), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.22);
+  }
+
+  .member-row:hover{
+    background:
+      radial-gradient(circle at 18% 14%, rgba(255,255,255,0.07), rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .member-row:hover .avatar{
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08), rgba(255,255,255,0) 60%),
+      rgba(255,255,255,0.02);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+
+  /* scheda selezionata a sinistra (mantiene evidenza ma più trasparente) */
+  #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background:
+      radial-gradient(circle at 16% 12%, rgba(255,245,220,0.09), rgba(255,245,220,0) 52%),
+      linear-gradient(135deg, rgba(255,210,140,0.09), rgba(255,210,140,0) 42%),
+      linear-gradient(180deg, rgba(255,205,120,0.11), rgba(255,205,120,0.05));
+    box-shadow:
+      0 18px 44px rgba(0,0,0,0.46),
+      0 0 0 4px rgba(255,205,120,0.10),
+      0 0 64px rgba(255,205,120,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+
+  /* box contatti nel footer profilo (pannellino vetro) */
+  .contact{
+    background:
+      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.05), rgba(255,255,255,0) 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01)),
+      rgba(15,17,21,0.55);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.22);
+  }
+
+  /* riquadro frecce in alto a destra (unico) */
+  .team-grid .panel-controls{
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255,255,255,0.05), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01));
+    box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.22), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+
+  .team-grid .panel-controls .next-profile{
+    border-left: 1px solid rgba(255,255,255,0.10);
+  }
+
+  .team-grid .panel-controls .close:hover:not(.is-disabled):not(:disabled){
+    background: rgba(255,255,255,0.05);
+  }
+}
+
+
+/* v427 – PC only: trasparenza MOLTO aumentata per mostrare il video dietro ai pannelli
+   MOBILE invariato, nessuna modifica geometria */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  :root{
+    --panel: rgba(255,255,255,0.012);
+  }
+
+  /* pannelli principali */
+  html[data-theme="dark"] .card{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.065), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.030), rgba(255,255,255,0.006)),
+      rgba(0,0,0,0.030);
+    -webkit-backdrop-filter: blur(12px) saturate(135%);
+    backdrop-filter: blur(12px) saturate(135%);
+  }
+
+  /* schede team a sinistra */
+  html[data-theme="dark"] .member-row{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.072), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.034), rgba(255,255,255,0.010)),
+      rgba(0,0,0,0.024);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+  }
+
+  html[data-theme="dark"] .member-row:hover,
+  html[data-theme="dark"] body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.085), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.040), rgba(255,255,255,0.012)),
+      rgba(0,0,0,0.032);
+  }
+
+  /* scheda selezionata a sinistra: mantiene evidenza ma più "vetro" */
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,245,220,0.070), rgba(255,245,220,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.042), rgba(255,255,255,0.012)),
+      rgba(0,0,0,0.030);
+  }
+
+  /* box contatti, pulsante LinkedIn, controlli frecce */
+  html[data-theme="dark"] .contact{
+    background:
+      radial-gradient(140% 95% at 18% 12%, rgba(255,255,255,0.062), rgba(255,255,255,0) 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.028), rgba(255,255,255,0.006)),
+      rgba(0,0,0,0.032);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+  }
+
+  html[data-theme="dark"] .linkedin{
+    background: rgba(0,0,0,0.040);
+    -webkit-backdrop-filter: blur(8px) saturate(125%);
+    backdrop-filter: blur(8px) saturate(125%);
+  }
+
+  .team-grid .panel-controls{
+    background:
+      radial-gradient(circle at 50% 35%, rgba(255,255,255,0.060), rgba(255,255,255,0) 62%),
+      linear-gradient(180deg, rgba(255,255,255,0.030), rgba(255,255,255,0.010)),
+      rgba(0,0,0,0.022);
+  }
+
+  .team-grid .panel-controls .close:hover:not(.is-disabled):not(:disabled){
+    background: rgba(255,255,255,0.050);
+  }
+}

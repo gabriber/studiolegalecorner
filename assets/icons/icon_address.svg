@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="146.0808mm"
+   height="207.46387mm"
+   viewBox="0 0 626.88163 890.29727"
+   version="1.2"
+   id="svg23"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Qt SVG Document</title>
+  <desc
+     id="desc1">Generated with Qt</desc>
+  <defs
+     id="defs1" />
+  <g
+     fill="none"
+     stroke="#000000"
+     stroke-width="1"
+     fill-rule="evenodd"
+     stroke-linecap="square"
+     stroke-linejoin="bevel"
+     id="g23"
+     transform="translate(-931.55902,-43.553)">
+    <g
+       fill="none"
+       stroke="#000000"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g2" />
+    <g
+       fill="#000000"
+       fill-opacity="0"
+       stroke="#000000"
+       stroke-opacity="0"
+       stroke-width="1"
+       stroke-linecap="butt"
+       stroke-linejoin="miter"
+       stroke-miterlimit="2"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g3" />
+    <g
+       fill="#000000"
+       fill-opacity="0"
+       stroke="#000000"
+       stroke-opacity="0"
+       stroke-width="1"
+       stroke-linecap="butt"
+       stroke-linejoin="miter"
+       stroke-miterlimit="2"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g4" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g5" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g6" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g7">
+      <image
+         x="932.59998"
+         y="44.867599"
+         width="624.80103"
+         height="887.56897"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,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"
+         id="image6" />
+    </g>
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g8" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g9" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g10" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g11" />
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g12" />
+    <g
+       fill="none"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       transform="translate(1245,356.953)"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g13">
+      <path
+         vector-effect="none"
+         fill-rule="evenodd"
+         d="M 130.523,0 C 130.523,-72.0861 72.0861,-130.523 0,-130.523 -72.0861,-130.523 -130.523,-72.0861 -130.523,0 -130.523,72.0861 -72.0861,130.523 0,130.523 72.0861,130.523 130.523,72.0861 130.523,0"
+         id="path12" />
+    </g>
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g14">
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="932.6,356.953 933.002,366.549 933.221,371.346 933.462,376.142 933.73,380.936 934.031,385.728 934.373,390.517 934.762,395.303 935.204,400.084 935.703,404.86 936.263,409.629 936.887,414.39 937.576,419.142 938.334,423.883 939.158,428.614 940.044,433.333 940.99,438.041 941.994,442.736 943.053,447.42 944.166,452.091 945.331,456.749 946.545,461.394 947.808,466.026 949.115,470.646 950.465,475.254 951.855,479.85 953.283,484.434 954.748,489.007 956.248,493.568 957.783,498.118 959.351,502.657 960.95,507.185 962.581,511.702 964.241,516.208 965.93,520.703 967.647,525.187 969.392,529.661 971.165,534.123 972.965,538.574 974.793,543.014 976.647,547.443 978.529,551.861 980.436,556.267 982.37,560.662 984.33,565.045 986.314,569.417 988.323,573.778 990.357,578.128 992.413,582.467 994.493,586.795 996.596,591.111 998.721,595.417 1000.87,599.711 1003.04,603.995 1005.23,608.268 1007.44,612.53 1009.67,616.781 1011.92,621.021 1014.2,625.25 1016.49,629.469 1018.8,633.677 1021.13,637.875 1023.48,642.062 1025.85,646.238 1028.24,650.404 1030.64,654.559 1033.07,658.704 1035.51,662.839 1040.44,671.078 1045.44,679.276 1050.51,687.434 1055.63,695.554 1060.82,703.634 1066.07,711.678 1071.37,719.684 1076.72,727.655 1082.13,735.59 1087.59,743.49 1093.1,751.356 1098.65,759.187 1104.26,766.984 1109.91,774.745 1115.62,782.469 1121.37,790.157 1127.17,797.808 1133.03,805.421 1138.93,812.996 1144.88,820.532 1150.88,828.029 1156.93,835.486 1163.03,842.903 1169.18,850.28 1175.37,857.615 1181.62,864.908 1187.92,872.158 1194.26,879.365 1200.66,886.525 1207.11,893.638 "
+         id="polyline13" />
+    </g>
+    <g
+       fill="none"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       transform="translate(1245,356.953)"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g15">
+      <path
+         vector-effect="none"
+         fill-rule="evenodd"
+         d="M 312.4,0 C 312.4,-172.534 172.534,-312.4 0,-312.4 -172.534,-312.4 -312.4,-172.534 -312.4,0"
+         id="path14" />
+    </g>
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g17">
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="1557.4,356.953 1557,366.549 1556.78,371.346 1556.54,376.142 1556.27,380.936 1555.97,385.728 1555.63,390.517 1555.24,395.303 1554.8,400.084 1554.3,404.86 1553.74,409.629 1553.11,414.39 1552.42,419.142 1551.67,423.883 1550.84,428.614 1549.96,433.333 1549.01,438.041 1548.01,442.736 1546.95,447.42 1545.83,452.091 1544.67,456.749 1543.45,461.394 1542.19,466.026 1540.88,470.646 1539.53,475.254 1538.14,479.85 1536.72,484.434 1535.25,489.007 1533.75,493.568 1532.22,498.118 1530.65,502.657 1529.05,507.185 1527.42,511.702 1525.76,516.208 1524.07,520.703 1522.35,525.187 1520.61,529.661 1518.84,534.123 1517.04,538.574 1515.21,543.014 1513.35,547.443 1511.47,551.861 1509.56,556.267 1507.63,560.662 1505.67,565.045 1503.69,569.417 1501.68,573.778 1499.64,578.128 1497.59,582.467 1495.51,586.795 1493.4,591.111 1491.28,595.417 1489.13,599.711 1486.96,603.995 1484.77,608.268 1482.56,612.53 1480.33,616.781 1478.08,621.021 1475.8,625.25 1473.51,629.469 1471.2,633.677 1468.87,637.875 1466.52,642.062 1464.15,646.238 1461.76,650.404 1459.36,654.559 1456.93,658.704 1454.49,662.839 1449.56,671.078 1444.56,679.276 1439.49,687.434 1434.37,695.554 1429.18,703.634 1423.93,711.678 1418.63,719.684 1413.28,727.655 1407.87,735.59 1402.41,743.49 1396.9,751.356 1391.35,759.187 1385.74,766.984 1380.09,774.745 1374.38,782.469 1368.63,790.157 1362.83,797.808 1356.97,805.421 1351.07,812.996 1345.12,820.532 1339.12,828.029 1333.07,835.486 1326.97,842.903 1320.82,850.28 1314.63,857.615 1308.38,864.908 1302.08,872.158 1295.74,879.365 1289.34,886.525 1282.89,893.638 "
+         id="polyline15" />
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="1207.11,893.638 1245,932.436 "
+         id="polyline16" />
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="1245,932.436 1282.89,893.638 "
+         id="polyline17" />
+    </g>
+    <g
+       fill="none"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       transform="translate(1245,356.953)"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g18">
+      <path
+         vector-effect="none"
+         fill-rule="evenodd"
+         d="m 252.682,0 c 0,-139.552 -113.13,-252.682 -252.682,-252.682 -139.552,0 -252.682,113.13 -252.682,252.682"
+         id="path17" />
+    </g>
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g19">
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="1497.69,356.585 1497.3,365.35 1496.86,374.114 1496.6,378.494 1496.31,382.871 1495.99,387.245 1495.61,391.616 1495.19,395.982 1494.71,400.343 1494.16,404.696 1493.55,409.041 1492.87,413.375 1492.13,417.698 1491.32,422.01 1490.45,426.311 1489.53,430.599 1488.55,434.876 1487.52,439.14 1486.44,443.392 1485.31,447.631 1484.14,451.859 1482.93,456.075 1481.68,460.28 1480.39,464.474 1479.07,468.657 1477.71,472.829 1476.32,476.991 1474.9,481.142 1473.46,485.283 1471.98,489.415 1470.47,493.536 1468.94,497.648 1467.39,501.749 1465.8,505.841 1464.2,509.923 1462.56,513.994 1460.91,518.056 1459.22,522.107 1457.52,526.148 1455.79,530.179 1454.03,534.2 1452.25,538.211 1450.45,542.212 1448.63,546.203 1446.79,550.183 1444.92,554.154 1443.04,558.115 1441.13,562.065 1439.2,566.006 1437.25,569.937 1435.29,573.858 1433.3,577.77 1431.3,581.671 1429.27,585.563 1427.23,589.446 1425.17,593.319 1423.09,597.182 1418.88,604.88 1414.61,612.541 1410.26,620.164 1405.86,627.751 1401.39,635.301 1396.86,642.815 1392.27,650.294 1387.63,657.738 1382.93,665.147 1378.18,672.524 1373.38,679.867 1368.53,687.179 1363.63,694.459 1358.69,701.709 1353.71,708.928 1348.68,716.118 1343.61,723.277 1338.5,730.407 1333.34,737.505 1328.14,744.572 1322.9,751.607 1317.61,758.61 1312.29,765.581 1306.91,772.518 1301.5,779.422 1296.04,786.292 1290.54,793.128 1285,799.929 1279.42,806.695 1273.79,813.426 1268.12,820.12 1262.41,826.778 1256.65,833.398 1250.85,839.98 1245,846.521 "
+         id="polyline18" />
+    </g>
+    <g
+       fill="none"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       transform="translate(1245,356.953)"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g20">
+      <path
+         vector-effect="none"
+         fill-rule="evenodd"
+         d="M 70.805,0 C 70.805,-39.1045 39.1045,-70.805 0,-70.805 -39.1045,-70.805 -70.805,-39.1045 -70.805,0 -70.805,39.1045 -39.1045,70.805 0,70.805 39.1045,70.805 70.805,39.1045 70.805,0"
+         id="path19" />
+    </g>
+    <g
+       fill="#fffffe"
+       fill-opacity="1"
+       stroke="#fffffe"
+       stroke-opacity="1"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g21">
+      <polyline
+         fill="none"
+         vector-effect="none"
+         points="992.31,356.585 992.702,365.35 993.144,374.114 993.4,378.494 993.688,382.871 994.015,387.245 994.387,391.616 994.812,395.982 995.294,400.343 995.837,404.696 996.448,409.041 997.127,413.375 997.872,417.698 998.679,422.01 999.547,426.311 1000.47,430.599 1001.45,434.876 1002.48,439.14 1003.56,443.392 1004.69,447.631 1005.86,451.859 1007.07,456.075 1008.32,460.28 1009.61,464.474 1010.93,468.657 1012.29,472.829 1013.68,476.991 1015.1,481.142 1016.54,485.283 1018.02,489.415 1019.53,493.536 1021.06,497.648 1022.61,501.749 1024.2,505.841 1025.8,509.923 1027.44,513.994 1029.09,518.056 1030.78,522.107 1032.48,526.148 1034.21,530.179 1035.97,534.2 1037.75,538.211 1039.55,542.212 1041.37,546.203 1043.21,550.183 1045.08,554.154 1046.96,558.115 1048.87,562.065 1050.8,566.006 1052.75,569.937 1054.71,573.858 1056.7,577.77 1058.7,581.671 1060.73,585.563 1062.77,589.446 1064.83,593.319 1066.91,597.182 1071.12,604.88 1075.39,612.541 1079.74,620.164 1084.14,627.751 1088.61,635.301 1093.14,642.815 1097.73,650.294 1102.37,657.738 1107.07,665.147 1111.82,672.524 1116.62,679.867 1121.47,687.179 1126.37,694.459 1131.31,701.709 1136.29,708.928 1141.32,716.118 1146.39,723.277 1151.5,730.407 1156.66,737.505 1161.86,744.572 1167.1,751.607 1172.39,758.61 1177.71,765.581 1183.09,772.518 1188.5,779.422 1193.96,786.292 1199.46,793.128 1205,799.929 1210.58,806.695 1216.21,813.426 1221.88,820.12 1227.59,826.778 1233.35,833.398 1239.15,839.98 1245,846.521 "
+         id="polyline20" />
+    </g>
+    <g
+       fill="none"
+       stroke="#000000"
+       stroke-opacity="1"
+       stroke-width="1"
+       stroke-linecap="square"
+       stroke-linejoin="bevel"
+       font-family="Tahoma"
+       font-size="13.625px"
+       font-weight="400"
+       font-style="normal"
+       id="g22" />
+  </g>
+  <metadata
+     id="metadata23">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Qt SVG Document</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
