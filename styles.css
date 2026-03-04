@@ -1096,8 +1096,9 @@ body:has(#view-mauro:checked, #view-nicola:checked, #view-micaela:checked, #view
 @media (min-width: 901px){
   .profile-footer{ align-items: flex-end; }
   .profile-footer .contact{
-    --pc-contact-slot: 36px;
-    --pc-contact-gap: 6px;
+    /* match the *visual* gap of the social icons: avoid extra empty space inside the icon slot */
+    --pc-contact-slot: 27px;
+    --pc-contact-gap: var(--sc19-social-gap);
   }
 
   .profile-footer .contact .contact-row{
@@ -1117,7 +1118,7 @@ body:has(#view-mauro:checked, #view-nicola:checked, #view-micaela:checked, #view
   }
 
   .profile-footer .contact .contact-icon .contact-svg{
-    width: 27px;
+    width: var(--pc-contact-slot);
     height: auto;
     display: block;
 
@@ -2081,8 +2082,30 @@ box-shadow:
 
 .mobile-member-data .contact-row{
   display: flex;
-  gap: 4px;
+  gap: var(--sc19-social-gap);
   align-items: flex-end;
+}
+
+
+
+.mobile-member-data{
+  /* same rationale as desktop: keep the icon slot tight so gap == social icons gap */
+  --m-contact-slot: 24px;
+}
+
+.mobile-member-data .contact-row .contact-icon{
+  flex: 0 0 var(--m-contact-slot);
+  width: var(--m-contact-slot);
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  line-height: 1;
+}
+
+.mobile-member-data .contact-row .contact-icon .contact-svg{
+  width: var(--m-contact-slot);
+  height: auto;
+  display: block;
 }
 
 .mobile-member-data .contact-row strong{
@@ -2116,8 +2139,8 @@ box-shadow:
 
 /* sc19: contact icon column – 34px width, keep vertical rhythm identical */
 .mobile-member-data .contact-row strong.contact-icon{
-  width: 34px;
-  flex: 0 0 34px;
+  width: var(--m-contact-slot);
+  flex: 0 0 var(--m-contact-slot);
   display: inline-flex;
   align-items: flex-end;
   justify-content: flex-start;
@@ -2126,7 +2149,7 @@ box-shadow:
 /* sc19: contact icon sizing – uniform width, preserve aspect ratio */
 .mobile-member-data .contact-row strong.contact-icon .contact-svg{
   position: static;
-  width: 24px;
+  width: var(--m-contact-slot);
   height: auto;
   display: block;
 }
@@ -2937,7 +2960,7 @@ box-shadow:
 .close-v.close-up{ top: 3px; }
 
 /* ==========================================================
-   v167  Mobile scuro  sfondo.webp a larghezza piena, nessun taglio
+   v167  Mobile scuro  sfondo-mobile.webp a larghezza piena, nessun taglio
    v203  Step 1 Mockup A: velo ambientale leggero sul solo sfondo (overlay)
    Pannelli I nostri servizi e Il team quasi trasparenti, nessun blur
    Solo estetica, nessuna modifica geometrica o JS
@@ -2971,7 +2994,7 @@ html[data-theme="dark"] .bg-video::before{
   content: "";
   position: absolute;
   inset: 0;
-  background: url("assets/sfondo.webp") top center / 100% auto no-repeat;
+  background: url("assets/sfondo-mobile.webp") top center / 100% auto no-repeat;
   filter: brightness(1.10) contrast(0.92);
   transform: translateZ(0);
 }
@@ -2994,7 +3017,13 @@ html[data-theme="dark"] .bg-video::after{
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.14));
+  /* v438: overlay dinamico (pilotato via JS su PC) per mascherare micro-scattini durante le rampe
+     senza far "sparire" il video. Valore aggiuntivo in alpha: --bgVideoDim (0..~0.14). */
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0, calc(0.06 + var(--bgVideoDim, 0))),
+    rgba(0,0,0, calc(0.14 + var(--bgVideoDim, 0)))
+  );
   pointer-events: none;
 }
 
@@ -3980,7 +4009,7 @@ a[href^="facetime-audio:"]{
     content: "";
     position: absolute;
     inset: 0;
-    background: url("assets/sfondo.webp") top center / cover no-repeat;
+    background: url("assets/sfondo-pc.webp") top center / cover no-repeat;
     filter: brightness(1.10) contrast(0.92);
     transform: translateZ(0);
   }
@@ -4317,4 +4346,141 @@ a[href^="facetime-audio:"]{
   .team-grid .panel-controls .close:hover:not(.is-disabled):not(:disabled){
     background: rgba(255,255,255,0.050);
   }
+}
+
+
+/* ==========================================================
+   PC ONLY: keep team-list text crisp on hover (avoid transform on label)
+   - Preserve original visuals (same lift distance, timing)
+   - Replace translateY(-2px) with top:-2px ONLY for the left team list rows
+   ========================================================== */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  /* ensure the hover lift is animated via 'top', not 'transform' (Chrome/Edge text AA stability) */
+  .team-grid .team-list label.member-row{
+    position: relative; /* already, but keep explicit */
+    top: 0;
+    transform: none !important;
+    will-change: top;
+    transition: top 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .team-grid .team-list label.member-row:hover{
+    top: -2px;
+    transform: none !important;
+  }
+
+  /* when bottom hover zone is active, keep the same transition signature (no snap) */
+  .team-grid .team-list .member-row{
+    transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  body.pc-bottom-hover .team-grid .team-list .member-row{
+    transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+}
+
+/* ==========================================================
+   PC ONLY: keep the 5 team list cards' text crisp on hover
+   (Chrome/Edge can soften text when the element is transformed).
+   We preserve the same visual lift by animating `top` instead of `transform`
+   ONLY for the left-bottom team list on PC.
+   ========================================================== */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  /* Left-bottom team list rows: switch lift from transform -> top */
+  .team-grid .team-list label.member-row{
+    top: 0;
+    transform: none !important;
+    will-change: top;
+    transition: top 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .team-grid .team-list label.member-row:hover{
+    top: -2px;
+    transform: none !important;
+  }
+
+  /* Parity with bottom-hover accent state rules that redefine transitions */
+  .team-grid .team-list .member-row{
+    top: 0;
+    transform: none !important;
+    will-change: top;
+    transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  body.pc-bottom-hover .team-grid .team-list .member-row{
+    transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+  }
+  body.pc-bottom-hover .team-grid .team-list .member-row:hover{
+    top: -2px;
+    transform: none !important;
+  }
+
+  /* Ensure selected radio-driven label doesn't keep transform-based transitions */
+  body.pc-bottom-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"],
+  body.pc-bottom-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"],
+  body.pc-bottom-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"],
+  body.pc-bottom-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"],
+  body.pc-bottom-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]{
+    transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade) ease, box-shadow var(--pc-accent-fade) ease;
+    transform: none !important;
+  }
+}
+
+
+/* sc19: social icons group – keep icons tight and consistent (gap = 25% of icon size) */
+:root{
+  --sc19-social-icon: 40px;
+  --sc19-social-gap: calc(var(--sc19-social-icon) * 0.25);
+}
+
+.social-icons{
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sc19-social-gap);
+  flex-wrap: nowrap;
+}
+
+.social-icons .linkedin{
+  width: var(--sc19-social-icon);
+  height: var(--sc19-social-icon);
+}
+
+/* mobile: keep social icons on one row */
+@media (max-width: 900px){
+  .social-icons{
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+
+/* === SC19: social icons row (WhatsApp / Email / LinkedIn) === */
+:root{
+  --sc19-social-icon: 40px;
+  --sc19-social-gap: calc(var(--sc19-social-icon) * 0.25);
+}
+
+.social-icons{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sc19-social-gap);
+}
+
+.linkedin{
+  width: var(--sc19-social-icon);
+  height: var(--sc19-social-icon);
+}
+
+.profile-footer .social-icons{
+  margin-left: auto;
+}
+
+.mobile-member-data .social-icons{
+  width: 100%;
+  margin-top: 12px;
+}
+
+
+/* sc19: re-enable mailto/tel inside social icon buttons (they must remain clickable) */
+.social-icons a[href^="mailto:"],
+.social-icons a[href^="tel:"]{
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
