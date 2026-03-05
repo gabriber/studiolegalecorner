@@ -41,7 +41,7 @@
 
 
 <div aria-hidden="true" class="bg-video">
-<video autoplay="" loop="" muted="" playsinline="" preload="metadata">
+<video autoplay="" loop="" muted="" playsinline="" preload="auto" poster="assets/sfondo-mobile.webp" disablepictureinpicture>
 <source src="assets/sfondo.mp4" type="video/mp4">
 </source></video>
 </div>
@@ -59,6 +59,8 @@
   if (!source) { return; }
 
   var pcSrc = "assets/video_sfondo_pc.mp4";
+  var pcPoster = "assets/sfondo-pc.webp";
+  try { video.setAttribute("poster", pcPoster); } catch (e) {}
   if (source.getAttribute("src") === pcSrc) { return; }
 
   source.setAttribute("src", pcSrc);
@@ -2577,6 +2579,42 @@ if (brandHome) {
   hoverTargets.forEach(function(el){
     el.addEventListener("pointerenter", enter, {passive:true});
     el.addEventListener("pointerleave", leave, {passive:true});
+  });
+})();
+</script>
+<script>
+(function(){
+  var v = document.querySelector(".bg-video video");
+  if(!v) return;
+
+  // Make sure autoplay conditions are satisfied
+  try { v.muted = true; v.setAttribute("muted",""); } catch(e){}
+  try { v.loop = true; v.setAttribute("loop",""); } catch(e){}
+  try { v.playsInline = true; v.setAttribute("playsinline",""); } catch(e){}
+
+  var tried = false;
+  function attemptPlay(){
+    // Avoid spamming play() calls
+    if (tried && v.readyState < 2) return;
+    tried = true;
+    try{
+      var p = v.play();
+      if(p && typeof p.catch === "function"){ p.catch(function(){}); }
+    }catch(e){}
+  }
+
+  // Start once layout has settled a bit
+  window.addEventListener("load", function(){
+    setTimeout(attemptPlay, 150);
+  }, { once: true });
+
+  // Try as soon as the first frame is available
+  v.addEventListener("loadeddata", attemptPlay, { once: true });
+  v.addEventListener("canplay", attemptPlay, { once: true });
+
+  // If user tabs away/back, retry on visibility
+  document.addEventListener("visibilitychange", function(){
+    if(!document.hidden) attemptPlay();
   });
 })();
 </script>

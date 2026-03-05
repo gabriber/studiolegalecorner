@@ -39,7 +39,9 @@ body{
   color: var(--text);
 }
 
-.bg-video{ display: none; }
+.bg-video{ display: none;
+  contain: layout paint size;
+}
 
 
 .hero{
@@ -3011,6 +3013,7 @@ html[data-theme="dark"] .bg-video video{
   will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  pointer-events: none;
 }
 
 html[data-theme="dark"] .bg-video::after{
