@@ -4217,202 +4217,277 @@ if (brandHome) {
   }
 
   Array.prototype.slice.call(document.querySelectorAll('.profile-footer .contact .contact-row, .mobile-member-data .contact-row')).forEach(setupCopyRow);
-
-
-  function isStudioMobileViewport(){
-    return !!(window.matchMedia && window.matchMedia('(max-width: 900px), (hover: none) and (pointer: coarse)').matches);
+})();
+</script><script id="sc19-studio-copy-script">
+(function(){
+  function isMobileViewport(){
+    return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches);
   }
 
-  function ensureStudioFeedback(subtitle){
+  function normalizeText(value){
+    return (value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function normalizePhone(value){
+    return normalizeText(value).replace(/\s+/g, '');
+  }
+
+  function legacyCopy(text){
+    return new Promise(function(resolve, reject){
+      var cleaned = normalizeText(text);
+      if (!cleaned) { reject(new Error('empty')); return; }
+      var handled = false;
+      function onCopy(ev){
+        try {
+          if (ev && ev.clipboardData) {
+            ev.clipboardData.setData('text/plain', cleaned);
+            ev.preventDefault();
+            handled = true;
+          }
+        } catch (err) {}
+      }
+      document.addEventListener('copy', onCopy, true);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.removeEventListener('copy', onCopy, true);
+      if (ok && handled) { resolve(); }
+      else { reject(new Error('copy failed')); }
+    });
+  }
+
+  function copyText(text){
+    var normalized = normalizeText(text);
+    if (!normalized) { return Promise.reject(new Error('empty')); }
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      return navigator.clipboard.writeText(normalized).catch(function(){
+        return legacyCopy(normalized);
+      });
+    }
+    return legacyCopy(normalized);
+  }
+
+  function getSubtitleRefs(){
+    var subtitle = document.querySelector('.hero .subtitle');
     if (!subtitle) { return null; }
-    var layer = subtitle.querySelector('.sc19-copy-feedback-layer--studio');
+    var phoneLine = subtitle.querySelector('.subline.phone');
+    var phoneText = subtitle.querySelector('.studio-phone-text');
+    if (!phoneLine || !phoneText) { return null; }
+    return { subtitle: subtitle, phoneLine: phoneLine, phoneText: phoneText };
+  }
+
+  function ensureStudioToast(){
+    var refs = getSubtitleRefs();
+    if (!refs) { return null; }
+    var layer = document.body ? document.body.querySelector(':scope > .sc19-studio-copy-feedback-layer') : null;
     var box = null;
     if (!layer) {
-      layer = document.createElement('span');
-      layer.className = 'sc19-copy-feedback-layer sc19-copy-feedback-layer--studio';
+      layer = document.createElement('div');
+      layer.className = 'sc19-copy-feedback-layer sc19-studio-copy-feedback-layer';
       layer.setAttribute('role', 'status');
       layer.setAttribute('aria-live', 'polite');
       layer.setAttribute('aria-atomic', 'true');
-      box = document.createElement('span');
+      box = document.createElement('div');
       box.className = 'sc19-copy-feedback-box';
       layer.appendChild(box);
-      subtitle.appendChild(layer);
+      (document.body || refs.subtitle).appendChild(layer);
     } else {
       box = layer.querySelector('.sc19-copy-feedback-box');
     }
     if (!box) { return null; }
-    return { layer: layer, box: box };
+    return { refs: refs, layer: layer, box: box };
   }
 
-  function showStudioFeedback(subtitle, anchor, message){
-    var ref = ensureStudioFeedback(subtitle);
+  function positionStudioToast(ref){
+    if (!ref || !ref.layer || !ref.box || !ref.refs) { return; }
+    var rect = ref.refs.phoneLine.getBoundingClientRect ? ref.refs.phoneLine.getBoundingClientRect() : null;
+    var top = rect ? (rect.bottom + 8) : 12;
+    if (!isFinite(top) || top < 12) { top = 12; }
+    ref.layer.style.top = Math.round(top) + 'px';
+  }
+
+  function hideOtherFeedback(activeLayer){
+    Array.prototype.slice.call(document.querySelectorAll('.sc19-copy-feedback-layer.is-visible')).forEach(function(node){
+      if (node === activeLayer) { return; }
+      node.classList.remove('is-visible');
+      node.style.display = 'none';
+      if (node._sc19HideTimer) {
+        window.clearTimeout(node._sc19HideTimer);
+        node._sc19HideTimer = null;
+      }
+    });
+  }
+
+  function showStudioToast(message){
+    var ref = ensureStudioToast();
     if (!ref) { return; }
-    var layer = ref.layer;
-    var box = ref.box;
-    var hostRect = subtitle.getBoundingClientRect();
-    var anchorRect = (anchor || subtitle).getBoundingClientRect();
-    var top = Math.round((anchorRect.top - hostRect.top) + anchorRect.height + 8);
-    if (!isFinite(top)) { top = 12; }
-    box.textContent = message || 'Copiato';
-    layer.style.top = top + 'px';
-    layer.classList.add('is-visible');
-    if (layer._sc19HideTimer) {
-      window.clearTimeout(layer._sc19HideTimer);
-    }
-    layer._sc19HideTimer = window.setTimeout(function(){
-      layer.classList.remove('is-visible');
+    ref.box.textContent = message || 'Copiato';
+    ref.layer.style.display = 'flex';
+    positionStudioToast(ref);
+    hideOtherFeedback(ref.layer);
+    ref.layer.classList.add('is-visible');
+    if (ref.layer._sc19HideTimer) { window.clearTimeout(ref.layer._sc19HideTimer); }
+    ref.layer._sc19HideTimer = window.setTimeout(function(){
+      ref.layer.classList.remove('is-visible');
+      ref.layer.style.display = 'none';
     }, 1150);
   }
 
-  function bindStudioHold(textNode, trigger){
-    if (!textNode) { return; }
-    var holdTimer = null;
-    var startX = 0;
-    var startY = 0;
-    var HOLD_MS = 420;
+  function refreshStudioToastPosition(){
+    var layer = document.body ? document.body.querySelector(':scope > .sc19-studio-copy-feedback-layer.is-visible') : null;
+    if (!layer) { return; }
+    var box = layer.querySelector('.sc19-copy-feedback-box');
+    if (!box) { return; }
+    positionStudioToast({ refs: getSubtitleRefs(), layer: layer, box: box });
+  }
 
-    function clearHold(){
+  window.addEventListener('resize', refreshStudioToastPosition, { passive: true });
+  window.addEventListener('scroll', refreshStudioToastPosition, { passive: true });
+
+  function cleanupFocus(){
+    window.setTimeout(function(){
+      try { if (document.activeElement && typeof document.activeElement.blur === 'function') { document.activeElement.blur(); } } catch (e) {}
+      try { if (window.getSelection) { var sel = window.getSelection(); if (sel && typeof sel.removeAllRanges === 'function') { sel.removeAllRanges(); } } } catch (e) {}
+    }, 0);
+  }
+
+  function triggerStudioCopy(text, message, ev){
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    return copyText(text).then(function(){
+      showStudioToast(message);
+    }).finally(cleanupFocus);
+  }
+
+  function suppressNativeSelection(ev){
+    if (ev) { ev.preventDefault(); }
+  }
+
+  function setupHoldCopy(node, getText, message){
+    if (!node || node.dataset.sc19StudioHoldReady === '1') { return; }
+    node.dataset.sc19StudioHoldReady = '1';
+    node.classList.add('sc19-studio-copyable');
+    node.setAttribute('role', 'button');
+    node.setAttribute('tabindex', '0');
+
+    var holdDelayMs = 420;
+    var holdTimer = null;
+    var holdStartX = 0;
+    var holdStartY = 0;
+    var suppressClickUntil = 0;
+
+    function clearHoldTimer(){
       if (holdTimer) {
         window.clearTimeout(holdTimer);
         holdTimer = null;
       }
     }
 
-    function beginHold(x, y){
-      clearHold();
-      startX = isFinite(x) ? x : 0;
-      startY = isFinite(y) ? y : 0;
+    function beginHold(clientX, clientY){
+      clearHoldTimer();
+      holdStartX = isFinite(clientX) ? clientX : 0;
+      holdStartY = isFinite(clientY) ? clientY : 0;
       holdTimer = window.setTimeout(function(){
         holdTimer = null;
-        trigger();
-      }, HOLD_MS);
+        suppressClickUntil = Date.now() + 700;
+        triggerStudioCopy(getText(), message);
+      }, holdDelayMs);
     }
 
-    function maybeCancel(x, y){
+    function maybeCancelHoldForMove(clientX, clientY){
       if (!holdTimer) { return; }
-      if (!isFinite(x) || !isFinite(y)) { return; }
-      if (Math.abs(x - startX) > 10 || Math.abs(y - startY) > 10) {
-        clearHold();
+      if (!isFinite(clientX) || !isFinite(clientY)) { return; }
+      if (Math.abs(clientX - holdStartX) > 10 || Math.abs(clientY - holdStartY) > 10) {
+        clearHoldTimer();
       }
     }
 
-    textNode.addEventListener('touchstart', function(ev){
-      if (!isStudioMobileViewport()) { return; }
+    node.addEventListener('mousedown', suppressNativeSelection);
+    node.addEventListener('pointerdown', suppressNativeSelection);
+    node.addEventListener('selectstart', suppressNativeSelection);
+    node.addEventListener('dragstart', suppressNativeSelection);
+    node.addEventListener('contextmenu', function(ev){
+      if (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }
+    });
+    node.addEventListener('touchstart', function(ev){
+      if (!isMobileViewport()) { return; }
       var touch = ev && ev.touches && ev.touches[0];
       beginHold(touch ? touch.clientX : 0, touch ? touch.clientY : 0);
     }, { passive: true });
-    textNode.addEventListener('touchmove', function(ev){
-      if (!isStudioMobileViewport()) { return; }
+    node.addEventListener('touchmove', function(ev){
+      if (!isMobileViewport()) { return; }
       var touch = ev && ev.touches && ev.touches[0];
-      maybeCancel(touch ? touch.clientX : NaN, touch ? touch.clientY : NaN);
+      maybeCancelHoldForMove(touch ? touch.clientX : NaN, touch ? touch.clientY : NaN);
     }, { passive: true });
-    textNode.addEventListener('touchend', clearHold, { passive: true });
-    textNode.addEventListener('touchcancel', clearHold, { passive: true });
+    node.addEventListener('touchend', function(){
+      if (!isMobileViewport()) { return; }
+      suppressClickUntil = Date.now() + 700;
+      clearHoldTimer();
+    }, { passive: true });
+    node.addEventListener('touchcancel', function(){
+      if (!isMobileViewport()) { return; }
+      clearHoldTimer();
+    }, { passive: true });
+    node.addEventListener('click', function(ev){
+      if (!isMobileViewport()) { return; }
+      if (Date.now() < suppressClickUntil) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+    node.addEventListener('keydown', function(ev){
+      var key = ev && (ev.key || ev.code);
+      if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+        triggerStudioCopy(getText(), message, ev);
+      }
+    });
   }
 
-  function setupStudioHeaderCopy(){
-    var subtitle = document.querySelector('.subtitle');
-    if (!subtitle || subtitle.dataset.sc19StudioCopyBound === '1') { return; }
-    subtitle.dataset.sc19StudioCopyBound = '1';
+  function setupDesktopCopy(node, getText, message){
+    if (!node || node.dataset.sc19StudioClickReady === '1') { return; }
+    node.dataset.sc19StudioClickReady = '1';
+    node.classList.add('sc19-studio-copyable');
+    node.addEventListener('mousedown', suppressNativeSelection);
+    node.addEventListener('pointerdown', suppressNativeSelection);
+    node.addEventListener('selectstart', suppressNativeSelection);
+    node.addEventListener('dragstart', suppressNativeSelection);
+    node.addEventListener('click', function(ev){
+      if (isMobileViewport()) { return; }
+      triggerStudioCopy(getText(), message, ev);
+    });
+  }
 
-    var addressLine = subtitle.querySelector('.subline.address');
-    var addressText = subtitle.querySelector('.studio-address-text');
-    var phoneLine = subtitle.querySelector('.subline.phone');
-    var phoneText = subtitle.querySelector('.studio-phone-text');
-
-    function copyStudioText(rawText, message, anchor){
-      copyText(rawText).then(function(){
-        showStudioFeedback(subtitle, anchor || phoneLine || subtitle, message);
-      }).finally(cleanupAfterCopy);
-    }
+  function initStudioCopy(){
+    var addressText = document.querySelector('.studio-address-text');
+    var phoneText = document.querySelector('.studio-phone-text');
+    var phoneIcon = document.querySelector('.studio-phone-iconlink');
 
     if (addressText) {
-      addressText.classList.add('sc19-studio-copy-active');
-      addressText.setAttribute('tabindex', '0');
-      addressText.setAttribute('role', 'button');
-      addressText.setAttribute('aria-label', 'Copia indirizzo studio');
-      addressText.addEventListener('mousedown', suppressNativeSelection);
-      addressText.addEventListener('pointerdown', suppressNativeSelection);
-      addressText.addEventListener('selectstart', suppressNativeSelection);
-      addressText.addEventListener('dragstart', suppressNativeSelection);
-      bindStudioHold(addressText, function(){
-        copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
-      });
-      addressText.addEventListener('click', function(ev){
-        if (isStudioMobileViewport()) {
-          ev.preventDefault();
-          ev.stopPropagation();
-          return;
-        }
-        ev.preventDefault();
-        ev.stopPropagation();
-        copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
-      });
-      addressText.addEventListener('keydown', function(ev){
-        var key = ev && (ev.key || ev.code);
-        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
-          ev.preventDefault();
-          copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
-        }
-      });
+      setupDesktopCopy(addressText, function(){ return normalizeText(addressText.textContent); }, 'Indirizzo copiato');
+      setupHoldCopy(addressText, function(){ return normalizeText(addressText.textContent); }, 'Indirizzo copiato');
     }
 
-    if (phoneLine && phoneText) {
-      phoneLine.classList.add('sc19-studio-phone-copy-target');
-      phoneText.classList.add('sc19-studio-copy-active');
-      phoneText.setAttribute('tabindex', '0');
-      phoneText.setAttribute('role', 'button');
-      phoneText.setAttribute('aria-label', 'Copia numero studio');
-      phoneLine.setAttribute('role', 'button');
-      phoneLine.setAttribute('tabindex', '0');
-      phoneText.addEventListener('mousedown', suppressNativeSelection);
-      phoneText.addEventListener('pointerdown', suppressNativeSelection);
-      phoneText.addEventListener('selectstart', suppressNativeSelection);
-      phoneText.addEventListener('dragstart', suppressNativeSelection);
-      phoneLine.addEventListener('mousedown', function(ev){
-        if (!isStudioMobileViewport()) { suppressNativeSelection(ev); }
-      });
-      phoneLine.addEventListener('pointerdown', function(ev){
-        if (!isStudioMobileViewport()) { suppressNativeSelection(ev); }
-      });
-      bindStudioHold(phoneText, function(){
-        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
-      });
-      phoneText.addEventListener('click', function(ev){
-        if (isStudioMobileViewport()) {
-          ev.preventDefault();
-          ev.stopPropagation();
-          return;
-        }
-        ev.preventDefault();
-        ev.stopPropagation();
-        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
-      });
-      phoneText.addEventListener('keydown', function(ev){
-        var key = ev && (ev.key || ev.code);
-        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
-          ev.preventDefault();
-          copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
-        }
-      });
-      phoneLine.addEventListener('click', function(ev){
-        if (isStudioMobileViewport()) { return; }
-        ev.preventDefault();
-        ev.stopPropagation();
-        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
-      });
-      phoneLine.addEventListener('keydown', function(ev){
-        if (isStudioMobileViewport()) { return; }
-        var key = ev && (ev.key || ev.code);
-        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
-          ev.preventDefault();
-          copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
-        }
-      });
+    if (phoneText) {
+      setupDesktopCopy(phoneText, function(){ return normalizePhone(phoneText.textContent); }, 'Numero copiato');
+      setupHoldCopy(phoneText, function(){ return normalizePhone(phoneText.textContent); }, 'Numero copiato');
+    }
+
+    if (phoneIcon) {
+      setupDesktopCopy(phoneIcon, function(){
+        var ref = document.querySelector('.studio-phone-text');
+        return normalizePhone(ref ? ref.textContent : '+39 0445 192 0134');
+      }, 'Numero copiato');
     }
   }
 
-  setupStudioHeaderCopy();
+  initStudioCopy();
 })();
 </script></body>
 </html>

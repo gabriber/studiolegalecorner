@@ -106,6 +106,7 @@ h1{
 }
 
 .subtitle{
+  position: relative;
   max-width: 860px;
   margin: 0 auto;
   color: var(--text);
@@ -5916,6 +5917,8 @@ html.sc19-print-restoring .team-grid .team-detail::after{
   color: #ffffff;
   border: 2px solid #ffffff;
   box-shadow: none;
+  text-shadow: none;
+  filter: none;
   font-size: 13px;
   line-height: 1.2;
   font-weight: 700;
@@ -5931,6 +5934,41 @@ html.sc19-print-restoring .team-grid .team-detail::after{
 @media (max-width: 900px){
   .sc19-copy-feedback-box{
     max-width: calc(100% - 28px);
+  }
+}
+
+.sc19-studio-copy-feedback-layer{
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 2147483000;
+  top: 12px;
+}
+
+.sc19-studio-copy-feedback-layer .sc19-copy-feedback-box{
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.subtitle .studio-address-text.sc19-studio-copyable,
+.subtitle .studio-phone-text.sc19-studio-copyable,
+.subtitle .studio-phone-iconlink.sc19-studio-copyable{
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  caret-color: transparent;
+}
+
+.subtitle .studio-phone-iconlink.sc19-studio-copyable{
+  display: inline-block;
+}
+
+@media (max-width: 900px){
+  .subtitle .studio-address-text.sc19-studio-copyable,
+  .subtitle .studio-phone-text.sc19-studio-copyable{
+    cursor: default;
   }
 }
 
@@ -6361,59 +6399,5 @@ html.sc19-print-restoring .team-grid .team-detail::after{
       0 10px 22px rgba(10,16,28,0.10),
       0 0 14px rgba(10,16,28,0.04),
       inset 0 1px 0 rgba(255,255,255,0.78) !important;
-  }
-}
-
-
-/* v658 – studio header copy on PC/mobile with toast under studio phone */
-.subtitle{
-  position: relative;
-}
-
-.subtitle .sc19-studio-copy-active,
-.subtitle .sc19-studio-copy-active *{
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  caret-color: transparent;
-}
-
-.subtitle .sc19-studio-copy-active{
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-@media (min-width: 901px){
-  .subtitle .sc19-studio-phone-copy-target,
-  .subtitle .sc19-studio-phone-copy-target *{
-    cursor: pointer;
-  }
-}
-
-.subtitle .sc19-copy-feedback-layer--studio{
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  right: auto;
-  width: max-content;
-  max-width: calc(100% - 12px);
-  transform: translateX(-50%);
-  display: none;
-  justify-content: center;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-  caret-color: transparent;
-  z-index: 8;
-}
-
-.subtitle .sc19-copy-feedback-layer--studio.is-visible{
-  display: flex;
-}
-
-@media (max-width: 900px){
-  .subtitle .sc19-copy-feedback-layer--studio{
-    max-width: calc(100% - 8px);
   }
 }
