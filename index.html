@@ -28,13 +28,15 @@
 <meta content="default" name="apple-mobile-web-app-status-bar-style"/>
 <title>Studio Legale Corner</title>
 <link href="https://www.studiolegalecorner.it/" rel="canonical"/>
-<link href="assets/favicon/favicon.ico" rel="icon" type="image/x-icon"/>
-<link href="assets/favicon/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
-<link href="assets/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="assets/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="assets/favicon/favicon-48x48.png" rel="icon" sizes="48x48" type="image/png"/>
-<link href="assets/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="assets/favicon/site.webmanifest" rel="manifest"/>
+<link href="/assets/favicon/favicon.ico" rel="icon" type="image/x-icon"/>
+<link href="/assets/favicon/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+<link href="/assets/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/assets/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/assets/favicon/favicon-48x48.png" rel="icon" sizes="48x48" type="image/png"/>
+<link href="/assets/favicon/android-chrome-192x192.png" rel="icon" sizes="192x192" type="image/png"/>
+<link href="/assets/favicon/android-chrome-512x512.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/assets/favicon/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/assets/favicon/site.webmanifest" rel="manifest"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
@@ -43,9 +45,414 @@
 <link as="image" href="assets/icons/icon_phone_white.svg" rel="preload"/>
 <link as="image" href="assets/sfondo-mobile.webp" media="(max-width: 900px)" rel="preload"/>
 <link as="image" href="assets/sfondo-pc.webp" media="(min-width: 901px)" rel="preload"/>
-<link as="image" href="assets/brand/logo-studio-1024.png" rel="preload"/><link as="image" href="assets/icons/print.png" rel="preload"/><link href="styles.css" rel="stylesheet"/>
+<link as="image" href="assets/brand/logo-studio-1024.png" rel="preload"/><link as="image" href="assets/icons/print.png" rel="preload"/><link href="styles.css" id="site-stylesheet" rel="stylesheet"/>
+<style id="sc19-print-lite-styles" media="print">
+  @page{
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html.sc19-print-lite,
+  html.sc19-print-lite body{
+    width: 210mm !important;
+    min-width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+    color: #111111 !important;
+  }
+
+  html.sc19-print-lite body{
+    position: relative !important;
+  }
+
+  html.sc19-print-lite body > *{
+    display: none !important;
+  }
+
+  html.sc19-print-lite main.container{
+    display: block !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    filter: none !important;
+  }
+
+  html.sc19-print-lite main.container > :not(.print-only-shell){
+    display: none !important;
+  }
+
+  html.sc19-print-lite .print-only-shell,
+  html.sc19-print-lite .print-only-shell *,
+  html.sc19-print-lite .print-only-shell *::before,
+  html.sc19-print-lite .print-only-shell *::after{
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  html.sc19-print-lite .print-only-shell{
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    border: 0 !important;
+    background-clip: border-box !important;
+  }
+
+  html.sc19-print-lite,
+  html.sc19-print-lite body,
+  html.sc19-print-lite main.container,
+  html.sc19-print-lite .print-only-shell{
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    border: 0 !important;
+    filter: none !important;
+    background-clip: border-box !important;
+  }
+
+  html.sc19-print-lite .print-only-shell::before,
+  html.sc19-print-lite .print-only-shell::after,
+  html.sc19-print-lite .print-sheet::before,
+  html.sc19-print-lite .print-sheet::after{
+    content: none !important;
+    display: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html.sc19-print-lite .print-sheet{
+    width: 794px !important;
+    max-width: 794px !important;
+    min-height: 1107px !important;
+    height: 1107px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 49px 58px 30px !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    outline: 0 !important;
+    clip-path: none !important;
+    -webkit-mask: none !important;
+    mask: none !important;
+    transform: none !important;
+    background-clip: border-box !important;
+    gap: 22px !important;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+    isolation: isolate !important;
+    display: flex !important;
+    flex-direction: column !important;
+    color: #111111 !important;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  }
+
+  html.sc19-print-lite .print-sheet{
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    outline: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-clip: border-box !important;
+  }
+
+  html.sc19-print-lite .print-sheet p,
+  html.sc19-print-lite .print-sheet h3,
+  html.sc19-print-lite .print-sheet ul{
+    margin: 0 !important;
+  }
+
+  html.sc19-print-lite .print-sheet-header,
+  html.sc19-print-lite .print-sheet-services,
+  html.sc19-print-lite .print-sheet-profile,
+  html.sc19-print-lite .print-sheet-contacts{
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  html.sc19-print-lite .print-sheet-header{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+  }
+
+  html.sc19-print-lite .print-sheet-brand{
+    display: flex !important;
+    align-items: center !important;
+    gap: 22px !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.sc19-print-lite .print-sheet-brand img{
+    width: 92px !important;
+    height: 92px !important;
+    flex: 0 0 auto !important;
+    display: block !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  html.sc19-print-lite .print-sheet-brand-copy{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.sc19-print-lite .print-sheet-studio{
+    font-size: 33px !important;
+    line-height: 1.05 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  html.sc19-print-lite .print-sheet-meta{
+    color: #505050 !important;
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+
+  html.sc19-print-lite .print-sheet-divider{
+    height: 1px !important;
+    background: #bfc3c7 !important;
+  }
+
+  html.sc19-print-lite .print-sheet-services{
+    padding: 18px 22px 20px !important;
+    border: 1.6px solid #bfc3c7 !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.sc19-print-lite .print-services-head{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  html.sc19-print-lite .print-kicker{
+    color: #2f2f2f !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+  }
+
+  html.sc19-print-lite .print-services-note{
+    color: #656565 !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  html.sc19-print-lite .print-services-grid{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+  }
+
+  html.sc19-print-lite .print-service-col h3{
+    margin-bottom: 9px !important;
+    color: #181818 !important;
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+  }
+
+  html.sc19-print-lite .print-service-col h3 span{
+    font-weight: 400 !important;
+    color: #4b4b4b !important;
+  }
+
+  html.sc19-print-lite .print-service-col ul{
+    padding-left: 18px !important;
+    color: #2a2a2a !important;
+    font-size: 13.2px !important;
+    line-height: 1.48 !important;
+  }
+
+  html.sc19-print-lite .print-service-col li + li{
+    margin-top: 3px !important;
+  }
+
+  /* Guerra resta il riferimento: gli altri profili vengono rifiniti con micro-interventi
+     solo sull’interlinea della sezione “I nostri servizi”, senza toccare il resto del layout print. */
+  html.sc19-print-lite .print-sheet[data-print-profile="micaela"] .print-service-col ul{
+    line-height: 1.432 !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="micaela"] .print-service-col li + li{
+    margin-top: 2px !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="mauro"] .print-service-col ul{
+    line-height: 1.494 !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="mauro"] .print-service-col li + li{
+    margin-top: 3.6px !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="agostino"] .print-service-col ul{
+    line-height: 1.486 !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="agostino"] .print-service-col li + li{
+    margin-top: 3.5px !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="gabriele"] .print-service-col ul{
+    line-height: 1.417 !important;
+  }
+
+  html.sc19-print-lite .print-sheet[data-print-profile="gabriele"] .print-service-col li + li{
+    margin-top: 1.2px !important;
+  }
+
+  html.sc19-print-lite .print-sheet-profile{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.sc19-print-lite .print-sheet-profile h3{
+    font-size: 33px !important;
+    line-height: 1.05 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.03em !important;
+    color: #141414 !important;
+  }
+
+  html.sc19-print-lite .print-profile-role{
+    color: #494949 !important;
+    font-size: 18px !important;
+    line-height: 1.35 !important;
+  }
+
+  html.sc19-print-lite .print-profile-copy{
+    display: grid !important;
+    gap: 12px !important;
+    margin-top: 6px !important;
+    color: #1f1f1f !important;
+    font-size: 15.6px !important;
+    line-height: 1.60 !important;
+  }
+
+  html.sc19-print-lite .print-sheet-contacts{
+    margin-top: auto !important;
+    padding-top: 14px !important;
+    border-top: 1px solid #bfc3c7 !important;
+    display: grid !important;
+    grid-template-columns: max-content minmax(0, 1fr) max-content !important;
+    column-gap: 18px !important;
+    row-gap: 10px !important;
+    align-items: start !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html.sc19-print-lite .print-contact-block{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+  }
+
+  html.sc19-print-lite .print-sheet-contacts .print-contact-block:nth-child(1){
+    justify-self: start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  html.sc19-print-lite .print-sheet-contacts .print-contact-block:nth-child(2){
+    justify-self: center !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  html.sc19-print-lite .print-sheet-contacts .print-contact-block:nth-child(3){
+    justify-self: end !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  html.sc19-print-lite .print-contact-label{
+    color: #2f2f2f !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+  }
+
+  html.sc19-print-lite .print-contact-value{
+    color: #161616 !important;
+    font-size: 14.2px !important;
+    line-height: 1.45 !important;
+    white-space: nowrap !important;
+  }
+</style>
 </head>
 <body>
+<div aria-hidden="true" id="sc19-print-guard" style="display:none;opacity:0;pointer-events:none;position:fixed;inset:0;z-index:2147483647;background:radial-gradient(circle at 50% 10%, rgba(120,160,255,0.16), rgba(0,0,0,0) 55%), #0f1115;transition:opacity 120ms ease;"></div>
 <div aria-hidden="true" class="bg-video">
 <video autoplay="" disablepictureinpicture="" loop="" muted="" playsinline="" poster="assets/sfondo-mobile.webp" preload="auto">
 <source src="assets/sfondo.mp4" type="video/mp4"/>
@@ -214,7 +621,7 @@
 <summary class="member-row mobile-member-summary">
 <span class="avatar"><img alt="Mauro Poncini" src="assets/icons/icon-mauro-poncini-128.png"/></span>
 <span class="member-text">
-<span class="member-name">Mauro Poncini</span>
+<span class="member-name"><span class="member-name-label">Mauro Poncini</span></span>
 <span class="member-role">Avvocato</span>
 </span>
 <span aria-hidden="true" class="mobile-chevron"></span>
@@ -247,7 +654,7 @@
 <summary class="member-row mobile-member-summary">
 <span class="avatar"><img alt="Nicola Guerra" src="assets/icons/icon-nicola-guerra-128.png"/></span>
 <span class="member-text">
-<span class="member-name">Nicola Guerra</span>
+<span class="member-name"><span class="member-name-label">Nicola Guerra</span></span>
 <span class="member-role">Avvocato</span>
 </span>
 <span aria-hidden="true" class="mobile-chevron"></span>
@@ -281,7 +688,7 @@
 <summary class="member-row mobile-member-summary">
 <span class="avatar"><img alt="Micaela Plebani" src="assets/icons/icon-micaela-plebani-128.png"/></span>
 <span class="member-text">
-<span class="member-name">Micaela Plebani</span>
+<span class="member-name"><span class="member-name-label">Micaela Plebani</span></span>
 <span class="member-role">Avvocato</span>
 </span>
 <span aria-hidden="true" class="mobile-chevron"></span>
@@ -315,7 +722,7 @@
 <summary class="member-row mobile-member-summary">
 <span class="avatar"><img alt="Agostino Dal Zotto" src="assets/icons/icon-agostino-dal-zotto-128.png"/></span>
 <span class="member-text">
-<span class="member-name">Agostino Dal Zotto</span>
+<span class="member-name"><span class="member-name-label">Agostino Dal Zotto</span></span>
 <span class="member-role">Avvocato</span>
 </span>
 <span aria-hidden="true" class="mobile-chevron"></span>
@@ -348,7 +755,7 @@
 <summary class="member-row mobile-member-summary">
 <span class="avatar"><img alt="Gabriele Berto" src="assets/icons/icon-gabriele-berto-128.png"/></span>
 <span class="member-text">
-<span class="member-name">Gabriele Berto</span>
+<span class="member-name"><span class="member-name-label">Gabriele Berto</span></span>
 <span class="member-role">Abogado e Dottore in Ingegneria</span>
 </span>
 <span aria-hidden="true" class="mobile-chevron"></span>
@@ -384,6 +791,7 @@
 <aside class="card team-list">
 <h2>Il team</h2>
 <label class="member-row" for="view-mauro">
+<span class="member-row-ui">
 <span class="avatar">
 <img alt="" aria-hidden="true" src="assets/icons/icon-mauro-poncini-128.png"/>
 </span>
@@ -391,8 +799,11 @@
 <span class="member-name">Mauro Poncini</span>
 <span class="member-role">Avvocato</span>
 </span>
+</span>
+<span aria-hidden="true" class="sc19-hover-bridge"></span>
 </label>
 <label class="member-row" for="view-nicola">
+<span class="member-row-ui">
 <span class="avatar">
 <img alt="" aria-hidden="true" src="assets/icons/icon-nicola-guerra-128.png"/>
 </span>
@@ -400,8 +811,11 @@
 <span class="member-name">Nicola Guerra</span>
 <span class="member-role">Avvocato</span>
 </span>
+</span>
+<span aria-hidden="true" class="sc19-hover-bridge"></span>
 </label>
 <label class="member-row" for="view-micaela">
+<span class="member-row-ui">
 <span class="avatar">
 <img alt="" aria-hidden="true" src="assets/icons/icon-micaela-plebani-128.png"/>
 </span>
@@ -409,8 +823,11 @@
 <span class="member-name">Micaela Plebani</span>
 <span class="member-role">Avvocato</span>
 </span>
+</span>
+<span aria-hidden="true" class="sc19-hover-bridge"></span>
 </label>
 <label class="member-row" for="view-agostino">
+<span class="member-row-ui">
 <span class="avatar">
 <img alt="" aria-hidden="true" src="assets/icons/icon-agostino-dal-zotto-128.png"/>
 </span>
@@ -418,8 +835,11 @@
 <span class="member-name">Agostino Dal Zotto</span>
 <span class="member-role">Avvocato</span>
 </span>
+</span>
+<span aria-hidden="true" class="sc19-hover-bridge"></span>
 </label>
 <label class="member-row" for="view-gabriele">
+<span class="member-row-ui">
 <span class="avatar">
 <img alt="" aria-hidden="true" src="assets/icons/icon-gabriele-berto-128.png"/>
 </span>
@@ -427,6 +847,8 @@
 <span class="member-name">Gabriele Berto</span>
 <span class="member-role">Abogado e Dottore in Ingegneria</span>
 </span>
+</span>
+<span aria-hidden="true" class="sc19-hover-bridge"></span>
 </label>
 </aside>
 <section class="card team-detail">
@@ -577,13 +999,6 @@
 </section>
 </div>
 </section>
-
-<div aria-hidden="true" class="pdf-status" id="pdf-status">
-<div class="pdf-status-box">
-<p class="pdf-status-title">Preparazione PDF in corso…</p>
-<p class="pdf-status-text">Attendi qualche secondo.</p>
-</div>
-</div>
 
 <section aria-hidden="true" class="print-only-shell">
 <article aria-label="Scheda professionale stampabile" class="print-sheet" id="print-sheet">
@@ -2106,6 +2521,11 @@ const bindDesktopCyclers = function () {
               if (isMobile()) return;
               ev.preventDefault();
               goNextProfile();
+              window.setTimeout(function () {
+                if (typeof syncPcHoverVisualsFromChecked === "function") {
+                  syncPcHoverVisualsFromChecked(!!(b && b.closest && b.closest(".team-detail.card")));
+                }
+              }, 0);
               if (b && b.blur) b.blur();
             });
           });
@@ -2116,6 +2536,11 @@ const bindDesktopCyclers = function () {
               if (isMobile()) return;
               ev.preventDefault();
               goPrevProfile();
+              window.setTimeout(function () {
+                if (typeof syncPcHoverVisualsFromChecked === "function") {
+                  syncPcHoverVisualsFromChecked(!!(b && b.closest && b.closest(".team-detail.card")));
+                }
+              }, 0);
               if (b && b.blur) b.blur();
             });
           });
@@ -2123,11 +2548,59 @@ const bindDesktopCyclers = function () {
         bindDesktopCyclers();
         updateDesktopNavButtons();
 
+        let pinnedProfileId = null;
+
+        const hasPinnedProfile = function () {
+          return !!pinnedProfileId;
+        };
+
+        const isPcBridgeArmed = function () {
+          return document.body.classList.contains("pc-bridge-armed");
+        };
+
+        const setPcBridgeArmed = function (armed) {
+          if (armed || hasPinnedProfile()) {
+            document.body.classList.add("pc-bridge-armed");
+            return;
+          }
+          document.body.classList.remove("pc-bridge-armed");
+        };
+
+        const syncPcHoverVisualsFromChecked = function (forceRightHover) {
+          if (isMobile()) return;
+          if (hasPinnedProfile()) return;
+
+          const list = document.querySelector(".team-grid .team-list.card") || document.querySelector(".team-grid .team-list");
+          if (!list) return;
+
+          const checked = document.querySelector('.team-view:checked');
+          const checkedId = checked && checked.id ? checked.id : null;
+          if (!checkedId) return;
+
+          Array.prototype.slice.call(list.querySelectorAll('label.member-row.sc19-simhover')).forEach(function (lab) {
+            lab.classList.remove('sc19-simhover');
+          });
+
+          const activeLabel = list.querySelector('label.member-row[for="' + checkedId + '"]');
+          if (!activeLabel) return;
+
+          activeLabel.classList.add('sc19-simhover');
+          document.body.classList.add('pc-bottom-hover');
+          if (forceRightHover) {
+            document.body.classList.add('pc-right-hover');
+          }
+          setPcBridgeArmed(true);
+        };
+
         const initPcServicesHoverHold = function () {
           if (isMobile()) return;
 
           const card = document.querySelector(".services-card.card");
           if (!card) return;
+
+          let hasPointer = false;
+          let lastClientX = -1;
+          let lastClientY = -1;
 
           const activate = function () {
             card.classList.add("sc19-services-hover");
@@ -2137,12 +2610,58 @@ const bindDesktopCyclers = function () {
             card.classList.remove("sc19-services-hover");
           };
 
-          card.addEventListener("mouseenter", activate, { passive: true });
-          card.addEventListener("mouseleave", deactivate, { passive: true });
+          const pointInsideCard = function (x, y) {
+            if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+            const rect = card.getBoundingClientRect();
+            if (!rect || rect.width <= 0 || rect.height <= 0) return false;
+            if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) return false;
+            const el = document.elementFromPoint(x, y);
+            return !!(el && card.contains(el));
+          };
+
+          const syncFromPointer = function () {
+            if (isMobile()) {
+              deactivate();
+              return;
+            }
+            if (!hasPointer) {
+              deactivate();
+              return;
+            }
+            if (pointInsideCard(lastClientX, lastClientY)) {
+              activate();
+            } else {
+              deactivate();
+            }
+          };
+
+          window.addEventListener("mousemove", function (e) {
+            if (isMobile()) {
+              deactivate();
+              return;
+            }
+            hasPointer = true;
+            lastClientX = e.clientX;
+            lastClientY = e.clientY;
+            syncFromPointer();
+          }, { passive: true });
+
+          window.addEventListener("scroll", function () {
+            syncFromPointer();
+          }, { passive: true });
 
           document.addEventListener("mouseleave", function () {
-            if (isMobile()) return;
-            card.classList.remove("sc19-services-hover");
+            hasPointer = false;
+            lastClientX = -1;
+            lastClientY = -1;
+            deactivate();
+          }, { passive: true });
+
+          window.addEventListener("blur", function () {
+            hasPointer = false;
+            lastClientX = -1;
+            lastClientY = -1;
+            deactivate();
           }, { passive: true });
         };
 
@@ -2157,11 +2676,34 @@ const bindDesktopCyclers = function () {
           let rafPending = false;
           let lastX = 0;
           let lastY = 0;
-
           let insideBottom = false;
 
+          const getCheckedId = function () {
+            const checked = document.querySelector('.team-view:checked');
+            return checked && checked.id ? checked.id : null;
+          };
+
+          const getActiveLabel = function () {
+            const checkedId = getCheckedId();
+            if (!checkedId) return null;
+            return left.querySelector('label.member-row[for="' + checkedId + '"]');
+          };
+
+          const getBridgeZone = function () {
+            const label = getActiveLabel();
+            if (!label) return null;
+            const lr = label.getBoundingClientRect();
+            const rr = right.getBoundingClientRect();
+            return {
+              left: Math.min(lr.right, rr.left) - 2,
+              right: Math.max(lr.right, rr.left) + 2,
+              top: lr.top,
+              bottom: lr.bottom
+            };
+          };
+
           const setInside = function (inside) {
-            if (inside) {
+            if (inside || hasPinnedProfile()) {
               insideBottom = true;
               if (!document.body.classList.contains("pc-bottom-hover")) {
                 document.body.classList.add("pc-bottom-hover");
@@ -2174,29 +2716,40 @@ const bindDesktopCyclers = function () {
           };
 
           const compute = function (x, y) {
-            const r1 = left.getBoundingClientRect();
-            const r2 = right.getBoundingClientRect();
-            const top = Math.min(r1.top, r2.top);
-            const bottom = Math.max(r1.bottom, r2.bottom);
-            const l = Math.min(r1.left, r2.left);
-            const r = Math.max(r1.right, r2.right);
+            const vw = window.innerWidth || document.documentElement.clientWidth || 0;
+            const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+            if (!(vw > 0 && vh > 0)) {
+              setInside(false);
+              return;
+            }
 
-            // Fast reject outside the whole bottom row.
-            const inRect = (x >= l && x <= r && y >= top && y <= bottom);
-            if (!inRect) { setInside(false); return; }
+            if (!(x >= 0 && x <= vw && y >= 0 && y <= vh)) {
+              setInside(false);
+              return;
+            }
 
-            // Activate only when hovering a left member row or the right detail panel.
             const el = document.elementFromPoint(x, y);
             const overRight = !!(el && right.contains(el));
             const overRow = !!(el && el.closest && el.closest(".team-grid .team-list.card label.member-row"));
-            setInside(overRight || overRow);
+            const bridge = getBridgeZone();
+            const inBridge = !!(bridge && x >= bridge.left && x <= bridge.right && y >= bridge.top && y <= bridge.bottom);
+
+            if (overRight || overRow) {
+              setPcBridgeArmed(true);
+              setInside(true);
+              return;
+            }
+
+            if (inBridge && isPcBridgeArmed()) {
+              setInside(true);
+              return;
+            }
+
+            setPcBridgeArmed(false);
+            setInside(false);
           };
 
-          const onMove = function (e) {
-            if (isMobile()) return;
-            lastX = e.clientX;
-            lastY = e.clientY;
-
+          const scheduleCompute = function () {
             if (rafPending) return;
             rafPending = true;
 
@@ -2206,12 +2759,34 @@ const bindDesktopCyclers = function () {
             });
           };
 
+          const onMove = function (e) {
+            if (isMobile()) return;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            scheduleCompute();
+          };
+
           window.addEventListener("mousemove", onMove, { passive: true });
+          window.addEventListener("scroll", function () {
+            if (isMobile()) return;
+            scheduleCompute();
+          }, { passive: true });
+          window.addEventListener("resize", function () {
+            if (isMobile()) return;
+            scheduleCompute();
+          }, { passive: true });
 
           document.addEventListener("mouseleave", function () {
             if (isMobile()) return;
+            if (hasPinnedProfile()) {
+              insideBottom = true;
+              document.body.classList.add("pc-bottom-hover");
+              setPcBridgeArmed(true);
+              return;
+            }
             insideBottom = false;
             document.body.classList.remove("pc-bottom-hover");
+            setPcBridgeArmed(false);
           }, { passive: true });
         };
 
@@ -2224,6 +2799,39 @@ const bindDesktopCyclers = function () {
           if (!right || !list) return;
 
           let simLabel = null;
+          let lastX = 0;
+          let lastY = 0;
+          let rafPending = false;
+
+          const getCheckedId = function () {
+            const checked = document.querySelector('.team-view:checked');
+            return checked && checked.id ? checked.id : null;
+          };
+
+          const getActiveLabel = function () {
+            const checkedId = getCheckedId();
+            if (!checkedId) return null;
+            return list.querySelector('label.member-row[for="' + checkedId + '"]');
+          };
+
+          const getBridgeHotZone = function () {
+            const label = getActiveLabel();
+            if (!label) return null;
+            const lr = label.getBoundingClientRect();
+            const rr = right.getBoundingClientRect();
+            return {
+              left: Math.min(lr.right, rr.left) - 2,
+              right: Math.max(lr.right, rr.left) + 2,
+              top: lr.top,
+              bottom: lr.bottom
+            };
+          };
+
+          const pointInBridgeHotZone = function (x, y) {
+            if (!isPcBridgeArmed() && !hasPinnedProfile()) return false;
+            const z = getBridgeHotZone();
+            return !!(z && x >= z.left && x <= z.right && y >= z.top && y <= z.bottom);
+          };
 
           const clearSim = function () {
             if (simLabel) simLabel.classList.remove("sc19-simhover");
@@ -2232,25 +2840,84 @@ const bindDesktopCyclers = function () {
 
           const applySim = function () {
             clearSim();
-            const checked = document.querySelector(".team-view:checked");
-            if (!checked || !checked.id) return;
-            const lab = list.querySelector('label.member-row[for="' + checked.id + '"]');
+            if (hasPinnedProfile()) return;
+            const lab = getActiveLabel();
             if (!lab) return;
             simLabel = lab;
             simLabel.classList.add("sc19-simhover");
           };
 
-          const enter = function () {
-            if (isMobile()) return;
+          const ensureRightSyncClasses = function () {
             document.body.classList.add("pc-bottom-hover");
             document.body.classList.add("pc-right-hover");
+            setPcBridgeArmed(true);
+          };
+
+          const enter = function () {
+            if (isMobile()) return;
+            ensureRightSyncClasses();
             applySim();
           };
 
           const leave = function () {
             if (isMobile()) return;
-            document.body.classList.remove("pc-right-hover");
-            clearSim();
+            requestAnimationFrame(function () {
+              if (isMobile()) return;
+              const el = document.elementFromPoint(lastX, lastY);
+              const stillInsideRight = !!(el && right.contains(el));
+              const stillOverRow = !!(el && el.closest && el.closest(".team-grid .team-list.card label.member-row"));
+              const stillInBridge = pointInBridgeHotZone(lastX, lastY);
+
+              if (stillInsideRight || stillInBridge || hasPinnedProfile()) {
+                ensureRightSyncClasses();
+                if (!simLabel) applySim();
+                return;
+              }
+
+              document.body.classList.remove("pc-right-hover");
+              clearSim();
+              if (!stillOverRow && !hasPinnedProfile()) {
+                document.body.classList.remove("pc-bottom-hover");
+              }
+            });
+          };
+
+          const recompute = function () {
+            if (isMobile()) return;
+
+            const vw = window.innerWidth || document.documentElement.clientWidth || 0;
+            const vh = window.innerHeight || document.documentElement.clientHeight || 0;
+            if (!(vw > 0 && vh > 0)) {
+              leave();
+              return;
+            }
+
+            if (!(lastX >= 0 && lastX <= vw && lastY >= 0 && lastY <= vh)) {
+              leave();
+              return;
+            }
+
+            const rr = right.getBoundingClientRect();
+            const insideRight = (lastX >= rr.left && lastX <= rr.right && lastY >= rr.top && lastY <= rr.bottom);
+            const insideBridge = pointInBridgeHotZone(lastX, lastY);
+            if (!insideRight && !insideBridge) {
+              leave();
+              return;
+            }
+
+            ensureRightSyncClasses();
+            if (!simLabel) {
+              applySim();
+            }
+          };
+
+          const scheduleRecompute = function () {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(function () {
+              rafPending = false;
+              recompute();
+            });
           };
 
           right.addEventListener("mouseenter", enter, { passive: true });
@@ -2269,10 +2936,30 @@ const bindDesktopCyclers = function () {
 
           window.addEventListener("mousemove", function (e) {
             if (isMobile()) return;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            const el = document.elementFromPoint(lastX, lastY);
+            const insideRightNow = !!(el && right.contains(el));
+            const insideBridgeNow = pointInBridgeHotZone(lastX, lastY);
+            if (insideRightNow) {
+              ensureRightSyncClasses();
+              if (!simLabel) applySim();
+            } else if (insideBridgeNow) {
+              ensureRightSyncClasses();
+              if (!simLabel) applySim();
+            }
             if (!document.body.classList.contains("pc-right-hover")) return;
-            const rr = right.getBoundingClientRect();
-            const inside = (e.clientX >= rr.left && e.clientX <= rr.right && e.clientY >= rr.top && e.clientY <= rr.bottom);
-            if (!inside) leave();
+            recompute();
+          }, { passive: true });
+
+          window.addEventListener("scroll", function () {
+            if (isMobile()) return;
+            scheduleRecompute();
+          }, { passive: true });
+
+          window.addEventListener("resize", function () {
+            if (isMobile()) return;
+            scheduleRecompute();
           }, { passive: true });
         };
 
@@ -2314,6 +3001,7 @@ const bindDesktopCyclers = function () {
           labels.forEach(function (lab) {
             const activate = function () {
               if (isMobile()) return;
+              if (hasPinnedProfile()) return;
               const id = lab.getAttribute("for");
               if (!id) return;
               lockedId = id;
@@ -2347,6 +3035,171 @@ const bindDesktopCyclers = function () {
           }
         };
 
+
+        const initPcPinnedSelection = function () {
+          if (isMobile()) return;
+
+          const list = document.querySelector(".team-grid .team-list.card");
+          const detail = document.querySelector(".team-grid .team-detail.card");
+          if (!list || !detail) return;
+
+          const labels = Array.prototype.slice.call(list.querySelectorAll("label.member-row[for]"));
+          if (!labels.length) return;
+
+          const getCheckedId = function () {
+            for (let i = 0; i < PROFILE_ORDER.length; i++) {
+              const id = PROFILE_ORDER[i];
+              const r = document.getElementById(id);
+              if (r && r.checked) return id;
+            }
+            return PROFILE_ORDER[0];
+          };
+
+          const getLabel = function (id) {
+            return list.querySelector('label.member-row[for="' + id + '"]');
+          };
+
+          const setChecked = function (id) {
+            const r = document.getElementById(id);
+            if (!r) return;
+            if (!r.checked) {
+              r.checked = true;
+              if (r.dispatchEvent) {
+                r.dispatchEvent(new Event("change", { bubbles: true }));
+              }
+            } else {
+              updateDesktopNavButtons();
+            }
+          };
+
+          const applyPinnedRowUiStyles = function () {
+            labels.forEach(function (lab) {
+              const ui = lab.querySelector(":scope > .member-row-ui") || lab.querySelector(".member-row-ui");
+              if (!ui) return;
+              ui.style.removeProperty("border-color");
+              ui.style.removeProperty("box-shadow");
+            });
+
+            if (!pinnedProfileId) { return; }
+
+            const pinnedLabel = getLabel(pinnedProfileId);
+            const pinnedUi = pinnedLabel && (pinnedLabel.querySelector(":scope > .member-row-ui") || pinnedLabel.querySelector(".member-row-ui"));
+            if (!pinnedUi) { return; }
+
+            const root = document.documentElement;
+            const isLight = root && root.getAttribute("data-theme") === "light";
+            const cs = getComputedStyle(document.body);
+            const accent = (cs.getPropertyValue("--pc-accent-95") || "").trim() || (isLight ? "rgba(236,246,255,0.55)" : "rgba(255,235,200,0.95)");
+            pinnedUi.style.setProperty("border-color", accent, "important");
+            if (isLight) {
+              pinnedUi.style.setProperty("box-shadow", "0 10px 22px rgba(10,16,28,0.10), 0 0 14px rgba(10,16,28,0.04), inset 0 1px 0 rgba(255,255,255,0.78)", "important");
+            } else {
+              pinnedUi.style.setProperty("box-shadow", "0 12px 28px rgba(0,0,0,0.24), 0 0 18px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22)", "important");
+            }
+          };
+
+          const syncPinClasses = function () {
+            labels.forEach(function (lab) {
+              lab.classList.remove("sc19-pinned");
+            });
+            document.body.classList.remove("sc19-selection-pinned");
+            document.body.removeAttribute("data-sc19-pinned");
+            detail.classList.remove("sc19-pinned-detail");
+
+            if (!pinnedProfileId) {
+              applyPinnedRowUiStyles();
+              return;
+            }
+
+            const label = getLabel(pinnedProfileId);
+            if (label) {
+              label.classList.add("sc19-pinned");
+            }
+            document.body.classList.add("sc19-selection-pinned");
+            document.body.setAttribute("data-sc19-pinned", pinnedProfileId);
+            detail.classList.add("sc19-pinned-detail");
+            document.body.classList.add("pc-bottom-hover");
+            applyPinnedRowUiStyles();
+          };
+
+          const pinProfile = function (id) {
+            if (!id) return;
+            pinnedProfileId = id;
+            setChecked(id);
+            syncPinClasses();
+          };
+
+          const clearPinnedProfile = function (preserveBottomHover) {
+            pinnedProfileId = null;
+            syncPinClasses();
+            if (!preserveBottomHover) {
+              document.body.classList.remove("pc-bottom-hover");
+              document.body.classList.remove("pc-right-hover");
+            }
+          };
+
+          labels.forEach(function (lab) {
+            lab.addEventListener("mousedown", function (ev) {
+              if (isMobile()) return;
+              ev.preventDefault();
+            }, true);
+
+            lab.addEventListener("click", function (ev) {
+              if (isMobile()) return;
+              const id = lab.getAttribute("for");
+              if (!id) return;
+              ev.preventDefault();
+              if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+              if (ev.stopPropagation) ev.stopPropagation();
+              const activeEl = document.activeElement;
+              if (activeEl && typeof activeEl.blur === "function") {
+                activeEl.blur();
+              }
+              if (window.getSelection) {
+                const sel = window.getSelection();
+                if (sel && typeof sel.removeAllRanges === "function") {
+                  try { sel.removeAllRanges(); } catch (e) {}
+                }
+              }
+              if (pinnedProfileId === id) {
+                clearPinnedProfile(true);
+                return;
+              }
+              pinProfile(id);
+            }, true);
+          });
+
+          document.addEventListener("click", function (ev) {
+            if (isMobile()) return;
+            if (!pinnedProfileId) return;
+            const target = ev.target;
+            if (!target) return;
+            if (target.closest && (target.closest(".team-grid .team-list.card label.member-row") || target.closest(".team-grid .team-detail.card"))) {
+              return;
+            }
+            clearPinnedProfile(false);
+          }, true);
+
+          document.querySelectorAll(".team-view").forEach(function (input) {
+            input.addEventListener("change", function () {
+              if (!pinnedProfileId) return;
+              pinnedProfileId = getCheckedId();
+              syncPinClasses();
+            });
+          });
+
+          const themeToggle = document.querySelector(".theme-toggle");
+          if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+              if (!pinnedProfileId) return;
+              window.requestAnimationFrame(function () {
+                syncPinClasses();
+              });
+            });
+          }
+        };
+
+        initPcPinnedSelection();
         initPcHoverPreview();
 
 
@@ -2679,6 +3532,12 @@ if (brandHome) {
 (function(){
   var PROFILE_ORDER = ["mauro", "nicola", "micaela", "agostino", "gabriele"];
   var lastRequestedProfile = null;
+  var siteStylesheet = document.getElementById('site-stylesheet');
+  var printGuard = document.getElementById('sc19-print-guard');
+  var printLiteActive = false;
+  var printRestoreTimer = null;
+  var printGuardHideTimer = null;
+  var printUiSnapshot = null;
 
   function text(el){
     return el ? (el.textContent || "").replace(/\s+/g, " ").trim() : "";
@@ -2693,12 +3552,149 @@ if (brandHome) {
       .replace(/'/g, "&#39;");
   }
 
+  function syncPrintGuardTheme(){
+    if (!printGuard) { return; }
+    var theme = (document.documentElement.getAttribute('data-theme') || 'dark').toLowerCase();
+    if (theme === 'light') {
+      printGuard.style.background = 'linear-gradient(180deg, #f7f7f7, #ececec)';
+    } else {
+      printGuard.style.background = 'radial-gradient(circle at 50% 10%, rgba(120,160,255,0.16), rgba(0,0,0,0) 55%), #0f1115';
+    }
+  }
+
+  function showPrintGuard(){
+    if (!printGuard) { return; }
+    if (printGuardHideTimer){
+      window.clearTimeout(printGuardHideTimer);
+      printGuardHideTimer = null;
+    }
+    syncPrintGuardTheme();
+    printGuard.style.transition = 'none';
+    printGuard.style.display = 'block';
+    printGuard.style.opacity = '1';
+    printGuard.style.pointerEvents = 'auto';
+  }
+
+  function hidePrintGuard(){
+    if (!printGuard) { return; }
+    if (printGuardHideTimer){
+      window.clearTimeout(printGuardHideTimer);
+      printGuardHideTimer = null;
+    }
+    printGuard.style.transition = 'none';
+    printGuard.style.opacity = '0';
+    printGuard.style.display = 'none';
+    printGuard.style.pointerEvents = 'none';
+  }
+
   function selectedProfileKey(){
     var checked = document.querySelector('.team-view:checked');
     if (checked && checked.id && checked.id.indexOf('view-') === 0){
       return checked.id.replace('view-', '');
     }
     return PROFILE_ORDER[0];
+  }
+
+  function capturePrintUiSnapshot(){
+    var body = document.body;
+    var checked = document.querySelector('.team-view:checked');
+    var simhover = document.querySelector('.team-grid .team-list.card label.member-row.sc19-simhover');
+    return {
+      checkedId: checked && checked.id ? checked.id : '',
+      simhoverFor: simhover && simhover.getAttribute('for') ? simhover.getAttribute('for') : '',
+      bodyClasses: {
+        pcBottomHover: !!(body && body.classList.contains('pc-bottom-hover')),
+        pcRightHover: !!(body && body.classList.contains('pc-right-hover')),
+        pcBridgeArmed: !!(body && body.classList.contains('pc-bridge-armed')),
+        selectionPinned: !!(body && body.classList.contains('sc19-selection-pinned'))
+      },
+      pinnedKey: body ? (body.getAttribute('data-sc19-pinned') || '') : ''
+    };
+  }
+
+  function shouldPersistPrintHover(snapshot){
+    if (!snapshot || !snapshot.bodyClasses) { return false; }
+    if (snapshot.bodyClasses.selectionPinned) { return false; }
+    return !!(snapshot.bodyClasses.pcBottomHover || snapshot.bodyClasses.pcRightHover || snapshot.simhoverFor || snapshot.checkedId);
+  }
+
+  function clearPrintHoverMemory(){
+    var body = document.body;
+    if (!body) { return; }
+    body.classList.remove('sc19-print-hover-memory');
+    Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row.sc19-simhover')).forEach(function(label){
+      label.classList.remove('sc19-simhover');
+    });
+    if (!body.classList.contains('sc19-selection-pinned')) {
+      body.classList.remove('pc-bottom-hover', 'pc-right-hover', 'pc-bridge-armed');
+      body.removeAttribute('data-sc19-print-hover-key');
+    }
+  }
+
+  function restorePrintUiSnapshot(snapshot){
+    var body = document.body;
+    if (!body || !snapshot) { return; }
+
+    document.documentElement.classList.add('sc19-print-restoring');
+
+    Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row.sc19-simhover')).forEach(function(label){
+      label.classList.remove('sc19-simhover');
+    });
+
+    body.classList.remove('pc-bottom-hover', 'pc-right-hover', 'pc-bridge-armed', 'sc19-selection-pinned', 'sc19-print-hover-memory');
+    body.removeAttribute('data-sc19-pinned');
+
+    if (snapshot.checkedId) {
+      var radio = document.getElementById(snapshot.checkedId);
+      if (radio) { radio.checked = true; }
+    }
+
+    if (snapshot.bodyClasses.selectionPinned) {
+      if (snapshot.bodyClasses.pcBottomHover) { body.classList.add('pc-bottom-hover'); }
+      if (snapshot.bodyClasses.pcRightHover) { body.classList.add('pc-right-hover'); }
+      if (snapshot.bodyClasses.pcBridgeArmed) { body.classList.add('pc-bridge-armed'); }
+      body.classList.add('sc19-selection-pinned');
+      if (snapshot.pinnedKey) { body.setAttribute('data-sc19-pinned', snapshot.pinnedKey); }
+
+      if (snapshot.simhoverFor) {
+        var simLabel = document.querySelector('.team-grid .team-list.card label.member-row[for="' + snapshot.simhoverFor + '"]');
+        if (simLabel) { simLabel.classList.add('sc19-simhover'); }
+      }
+      return;
+    }
+
+    if (shouldPersistPrintHover(snapshot)) {
+      var hoverKey = '';
+      if (snapshot.simhoverFor && snapshot.simhoverFor.indexOf('view-') === 0) {
+        hoverKey = snapshot.simhoverFor.replace('view-', '');
+      } else if (snapshot.checkedId && snapshot.checkedId.indexOf('view-') === 0) {
+        hoverKey = snapshot.checkedId.replace('view-', '');
+      }
+
+      body.classList.add('sc19-print-hover-memory', 'pc-bottom-hover');
+      if (snapshot.bodyClasses.pcRightHover) { body.classList.add('pc-right-hover'); }
+      if (snapshot.bodyClasses.pcBridgeArmed) { body.classList.add('pc-bridge-armed'); }
+      if (hoverKey) {
+        body.setAttribute('data-sc19-print-hover-key', hoverKey);
+        var hoverLabel = document.querySelector('.team-grid .team-list.card label.member-row[for="view-' + hoverKey + '"]');
+        if (hoverLabel) { hoverLabel.classList.add('sc19-simhover'); }
+      } else {
+        body.removeAttribute('data-sc19-print-hover-key');
+      }
+    }
+  }
+
+  function releasePrintRestoreLock(onDone){
+    window.setTimeout(function(){
+      window.requestAnimationFrame(function(){
+        window.requestAnimationFrame(function(){
+          document.documentElement.classList.remove('sc19-print-restoring');
+          if (typeof onDone === 'function') {
+            onDone();
+          }
+        });
+      });
+    }, 136);
   }
 
   function getProfileData(key){
@@ -2783,179 +3779,65 @@ if (brandHome) {
     return true;
   }
 
-  function isMobilePdfMode(){
-    try {
-      if (window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
-        return true;
+  function enablePrintLite(){
+    if (printLiteActive) { return; }
+    printUiSnapshot = capturePrintUiSnapshot();
+    showPrintGuard();
+    printLiteActive = true;
+    document.documentElement.classList.add('sc19-print-lite');
+    if (siteStylesheet){
+      if (!siteStylesheet.hasAttribute('data-prev-media')){
+        siteStylesheet.setAttribute('data-prev-media', siteStylesheet.getAttribute('media') || 'all');
       }
-    } catch (e) {}
-    var ua = (navigator.userAgent || '').toLowerCase();
-    return /android|iphone|ipad|ipod|mobile/.test(ua);
+      siteStylesheet.media = 'not all';
+      siteStylesheet.disabled = true;
+    }
   }
 
-  function isIOS(){
-    var ua = navigator.userAgent || '';
-    return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }
-
-  function nextFrame(){
-    return new Promise(function(resolve){
+  function restorePrintLite(){
+    if (printRestoreTimer){
+      window.clearTimeout(printRestoreTimer);
+      printRestoreTimer = null;
+    }
+    if (!printLiteActive) {
+      releasePrintRestoreLock(function(){
+        hidePrintGuard();
+      });
+      return;
+    }
+    showPrintGuard();
+    printLiteActive = false;
+    document.documentElement.classList.remove('sc19-print-lite');
+    if (siteStylesheet){
+      siteStylesheet.disabled = false;
+      siteStylesheet.media = siteStylesheet.getAttribute('data-prev-media') || 'all';
+    }
+    window.requestAnimationFrame(function(){
       window.requestAnimationFrame(function(){
-        window.requestAnimationFrame(resolve);
+        restorePrintUiSnapshot(printUiSnapshot);
+        releasePrintRestoreLock(function(){
+          hidePrintGuard();
+        });
       });
     });
   }
 
-  function waitForImages(root){
-    var images = Array.prototype.slice.call((root || document).querySelectorAll('img'));
-    var pending = images.map(function(img){
-      if (img.complete && img.naturalWidth > 0) {
-        return Promise.resolve();
-      }
-      return new Promise(function(resolve){
-        function done(){
-          img.removeEventListener('load', done);
-          img.removeEventListener('error', done);
-          resolve();
-        }
-        img.addEventListener('load', done, { once: true });
-        img.addEventListener('error', done, { once: true });
-      });
-    });
-    return Promise.all(pending);
-  }
-
-  var pdfLibsPromise = null;
-  function loadScript(src){
-    return new Promise(function(resolve, reject){
-      var existing = document.querySelector('script[data-sc19-pdf="' + src + '"]');
-      if (existing) {
-        if (existing.getAttribute('data-loaded') === '1') {
-          resolve();
-          return;
-        }
-        existing.addEventListener('load', function(){ resolve(); }, { once: true });
-        existing.addEventListener('error', function(){ reject(new Error('Errore nel caricamento di ' + src)); }, { once: true });
-        return;
-      }
-      var script = document.createElement('script');
-      script.src = src;
-      script.async = true;
-      script.setAttribute('data-sc19-pdf', src);
-      script.addEventListener('load', function(){
-        script.setAttribute('data-loaded', '1');
-        resolve();
-      }, { once: true });
-      script.addEventListener('error', function(){
-        reject(new Error('Errore nel caricamento di ' + src));
-      }, { once: true });
-      document.head.appendChild(script);
-    });
-  }
-
-  function ensurePdfLibs(){
-    if (window.html2canvas && window.jspdf && window.jspdf.jsPDF) {
-      return Promise.resolve();
-    }
-    if (pdfLibsPromise) {
-      return pdfLibsPromise;
-    }
-    pdfLibsPromise = loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js')
-      .then(function(){
-        return loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js');
-      });
-    return pdfLibsPromise;
-  }
-
-  function showPdfStatus(){
-    var status = document.getElementById('pdf-status');
-    if (status) {
-      status.hidden = false;
-      status.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('pdf-status-visible');
-    }
-  }
-
-  function hidePdfStatus(){
-    var status = document.getElementById('pdf-status');
-    if (status) {
-      status.hidden = true;
-      status.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('pdf-status-visible');
-    }
-  }
-
-  function buildPdfFilename(data){
-    var raw = 'StudioLegaleCorner_' + (data && data.name ? data.name : 'profilo');
-    var normalized = raw
-      .toLowerCase()
-      .replace(/[^a-z0-9àèéìòù\s_-]/gi, '')
-      .replace(/[àáâä]/g, 'a')
-      .replace(/[èéêë]/g, 'e')
-      .replace(/[ìíîï]/g, 'i')
-      .replace(/[òóôö]/g, 'o')
-      .replace(/[ùúûü]/g, 'u')
-      .replace(/\s+/g, '_')
-      .replace(/_+/g, '_')
-      .replace(/^_+|_+$/g, '');
-    return normalized + '.pdf';
-  }
-
-  function savePdfBlob(blob, filename){
-    if (!blob) {
-      return Promise.reject(new Error('PDF non disponibile'));
-    }
-
-    if (navigator.canShare && navigator.share && window.File) {
-      try {
-        var file = new File([blob], filename, { type: 'application/pdf' });
-        if (navigator.canShare({ files: [file] })) {
-          return navigator.share({ files: [file], title: filename.replace(/\.pdf$/i, '') }).catch(function(err){
-            if (err && err.name === 'AbortError') {
-              return;
-            }
-            throw err;
-          });
-        }
-      } catch (e) {}
-    }
-
-    var url = URL.createObjectURL(blob);
-
-    if (isIOS()) {
-      window.open(url, '_blank', 'noopener');
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 30000);
-      return Promise.resolve();
-    }
-
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    link.rel = 'noopener';
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(function(){
-      URL.revokeObjectURL(url);
-      if (link.parentNode) {
-        link.parentNode.removeChild(link);
-      }
-    }, 2000);
-    return Promise.resolve();
-  }
-
-  function syncPrintButtonsAccessibility(){
-    var mobile = isMobilePdfMode();
-    Array.prototype.slice.call(document.querySelectorAll('[data-print-profile]')).forEach(function(btn){
-      var label = btn.getAttribute('aria-label') || '';
-      if (!label) { return; }
-      var updated = mobile ? label.replace(/^Stampa /, 'Scarica PDF del ') : label.replace(/^Scarica PDF del /, 'Stampa ');
-      btn.setAttribute('aria-label', updated);
-    });
+  function schedulePrintRestore(){
+    if (!printLiteActive) { return; }
+    if (printRestoreTimer){ window.clearTimeout(printRestoreTimer); }
+    printRestoreTimer = window.setTimeout(function(){
+      restorePrintLite();
+    }, 1200);
   }
 
   function triggerPrint(key){
     lastRequestedProfile = key || selectedProfileKey();
     if (!fillPrintProfile(lastRequestedProfile)) { return; }
+    var activeEl = document.activeElement;
+    if (activeEl && typeof activeEl.blur === 'function') {
+      try { activeEl.blur(); } catch (e) {}
+    }
+    enablePrintLite();
     window.requestAnimationFrame(function(){
       window.requestAnimationFrame(function(){
         window.print();
@@ -2963,96 +3845,574 @@ if (brandHome) {
     });
   }
 
-  function generatePdf(key){
-    lastRequestedProfile = key || selectedProfileKey();
-    var data = getProfileData(lastRequestedProfile);
-    if (!data || !fillPrintProfile(lastRequestedProfile)) { return; }
-
-    showPdfStatus();
-    document.body.classList.add('pdf-capture-active');
-
-    var sheet = document.getElementById('print-sheet');
-    Promise.resolve()
-      .then(function(){
-        return ensurePdfLibs();
-      })
-      .then(function(){
-        return nextFrame();
-      })
-      .then(function(){
-        if (document.fonts && document.fonts.ready) {
-          return document.fonts.ready.catch(function(){});
-        }
-      })
-      .then(function(){
-        return waitForImages(sheet);
-      })
-      .then(function(){
-        return window.html2canvas(sheet, {
-          backgroundColor: '#ffffff',
-          scale: Math.min(window.devicePixelRatio || 1, 2),
-          useCORS: true,
-          allowTaint: false,
-          logging: false,
-          imageTimeout: 0,
-          width: sheet.offsetWidth,
-          height: sheet.offsetHeight,
-          scrollX: 0,
-          scrollY: 0
-        });
-      })
-      .then(function(canvas){
-        var jsPDF = window.jspdf.jsPDF;
-        var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-        var pageWidth = pdf.internal.pageSize.getWidth();
-        var pageHeight = pdf.internal.pageSize.getHeight();
-        var imageData = canvas.toDataURL('image/png');
-        pdf.addImage(imageData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
-        pdf.setProperties({
-          title: 'Scheda professionale - ' + data.name,
-          subject: 'Profilo professionale',
-          author: 'Studio Legale Corner',
-          creator: 'Studio Legale Corner'
-        });
-        var blob = pdf.output('blob');
-        return savePdfBlob(blob, buildPdfFilename(data));
-      })
-      .catch(function(err){
-        console.error(err);
-        window.alert('Non è stato possibile generare il PDF del profilo.');
-      })
-      .finally(function(){
-        document.body.classList.remove('pdf-capture-active');
-        hidePdfStatus();
-      });
-  }
-
   Array.prototype.slice.call(document.querySelectorAll('[data-print-profile]')).forEach(function(btn){
     btn.addEventListener('click', function(ev){
       ev.preventDefault();
-      var key = btn.getAttribute('data-print-profile');
-      if (isMobilePdfMode()) {
-        generatePdf(key);
-      } else {
-        triggerPrint(key);
+      if (btn && typeof btn.blur === 'function') {
+        try { btn.blur(); } catch (e) {}
       }
+      triggerPrint(btn.getAttribute('data-print-profile'));
     });
   });
 
   Array.prototype.slice.call(document.querySelectorAll('.team-view')).forEach(function(input){
     input.addEventListener('change', function(){
+      clearPrintHoverMemory();
       fillPrintProfile(selectedProfileKey());
     });
   });
 
+  Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row[for]')).forEach(function(label){
+    label.addEventListener('pointerenter', function(){
+      clearPrintHoverMemory();
+    }, { passive: true });
+    label.addEventListener('mouseenter', function(){
+      clearPrintHoverMemory();
+    }, { passive: true });
+  });
+
+  var printMemoryTopPanel = document.querySelector('.services-card.card');
+  if (printMemoryTopPanel) {
+    printMemoryTopPanel.addEventListener('pointerenter', function(){
+      clearPrintHoverMemory();
+    }, { passive: true });
+    printMemoryTopPanel.addEventListener('mouseenter', function(){
+      clearPrintHoverMemory();
+    }, { passive: true });
+  }
+
+  document.addEventListener('click', function(ev){
+    if (!document.body || !document.body.classList.contains('sc19-print-hover-memory')) { return; }
+    var target = ev.target;
+    if (!target) {
+      clearPrintHoverMemory();
+      return;
+    }
+    var insideLabel = !!(target.closest && target.closest('.team-grid .team-list.card label.member-row'));
+    var insideRight = !!(target.closest && target.closest('.team-grid .team-detail.card'));
+    var insideTop = !!(target.closest && target.closest('.services-card.card'));
+    if (!insideLabel && !insideRight && !insideTop) {
+      clearPrintHoverMemory();
+    }
+  }, true);
+
   window.addEventListener('beforeprint', function(){
+    enablePrintLite();
     fillPrintProfile(lastRequestedProfile || selectedProfileKey());
   });
 
-  window.addEventListener('resize', syncPrintButtonsAccessibility, { passive: true });
+  window.addEventListener('afterprint', function(){
+    restorePrintLite();
+  });
+
+  window.addEventListener('focus', function(){
+    schedulePrintRestore();
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible'){
+      schedulePrintRestore();
+    }
+  });
 
   fillPrintProfile(selectedProfileKey());
-  syncPrintButtonsAccessibility();
+  syncPrintGuardTheme();
+
+  if (window.MutationObserver && document.documentElement){
+    try {
+      new MutationObserver(function(mutations){
+        for (var i = 0; i < mutations.length; i += 1){
+          if (mutations[i].attributeName === 'data-theme'){
+            syncPrintGuardTheme();
+            break;
+          }
+        }
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    } catch (e) {}
+  }
+})();
+</script><script id="sc19-copy-contact-script">
+(function(){
+  function normalizeText(value){
+    return (value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function getCopyKind(row){
+    if (!row) { return 'generic'; }
+    if (row.querySelector('.contact-icon.phone')) { return 'phone'; }
+    if (row.querySelector('.contact-icon.mail')) { return 'mail'; }
+    if (row.querySelector('.contact-icon.pec')) { return 'pec'; }
+    return 'generic';
+  }
+
+  function normalizeCopyText(row, value){
+    var text = normalizeText(value);
+    if (!text) { return ''; }
+    if (getCopyKind(row) === 'phone') {
+      return text.replace(/\s+/g, '');
+    }
+    return text;
+  }
+
+  function legacyCopy(text){
+    return new Promise(function(resolve, reject){
+      var cleaned = normalizeText(text);
+      if (!cleaned) { reject(new Error('empty')); return; }
+      var handled = false;
+      function onCopy(ev){
+        try {
+          if (ev && ev.clipboardData) {
+            ev.clipboardData.setData('text/plain', cleaned);
+            ev.preventDefault();
+            handled = true;
+          }
+        } catch (err) {}
+      }
+      document.addEventListener('copy', onCopy, true);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.removeEventListener('copy', onCopy, true);
+      if (ok && handled) { resolve(); }
+      else { reject(new Error('copy failed')); }
+    });
+  }
+
+  function copyText(text){
+    var normalized = normalizeText(text);
+    if (!normalized) { return Promise.reject(new Error('empty')); }
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      return navigator.clipboard.writeText(normalized).catch(function(){
+        return legacyCopy(normalized);
+      });
+    }
+    return legacyCopy(normalized);
+  }
+
+
+  function setupCopyRow(row){
+    if (!row || row.dataset.sc19CopyReady === '1') { return; }
+    var value = row.querySelector('.contact-value');
+    if (!value) { return; }
+    var text = normalizeCopyText(row, value.textContent);
+    if (!text) { return; }
+
+    var copyKind = getCopyKind(row);
+    var isMobileValueOnly = !!(row.closest && row.closest('.mobile-member-data'));
+
+    row.dataset.sc19CopyReady = '1';
+    row.dataset.sc19CopyText = text;
+    row.removeAttribute('title');
+
+    function getCopyMessage(){
+      if (copyKind === 'phone') { return 'Numero copiato'; }
+      if (copyKind === 'mail') { return 'Email copiata'; }
+      if (copyKind === 'pec') { return 'PEC copiata'; }
+      return 'Copiato';
+    }
+
+    function getFeedbackContext(row){
+      if (!row) { return null; }
+      var mobileBody = row.closest ? row.closest('.mobile-member-body') : null;
+      if (mobileBody) {
+        return {
+          mode: 'mobile',
+          host: mobileBody,
+          anchor: mobileBody.querySelector('.mobile-member-divider') || mobileBody
+        };
+      }
+      var panel = row.closest ? row.closest('.panel') : null;
+      if (!panel) { return null; }
+      return {
+        mode: 'panel',
+        host: panel,
+        anchor: row.closest('.profile-footer') || panel
+      };
+    }
+
+    function ensureFeedbackLayer(row){
+      var ctx = getFeedbackContext(row);
+      if (!ctx || !ctx.host) { return null; }
+      var layer = ctx.host.querySelector('.sc19-copy-feedback-layer');
+      var box = null;
+      if (!layer) {
+        layer = document.createElement('div');
+        layer.className = 'sc19-copy-feedback-layer';
+        layer.setAttribute('role', 'status');
+        layer.setAttribute('aria-live', 'polite');
+        layer.setAttribute('aria-atomic', 'true');
+        box = document.createElement('div');
+        box.className = 'sc19-copy-feedback-box';
+        layer.appendChild(box);
+        ctx.host.appendChild(layer);
+      } else {
+        box = layer.querySelector('.sc19-copy-feedback-box');
+      }
+      if (!box) { return null; }
+      return { ctx: ctx, layer: layer, box: box };
+    }
+
+    function positionFeedback(ctx, layer, box){
+      if (!ctx || !layer || !box) { return; }
+      var top = 12;
+      if (ctx.mode === 'mobile') {
+        if (ctx.anchor && ctx.anchor !== ctx.host) {
+          top = ctx.anchor.offsetTop - box.offsetHeight - 6;
+        } else {
+          top = Math.round((ctx.host.clientHeight - box.offsetHeight) / 2);
+        }
+      } else {
+        if (ctx.anchor && ctx.anchor !== ctx.host) {
+          top = ctx.anchor.offsetTop - box.offsetHeight - 8;
+        }
+      }
+      if (!isFinite(top)) { top = 12; }
+      if (top < 12) { top = 12; }
+      layer.style.top = top + 'px';
+    }
+
+    function hideOtherFeedback(activeLayer){
+      Array.prototype.slice.call(document.querySelectorAll('.sc19-copy-feedback-layer.is-visible')).forEach(function(node){
+        if (node === activeLayer) { return; }
+        node.classList.remove('is-visible');
+        node.style.display = 'none';
+        if (node._sc19HideTimer) {
+          window.clearTimeout(node._sc19HideTimer);
+          node._sc19HideTimer = null;
+        }
+      });
+    }
+
+    function showToast(message){
+      var ref = ensureFeedbackLayer(row);
+      if (!ref || !ref.layer || !ref.box) { return; }
+      var layer = ref.layer;
+      var box = ref.box;
+      box.textContent = message || 'Copiato';
+      layer.style.display = 'flex';
+      positionFeedback(ref.ctx, layer, box);
+      hideOtherFeedback(layer);
+      layer.classList.add('is-visible');
+      if (layer._sc19HideTimer) { window.clearTimeout(layer._sc19HideTimer); }
+      layer._sc19HideTimer = window.setTimeout(function(){
+        layer.classList.remove('is-visible');
+        layer.style.display = 'none';
+      }, 1150);
+    }
+
+
+    function triggerCopy(ev){
+      if (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }
+      copyText(row.dataset.sc19CopyText).then(function(){
+        showToast(getCopyMessage());
+      }).finally(function(){
+        window.setTimeout(function(){
+          try { row.blur(); } catch (e) {}
+          try { value.blur && value.blur(); } catch (e) {}
+          try { if (document.activeElement && typeof document.activeElement.blur === 'function') { document.activeElement.blur(); } } catch (e) {}
+          try { if (window.getSelection) { var sel = window.getSelection(); if (sel && typeof sel.removeAllRanges === 'function') { sel.removeAllRanges(); } } } catch (e) {}
+        }, 0);
+      });
+    }
+
+    function suppressNativeSelection(ev){
+      if (ev) { ev.preventDefault(); }
+    }
+
+    if (isMobileValueOnly) {
+      var holdDelayMs = 420;
+      var holdTimer = null;
+      var holdStartX = 0;
+      var holdStartY = 0;
+      var suppressClickUntil = 0;
+
+      function clearHoldTimer(){
+        if (holdTimer) {
+          window.clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      }
+
+      function beginHold(clientX, clientY){
+        clearHoldTimer();
+        holdStartX = isFinite(clientX) ? clientX : 0;
+        holdStartY = isFinite(clientY) ? clientY : 0;
+        holdTimer = window.setTimeout(function(){
+          holdTimer = null;
+          suppressClickUntil = Date.now() + 700;
+          triggerCopy();
+        }, holdDelayMs);
+      }
+
+      function cancelHold(){
+        clearHoldTimer();
+      }
+
+      function maybeCancelHoldForMove(clientX, clientY){
+        if (!holdTimer) { return; }
+        if (!isFinite(clientX) || !isFinite(clientY)) { return; }
+        if (Math.abs(clientX - holdStartX) > 10 || Math.abs(clientY - holdStartY) > 10) {
+          clearHoldTimer();
+        }
+      }
+
+      row.classList.add('sc19-copyable-value-only', 'sc19-copyable-hold-mobile');
+      row.removeAttribute('role');
+      row.removeAttribute('aria-label');
+      value.setAttribute('role', 'button');
+      value.setAttribute('tabindex', '0');
+      value.setAttribute('aria-label', 'Tieni premuto per copiare: ' + text);
+      value.addEventListener('mousedown', suppressNativeSelection);
+      value.addEventListener('pointerdown', suppressNativeSelection);
+      value.addEventListener('selectstart', suppressNativeSelection);
+      value.addEventListener('dragstart', suppressNativeSelection);
+      value.addEventListener('contextmenu', function(ev){
+        if (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      });
+      value.addEventListener('touchstart', function(ev){
+        var touch = ev && ev.touches && ev.touches[0];
+        beginHold(touch ? touch.clientX : 0, touch ? touch.clientY : 0);
+      }, { passive: true });
+      value.addEventListener('touchmove', function(ev){
+        var touch = ev && ev.touches && ev.touches[0];
+        maybeCancelHoldForMove(touch ? touch.clientX : NaN, touch ? touch.clientY : NaN);
+      }, { passive: true });
+      value.addEventListener('touchend', function(){
+        suppressClickUntil = Date.now() + 700;
+        cancelHold();
+      }, { passive: true });
+      value.addEventListener('touchcancel', function(){
+        cancelHold();
+      }, { passive: true });
+      value.addEventListener('click', function(ev){
+        if (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+        suppressClickUntil = Date.now() + 700;
+      });
+      value.addEventListener('keydown', function(ev){
+        var key = ev && (ev.key || ev.code);
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+          triggerCopy(ev);
+        }
+      });
+      return;
+    }
+
+    row.classList.add('sc19-copyable');
+    row.setAttribute('role', 'button');
+    row.setAttribute('aria-label', 'Copia: ' + text);
+    row.addEventListener('mousedown', suppressNativeSelection);
+    row.addEventListener('pointerdown', suppressNativeSelection);
+    row.addEventListener('selectstart', suppressNativeSelection);
+    row.addEventListener('dragstart', suppressNativeSelection);
+    row.addEventListener('touchstart', function(){}, { passive: true });
+    row.addEventListener('click', triggerCopy);
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.profile-footer .contact .contact-row, .mobile-member-data .contact-row')).forEach(setupCopyRow);
+
+
+  function isStudioMobileViewport(){
+    return !!(window.matchMedia && window.matchMedia('(max-width: 900px), (hover: none) and (pointer: coarse)').matches);
+  }
+
+  function ensureStudioFeedback(subtitle){
+    if (!subtitle) { return null; }
+    var layer = subtitle.querySelector('.sc19-copy-feedback-layer--studio');
+    var box = null;
+    if (!layer) {
+      layer = document.createElement('span');
+      layer.className = 'sc19-copy-feedback-layer sc19-copy-feedback-layer--studio';
+      layer.setAttribute('role', 'status');
+      layer.setAttribute('aria-live', 'polite');
+      layer.setAttribute('aria-atomic', 'true');
+      box = document.createElement('span');
+      box.className = 'sc19-copy-feedback-box';
+      layer.appendChild(box);
+      subtitle.appendChild(layer);
+    } else {
+      box = layer.querySelector('.sc19-copy-feedback-box');
+    }
+    if (!box) { return null; }
+    return { layer: layer, box: box };
+  }
+
+  function showStudioFeedback(subtitle, anchor, message){
+    var ref = ensureStudioFeedback(subtitle);
+    if (!ref) { return; }
+    var layer = ref.layer;
+    var box = ref.box;
+    var hostRect = subtitle.getBoundingClientRect();
+    var anchorRect = (anchor || subtitle).getBoundingClientRect();
+    var top = Math.round((anchorRect.top - hostRect.top) + anchorRect.height + 8);
+    if (!isFinite(top)) { top = 12; }
+    box.textContent = message || 'Copiato';
+    layer.style.top = top + 'px';
+    layer.classList.add('is-visible');
+    if (layer._sc19HideTimer) {
+      window.clearTimeout(layer._sc19HideTimer);
+    }
+    layer._sc19HideTimer = window.setTimeout(function(){
+      layer.classList.remove('is-visible');
+    }, 1150);
+  }
+
+  function bindStudioHold(textNode, trigger){
+    if (!textNode) { return; }
+    var holdTimer = null;
+    var startX = 0;
+    var startY = 0;
+    var HOLD_MS = 420;
+
+    function clearHold(){
+      if (holdTimer) {
+        window.clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
+    function beginHold(x, y){
+      clearHold();
+      startX = isFinite(x) ? x : 0;
+      startY = isFinite(y) ? y : 0;
+      holdTimer = window.setTimeout(function(){
+        holdTimer = null;
+        trigger();
+      }, HOLD_MS);
+    }
+
+    function maybeCancel(x, y){
+      if (!holdTimer) { return; }
+      if (!isFinite(x) || !isFinite(y)) { return; }
+      if (Math.abs(x - startX) > 10 || Math.abs(y - startY) > 10) {
+        clearHold();
+      }
+    }
+
+    textNode.addEventListener('touchstart', function(ev){
+      if (!isStudioMobileViewport()) { return; }
+      var touch = ev && ev.touches && ev.touches[0];
+      beginHold(touch ? touch.clientX : 0, touch ? touch.clientY : 0);
+    }, { passive: true });
+    textNode.addEventListener('touchmove', function(ev){
+      if (!isStudioMobileViewport()) { return; }
+      var touch = ev && ev.touches && ev.touches[0];
+      maybeCancel(touch ? touch.clientX : NaN, touch ? touch.clientY : NaN);
+    }, { passive: true });
+    textNode.addEventListener('touchend', clearHold, { passive: true });
+    textNode.addEventListener('touchcancel', clearHold, { passive: true });
+  }
+
+  function setupStudioHeaderCopy(){
+    var subtitle = document.querySelector('.subtitle');
+    if (!subtitle || subtitle.dataset.sc19StudioCopyBound === '1') { return; }
+    subtitle.dataset.sc19StudioCopyBound = '1';
+
+    var addressLine = subtitle.querySelector('.subline.address');
+    var addressText = subtitle.querySelector('.studio-address-text');
+    var phoneLine = subtitle.querySelector('.subline.phone');
+    var phoneText = subtitle.querySelector('.studio-phone-text');
+
+    function copyStudioText(rawText, message, anchor){
+      copyText(rawText).then(function(){
+        showStudioFeedback(subtitle, anchor || phoneLine || subtitle, message);
+      }).finally(cleanupAfterCopy);
+    }
+
+    if (addressText) {
+      addressText.classList.add('sc19-studio-copy-active');
+      addressText.setAttribute('tabindex', '0');
+      addressText.setAttribute('role', 'button');
+      addressText.setAttribute('aria-label', 'Copia indirizzo studio');
+      addressText.addEventListener('mousedown', suppressNativeSelection);
+      addressText.addEventListener('pointerdown', suppressNativeSelection);
+      addressText.addEventListener('selectstart', suppressNativeSelection);
+      addressText.addEventListener('dragstart', suppressNativeSelection);
+      bindStudioHold(addressText, function(){
+        copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
+      });
+      addressText.addEventListener('click', function(ev){
+        if (isStudioMobileViewport()) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          return;
+        }
+        ev.preventDefault();
+        ev.stopPropagation();
+        copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
+      });
+      addressText.addEventListener('keydown', function(ev){
+        var key = ev && (ev.key || ev.code);
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+          ev.preventDefault();
+          copyStudioText(normalizeText(addressText.textContent), 'Indirizzo copiato', phoneLine || addressLine || subtitle);
+        }
+      });
+    }
+
+    if (phoneLine && phoneText) {
+      phoneLine.classList.add('sc19-studio-phone-copy-target');
+      phoneText.classList.add('sc19-studio-copy-active');
+      phoneText.setAttribute('tabindex', '0');
+      phoneText.setAttribute('role', 'button');
+      phoneText.setAttribute('aria-label', 'Copia numero studio');
+      phoneLine.setAttribute('role', 'button');
+      phoneLine.setAttribute('tabindex', '0');
+      phoneText.addEventListener('mousedown', suppressNativeSelection);
+      phoneText.addEventListener('pointerdown', suppressNativeSelection);
+      phoneText.addEventListener('selectstart', suppressNativeSelection);
+      phoneText.addEventListener('dragstart', suppressNativeSelection);
+      phoneLine.addEventListener('mousedown', function(ev){
+        if (!isStudioMobileViewport()) { suppressNativeSelection(ev); }
+      });
+      phoneLine.addEventListener('pointerdown', function(ev){
+        if (!isStudioMobileViewport()) { suppressNativeSelection(ev); }
+      });
+      bindStudioHold(phoneText, function(){
+        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
+      });
+      phoneText.addEventListener('click', function(ev){
+        if (isStudioMobileViewport()) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          return;
+        }
+        ev.preventDefault();
+        ev.stopPropagation();
+        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
+      });
+      phoneText.addEventListener('keydown', function(ev){
+        var key = ev && (ev.key || ev.code);
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+          ev.preventDefault();
+          copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
+        }
+      });
+      phoneLine.addEventListener('click', function(ev){
+        if (isStudioMobileViewport()) { return; }
+        ev.preventDefault();
+        ev.stopPropagation();
+        copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
+      });
+      phoneLine.addEventListener('keydown', function(ev){
+        if (isStudioMobileViewport()) { return; }
+        var key = ev && (ev.key || ev.code);
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+          ev.preventDefault();
+          copyStudioText(normalizeText(phoneText.textContent).replace(/\s+/g, ''), 'Numero copiato', phoneLine);
+        }
+      });
+    }
+  }
+
+  setupStudioHeaderCopy();
 })();
 </script></body>
 </html>
