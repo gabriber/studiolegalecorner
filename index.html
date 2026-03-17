@@ -4257,10 +4257,12 @@ if (brandHome) {
     });
   }
 
-  function copyText(text){
+  function copyText(text, options){
     var normalized = normalizeText(text);
+    var opts = options || {};
+    var preferLegacy = !!opts.preferLegacy;
     if (!normalized) { return Promise.reject(new Error('empty')); }
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    if (!preferLegacy && navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
       return navigator.clipboard.writeText(normalized).catch(function(){
         return legacyCopy(normalized);
       });
