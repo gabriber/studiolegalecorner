@@ -3977,10 +3977,12 @@ if (brandHome) {
     });
   }
 
-  function copyText(text){
+  function copyText(text, options){
     var normalized = normalizeText(text);
+    var opts = options || {};
+    var preferLegacy = !!opts.preferLegacy;
     if (!normalized) { return Promise.reject(new Error('empty')); }
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    if (!preferLegacy && navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && (window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
       return navigator.clipboard.writeText(normalized).catch(function(){
         return legacyCopy(normalized);
       });
@@ -4355,7 +4357,7 @@ if (brandHome) {
       ev.preventDefault();
       ev.stopPropagation();
     }
-    return copyText(text).then(function(){
+    return copyText(text, { preferLegacy: isMobileViewport() }).then(function(){
       showStudioToast(message);
     }).finally(cleanupFocus);
   }
@@ -4415,23 +4417,28 @@ if (brandHome) {
     });
     node.addEventListener('touchstart', function(ev){
       if (!isMobileViewport()) { return; }
+      if (ev && typeof ev.preventDefault === 'function') { ev.preventDefault(); }
+      if (ev && typeof ev.stopPropagation === 'function') { ev.stopPropagation(); }
       var touch = ev && ev.touches && ev.touches[0];
       beginHold(touch ? touch.clientX : 0, touch ? touch.clientY : 0);
-    }, { passive: true });
+    }, { passive: false });
     node.addEventListener('touchmove', function(ev){
       if (!isMobileViewport()) { return; }
+      if (ev && typeof ev.preventDefault === 'function') { ev.preventDefault(); }
       var touch = ev && ev.touches && ev.touches[0];
       maybeCancelHoldForMove(touch ? touch.clientX : NaN, touch ? touch.clientY : NaN);
-    }, { passive: true });
-    node.addEventListener('touchend', function(){
+    }, { passive: false });
+    node.addEventListener('touchend', function(ev){
       if (!isMobileViewport()) { return; }
+      if (ev && typeof ev.preventDefault === 'function') { ev.preventDefault(); }
       suppressClickUntil = Date.now() + 700;
       clearHoldTimer();
-    }, { passive: true });
-    node.addEventListener('touchcancel', function(){
+    }, { passive: false });
+    node.addEventListener('touchcancel', function(ev){
       if (!isMobileViewport()) { return; }
+      if (ev && typeof ev.preventDefault === 'function') { ev.preventDefault(); }
       clearHoldTimer();
-    }, { passive: true });
+    }, { passive: false });
     node.addEventListener('click', function(ev){
       if (!isMobileViewport()) { return; }
       if (Date.now() < suppressClickUntil) {
