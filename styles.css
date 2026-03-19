@@ -1191,9 +1191,9 @@ body:has(#view-mauro:checked, #view-nicola:checked, #view-micaela:checked, #view
 }
 
 .linkedin:hover{
-  transform: translateY(-1px);
-  border-color: rgba(255,235,200,0.62);
-  box-shadow: 0 12px 26px rgba(0,0,0,0.40), 0 0 28px rgba(255,205,120,0.14), inset 0 1px 0 rgba(255,255,255,0.05);
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.92);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .team-detail > *{
   position: relative;
@@ -4228,6 +4228,19 @@ a[href^="facetime-audio:"]{
   }
 }
 
+
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  .subtitle .studio-address-iconlink{
+    display: inline-block;
+    transition: transform 160ms ease;
+    will-change: transform;
+  }
+
+  .subtitle .studio-address-iconlink:hover{
+    transform: translateY(-2px);
+  }
+}
+
 /* v426 – PC only: aumenta trasparenza elementi vetro (nessuna modifica mobile, nessuna modifica geometria) */
 @media (min-width: 901px) and (hover: hover) and (pointer: fine){
   :root{
@@ -5273,9 +5286,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
     gap: 14px;
     padding: 12px 14px;
     border-radius: 14px;
-    background:
-      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    background: rgba(255,255,255,0.01);
     border: 0;
     box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
     transition: top 160ms ease, background 160ms ease, border-color var(--pc-accent-fade, 260ms) ease, box-shadow var(--pc-accent-fade, 260ms) ease;
@@ -5307,9 +5318,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
 
   .team-grid .team-list label.member-row:hover > .member-row-ui{
     top: -2px;
-    background:
-      radial-gradient(circle at 18% 14%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
-      linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    background: rgba(255,255,255,0.015);
     box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
   }
 
@@ -5347,9 +5356,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
 
   body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover > .member-row-ui{
     top: 0;
-    background:
-      radial-gradient(circle at 18% 14%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
-      linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    background: rgba(255,255,255,0.015);
     box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
     z-index: 10;
   }
@@ -5382,9 +5389,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
   html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
   html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover) > .member-row-ui{
     top: 0;
-    background:
-      radial-gradient(circle at 18% 18%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    background: rgba(255,255,255,0.01);
     box-shadow: 0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.22);
     z-index: auto;
   }
@@ -5404,7 +5409,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
   body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:hover > .member-row-ui,
   body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:not(:hover):not(.sc19-simhover) > .member-row-ui{
     top: 0 !important;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) !important;
+    background: rgba(255,255,255,0.012) !important;
     box-shadow: 0 18px 44px rgba(0,0,0,0.46), inset 0 1px 0 rgba(255,255,255,0.12) !important;
     z-index: 1 !important;
   }
@@ -5416,9 +5421,7 @@ html.sc19-print-restoring .team-grid .team-detail::after{
 
   body.sc19-selection-pinned .team-grid .team-list label.member-row:not(.sc19-pinned):hover > .member-row-ui{
     top: -2px !important;
-    background:
-      radial-gradient(circle at 18% 14%, rgba(255,255,255,0.14), rgba(255,255,255,0) 58%),
-      linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03)) !important;
+    background: rgba(255,255,255,0.015) !important;
     box-shadow: 0 18px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08) !important;
     z-index: 10 !important;
   }
@@ -5459,6 +5462,27 @@ html.sc19-print-restoring .team-grid .team-detail::after{
       0 0 0 4px rgba(236,246,255,0.10),
       0 0 64px rgba(236,246,255,0.10),
       inset 0 1px 0 rgba(255,255,255,0.85) !important;
+  }
+
+  html[data-theme="dark"] .team-grid .team-list label.member-row > .member-row-ui,
+  html[data-theme="dark"] .team-grid .team-list label.member-row:hover > .member-row-ui,
+  html[data-theme="dark"] body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] > .member-row-ui,
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:hover > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row:not(.sc19-pinned):hover > .member-row-ui{
+    background-image: none !important;
+    background: rgba(255,255,255,0.01) !important;
   }
 }
 
@@ -5717,6 +5741,35 @@ html.sc19-print-restoring .team-grid .team-detail::after{
     box-shadow: none !important;
     margin-top: 0 !important;
     z-index: 2147483001 !important;
+  }
+}
+
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  body.sc19-print-lock-busy .team-grid .team-list.card,
+  body.sc19-print-lock-busy .team-grid .team-detail.card,
+  body.sc19-print-lock-busy .services-card.card{
+    pointer-events: none !important;
+  }
+
+  body.sc19-print-lock-active #view-mauro:checked ~ .team-grid .team-detail.card,
+  body.sc19-print-lock-active #view-nicola:checked ~ .team-grid .team-detail.card,
+  body.sc19-print-lock-active #view-micaela:checked ~ .team-grid .team-detail.card,
+  body.sc19-print-lock-active #view-agostino:checked ~ .team-grid .team-detail.card,
+  body.sc19-print-lock-active #view-gabriele:checked ~ .team-grid .team-detail.card{
+    border-color: var(--pc-accent-95) !important;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.30) !important;
+  }
+
+  html[data-theme="light"] body.sc19-print-lock-active #view-mauro:checked ~ .team-grid .team-detail.card,
+  html[data-theme="light"] body.sc19-print-lock-active #view-nicola:checked ~ .team-grid .team-detail.card,
+  html[data-theme="light"] body.sc19-print-lock-active #view-micaela:checked ~ .team-grid .team-detail.card,
+  html[data-theme="light"] body.sc19-print-lock-active #view-agostino:checked ~ .team-grid .team-detail.card,
+  html[data-theme="light"] body.sc19-print-lock-active #view-gabriele:checked ~ .team-grid .team-detail.card{
+    border-color: rgba(236,246,255,0.55) !important;
+    box-shadow:
+      0 18px 40px rgba(10,16,28,0.12),
+      0 0 0 4px rgba(236,246,255,0.10),
+      0 0 64px rgba(236,246,255,0.10) !important;
   }
 }
 
@@ -6401,5 +6454,36 @@ html.sc19-print-restoring .team-grid .team-detail::after{
       0 10px 22px rgba(10,16,28,0.10),
       0 0 14px rgba(10,16,28,0.04),
       inset 0 1px 0 rgba(255,255,255,0.78) !important;
+  }
+}
+
+/* ==========================================================
+   PC ONLY (ver. 728): remove the internal white veil from the
+   left cards in every dark-theme state, including pin + bridge.
+   ========================================================== */
+@media (min-width: 901px) and (hover: hover) and (pointer: fine){
+  html[data-theme="dark"] .team-grid .team-list label.member-row > .member-row-ui,
+  html[data-theme="dark"] .team-grid .team-list label.member-row:hover > .member-row-ui,
+  html[data-theme="dark"] body.pc-right-hover .team-grid .team-list .member-row.sc19-simhover > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] > .member-row-ui,
+  html[data-theme="dark"] body.pc-bottom-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] > .member-row-ui,
+  html[data-theme="dark"] #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"]:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:hover > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row.sc19-pinned:not(:hover):not(.sc19-simhover) > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned .team-grid .team-list label.member-row:not(.sc19-pinned):hover > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned.pc-right-hover #view-mauro:checked ~ .team-grid .team-list label[for="view-mauro"] > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned.pc-right-hover #view-nicola:checked ~ .team-grid .team-list label[for="view-nicola"] > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned.pc-right-hover #view-micaela:checked ~ .team-grid .team-list label[for="view-micaela"] > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned.pc-right-hover #view-agostino:checked ~ .team-grid .team-list label[for="view-agostino"] > .member-row-ui,
+  html[data-theme="dark"] body.sc19-selection-pinned.pc-right-hover #view-gabriele:checked ~ .team-grid .team-list label[for="view-gabriele"] > .member-row-ui{
+    background-image: none !important;
   }
 }

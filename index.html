@@ -452,7 +452,8 @@
 </style>
 </head>
 <body>
-<div aria-hidden="true" id="sc19-print-guard" style="display:none;opacity:0;pointer-events:none;position:fixed;inset:0;z-index:2147483647;background:radial-gradient(circle at 50% 10%, rgba(120,160,255,0.16), rgba(0,0,0,0) 55%), #0f1115;transition:opacity 120ms ease;"></div>
+<div aria-hidden="true" id="sc19-print-guard" style="display:none !important;opacity:0 !important;pointer-events:none !important;position:fixed;inset:0;z-index:2147483647;background:transparent;transition:none;"></div>
+<iframe aria-hidden="true" id="sc19-pdf-print-frame" tabindex="-1" title="Stampa PDF profilo" style="position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;visibility:hidden;overflow:hidden;"></iframe>
 <div aria-hidden="true" class="bg-video">
 <video autoplay="" disablepictureinpicture="" loop="" muted="" playsinline="" poster="assets/sfondo-mobile.webp" preload="auto">
 <source src="assets/sfondo.mp4" type="video/mp4"/>
@@ -506,7 +507,7 @@
 </div>
 <h1>Studio Legale Corner</h1>
 <p class="subtitle">
-<span class="subline address"><a aria-label="Apri mappe per Via Marco Corner 19, 36016 Thiene (VI)" class="studio-address-iconlink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via%20Marco%20Corner%2019%2C%2036016%20Thiene%20VI%2C%20Italia"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-address-icon" src="assets/icons/icon_address.svg"/></span></a><span class="studio-address-text">Via Marco Corner 19, 36016 Thiene (VI)</span></span>
+<span class="subline address"><a aria-label="Apri mappe per Via Marco Corner 19, 36016 Thiene (VI)" class="studio-address-iconlink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via%20Marco%20Corner%2019%2C%2036016%20Thiene%20VI%2C%20Italia" rel="noopener" target="_blank"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-address-icon" src="assets/icons/icon_address.svg"/></span></a><span class="studio-address-text">Via Marco Corner 19, 36016 Thiene (VI)</span></span>
 <span class="subline phone"><span aria-hidden="true" class="studio-phone-iconlink"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-phone-icon" src="assets/icons/icon_phone_white.svg"/></span></span><span class="studio-phone-text">+39 0445 192 0134</span></span>
 </p>
 </header>
@@ -2554,12 +2555,24 @@ const bindDesktopCyclers = function () {
           return !!pinnedProfileId;
         };
 
+        const hasPrintLock = function () {
+          return !!(document.body && document.body.classList.contains("sc19-print-lock-active"));
+        };
+
+        const hasBusyPrintLock = function () {
+          return !!(document.body && document.body.classList.contains("sc19-print-lock-busy"));
+        };
+
+        const hasAnyPrintLock = function () {
+          return hasPrintLock() || hasBusyPrintLock();
+        };
+
         const isPcBridgeArmed = function () {
           return document.body.classList.contains("pc-bridge-armed");
         };
 
         const setPcBridgeArmed = function (armed) {
-          if (armed || hasPinnedProfile()) {
+          if (armed || hasPinnedProfile() || hasAnyPrintLock()) {
             document.body.classList.add("pc-bridge-armed");
             return;
           }
@@ -2568,7 +2581,7 @@ const bindDesktopCyclers = function () {
 
         const syncPcHoverVisualsFromChecked = function (forceRightHover) {
           if (isMobile()) return;
-          if (hasPinnedProfile()) return;
+          if (hasPinnedProfile() || hasAnyPrintLock()) return;
 
           const list = document.querySelector(".team-grid .team-list.card") || document.querySelector(".team-grid .team-list");
           if (!list) return;
@@ -2621,6 +2634,10 @@ const bindDesktopCyclers = function () {
 
           const syncFromPointer = function () {
             if (isMobile()) {
+              deactivate();
+              return;
+            }
+            if (hasAnyPrintLock()) {
               deactivate();
               return;
             }
@@ -2703,7 +2720,7 @@ const bindDesktopCyclers = function () {
           };
 
           const setInside = function (inside) {
-            if (inside || hasPinnedProfile()) {
+            if (inside || hasPinnedProfile() || hasAnyPrintLock()) {
               insideBottom = true;
               if (!document.body.classList.contains("pc-bottom-hover")) {
                 document.body.classList.add("pc-bottom-hover");
@@ -2716,6 +2733,11 @@ const bindDesktopCyclers = function () {
           };
 
           const compute = function (x, y) {
+            if (hasAnyPrintLock()) {
+              setPcBridgeArmed(true);
+              setInside(true);
+              return;
+            }
             const vw = window.innerWidth || document.documentElement.clientWidth || 0;
             const vh = window.innerHeight || document.documentElement.clientHeight || 0;
             if (!(vw > 0 && vh > 0)) {
@@ -2763,6 +2785,7 @@ const bindDesktopCyclers = function () {
             if (isMobile()) return;
             lastX = e.clientX;
             lastY = e.clientY;
+            if (hasAnyPrintLock()) return;
             scheduleCompute();
           };
 
@@ -2778,7 +2801,7 @@ const bindDesktopCyclers = function () {
 
           document.addEventListener("mouseleave", function () {
             if (isMobile()) return;
-            if (hasPinnedProfile()) {
+            if (hasPinnedProfile() || hasAnyPrintLock()) {
               insideBottom = true;
               document.body.classList.add("pc-bottom-hover");
               setPcBridgeArmed(true);
@@ -2828,7 +2851,7 @@ const bindDesktopCyclers = function () {
           };
 
           const pointInBridgeHotZone = function (x, y) {
-            if (!isPcBridgeArmed() && !hasPinnedProfile()) return false;
+            if (!isPcBridgeArmed() && !hasPinnedProfile() && !hasAnyPrintLock()) return false;
             const z = getBridgeHotZone();
             return !!(z && x >= z.left && x <= z.right && y >= z.top && y <= z.bottom);
           };
@@ -2840,7 +2863,7 @@ const bindDesktopCyclers = function () {
 
           const applySim = function () {
             clearSim();
-            if (hasPinnedProfile()) return;
+            if (hasPinnedProfile() || hasAnyPrintLock()) return;
             const lab = getActiveLabel();
             if (!lab) return;
             simLabel = lab;
@@ -2854,15 +2877,15 @@ const bindDesktopCyclers = function () {
           };
 
           const enter = function () {
-            if (isMobile()) return;
+            if (isMobile() || hasAnyPrintLock()) return;
             ensureRightSyncClasses();
             applySim();
           };
 
           const leave = function () {
-            if (isMobile()) return;
+            if (isMobile() || hasAnyPrintLock()) return;
             requestAnimationFrame(function () {
-              if (isMobile()) return;
+              if (isMobile() || hasAnyPrintLock()) return;
               const el = document.elementFromPoint(lastX, lastY);
               const stillInsideRight = !!(el && right.contains(el));
               const stillOverRow = !!(el && el.closest && el.closest(".team-grid .team-list.card label.member-row"));
@@ -2883,7 +2906,7 @@ const bindDesktopCyclers = function () {
           };
 
           const recompute = function () {
-            if (isMobile()) return;
+            if (isMobile() || hasAnyPrintLock()) return;
 
             const vw = window.innerWidth || document.documentElement.clientWidth || 0;
             const vh = window.innerHeight || document.documentElement.clientHeight || 0;
@@ -2928,7 +2951,7 @@ const bindDesktopCyclers = function () {
           const radios = document.querySelectorAll(".team-view");
           radios.forEach(function (r) {
             r.addEventListener("change", function () {
-              if (isMobile()) return;
+              if (isMobile() || hasAnyPrintLock()) return;
               if (!document.body.classList.contains("pc-right-hover")) return;
               applySim();
             });
@@ -2938,6 +2961,7 @@ const bindDesktopCyclers = function () {
             if (isMobile()) return;
             lastX = e.clientX;
             lastY = e.clientY;
+            if (hasAnyPrintLock()) return;
             const el = document.elementFromPoint(lastX, lastY);
             const insideRightNow = !!(el && right.contains(el));
             const insideBridgeNow = pointInBridgeHotZone(lastX, lastY);
@@ -3001,7 +3025,7 @@ const bindDesktopCyclers = function () {
           labels.forEach(function (lab) {
             const activate = function () {
               if (isMobile()) return;
-              if (hasPinnedProfile()) return;
+              if (hasPinnedProfile() || hasAnyPrintLock()) return;
               const id = lab.getAttribute("for");
               if (!id) return;
               lockedId = id;
@@ -3531,13 +3555,39 @@ if (brandHome) {
 <script id="sc19-print-profile-script">
 (function(){
   var PROFILE_ORDER = ["mauro", "nicola", "micaela", "agostino", "gabriele"];
+  var PROFILE_PDF_MAP = {
+    mauro: 'assets/pdf/mauro_poncini.pdf',
+    nicola: 'assets/pdf/nicola_guerra.pdf',
+    micaela: 'assets/pdf/micaela_plebani.pdf',
+    agostino: 'assets/pdf/agostino_dal_zotto.pdf',
+    gabriele: 'assets/pdf/gabriele_berto.pdf'
+  };
   var lastRequestedProfile = null;
   var siteStylesheet = document.getElementById('site-stylesheet');
   var printGuard = document.getElementById('sc19-print-guard');
+  var pdfPrintFrame = document.getElementById('sc19-pdf-print-frame');
   var printLiteActive = false;
   var printRestoreTimer = null;
   var printGuardHideTimer = null;
+  var printGuardUntilTs = 0;
+  var SC19_PRINT_GUARD_MS = 2000;
   var printUiSnapshot = null;
+  var pdfPrintToken = 0;
+  var pdfPrintInFlight = false;
+  var pdfPrintAttemptTimers = [];
+  var pdfPrintCleanupTimer = null;
+  var printLockKey = '';
+  var pdfWarmFrames = Object.create(null);
+  var pdfWarmReady = Object.create(null);
+  var pdfWarmQueueStarted = false;
+  var pdfWarmStartTimer = null;
+
+  function clearPdfPrintCleanupTimer(){
+    if (pdfPrintCleanupTimer){
+      window.clearTimeout(pdfPrintCleanupTimer);
+      pdfPrintCleanupTimer = null;
+    }
+  }
 
   function text(el){
     return el ? (el.textContent || "").replace(/\s+/g, " ").trim() : "";
@@ -3568,10 +3618,11 @@ if (brandHome) {
       window.clearTimeout(printGuardHideTimer);
       printGuardHideTimer = null;
     }
-    syncPrintGuardTheme();
+    printGuardUntilTs = Date.now() + Math.max(0, SC19_PRINT_GUARD_MS || 0);
     printGuard.style.transition = 'none';
-    printGuard.style.display = 'block';
+    printGuard.style.background = 'transparent';
     printGuard.style.opacity = '1';
+    printGuard.style.display = 'block';
     printGuard.style.pointerEvents = 'auto';
   }
 
@@ -3581,6 +3632,15 @@ if (brandHome) {
       window.clearTimeout(printGuardHideTimer);
       printGuardHideTimer = null;
     }
+    var remaining = Math.max(0, (printGuardUntilTs || 0) - Date.now());
+    if (remaining > 0){
+      printGuardHideTimer = window.setTimeout(function(){
+        printGuardHideTimer = null;
+        hidePrintGuard();
+      }, remaining);
+      return;
+    }
+    printGuardUntilTs = 0;
     printGuard.style.transition = 'none';
     printGuard.style.opacity = '0';
     printGuard.style.display = 'none';
@@ -3621,6 +3681,7 @@ if (brandHome) {
   function clearPrintHoverMemory(){
     var body = document.body;
     if (!body) { return; }
+    if (body.classList.contains('sc19-print-lock-active')) { return; }
     body.classList.remove('sc19-print-hover-memory');
     Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row.sc19-simhover')).forEach(function(label){
       label.classList.remove('sc19-simhover');
@@ -3830,13 +3891,345 @@ if (brandHome) {
     }, 1200);
   }
 
+  function clearPdfPrintAttemptTimers(){
+    while (pdfPrintAttemptTimers.length){
+      window.clearTimeout(pdfPrintAttemptTimers.pop());
+    }
+  }
+
+  function schedulePdfPrintCleanup(delay){
+    clearPdfPrintCleanupTimer();
+    var startedAt = Date.now();
+    var firstDelay = typeof delay === 'number' ? delay : 220;
+
+    function canFinalizeNow(){
+      if (!pdfPrintInFlight || printLiteActive) { return false; }
+      var isVisible = true;
+      try {
+        isVisible = document.visibilityState !== 'hidden';
+      } catch (e) {}
+      var hasFocusNow = true;
+      try {
+        hasFocusNow = !document.hasFocus || document.hasFocus();
+      } catch (e) {}
+      return !!(isVisible && hasFocusNow);
+    }
+
+    function tick(){
+      if (!pdfPrintInFlight) {
+        clearPdfPrintCleanupTimer();
+        return;
+      }
+      if (canFinalizeNow() || (Date.now() - startedAt) >= 12000) {
+        clearPdfPrintCleanupTimer();
+        finalizePrintLock();
+        return;
+      }
+      pdfPrintCleanupTimer = window.setTimeout(tick, 120);
+    }
+
+    pdfPrintCleanupTimer = window.setTimeout(tick, Math.max(60, firstDelay));
+  }
+
+  function isDesktopPrintLockContext(){
+    try {
+      return !!(window.matchMedia && window.matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)').matches);
+    } catch (e) {
+      return (window.innerWidth || document.documentElement.clientWidth || 0) >= 901;
+    }
+  }
+
+  function getPrintLockLabel(key){
+    if (!key) { return null; }
+    return document.querySelector('.team-grid .team-list.card label.member-row[for="view-' + key + '"]');
+  }
+
+  function clearPrintLockSimhover(){
+    Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row.sc19-simhover')).forEach(function(label){
+      label.classList.remove('sc19-simhover');
+    });
+  }
+
+  function applyPrintLockState(key, keepBusy){
+    var body = document.body;
+    if (!body || !isDesktopPrintLockContext() || !key) { return; }
+    var radio = document.getElementById('view-' + key);
+    if (radio && !radio.checked) {
+      radio.checked = true;
+      if (radio.dispatchEvent) {
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+    printLockKey = key;
+    clearPrintLockSimhover();
+    var label = getPrintLockLabel(key);
+    if (label) {
+      label.classList.add('sc19-simhover');
+    }
+    body.setAttribute('data-sc19-print-lock-key', key);
+    body.classList.add('sc19-print-lock-active', 'pc-bottom-hover', 'pc-bridge-armed');
+    body.classList.remove('pc-right-hover', 'sc19-print-hover-memory');
+    if (keepBusy) {
+      body.classList.add('sc19-print-lock-busy');
+    } else {
+      body.classList.remove('sc19-print-lock-busy');
+    }
+  }
+
+  function beginPrintLock(key){
+    if (!isDesktopPrintLockContext()) { return; }
+    applyPrintLockState(key || selectedProfileKey(), true);
+  }
+
+  function finalizePrintLock(){
+    clearPdfPrintCleanupTimer();
+    if (!isDesktopPrintLockContext()) {
+      pdfPrintInFlight = false;
+      hidePrintGuard();
+      return;
+    }
+    applyPrintLockState(printLockKey || selectedProfileKey(), false);
+    pdfPrintInFlight = false;
+    hidePrintGuard();
+  }
+
+  function clearPrintLock(){
+    var body = document.body;
+    if (!body) { return; }
+    clearPdfPrintCleanupTimer();
+    printLockKey = '';
+    clearPrintLockSimhover();
+    body.classList.remove('sc19-print-lock-active', 'sc19-print-lock-busy');
+    body.removeAttribute('data-sc19-print-lock-key');
+    if (!body.classList.contains('sc19-selection-pinned')) {
+      body.classList.remove('pc-bottom-hover', 'pc-right-hover', 'pc-bridge-armed');
+    }
+  }
+
+  function shouldClearPrintLockForLabel(label){
+    if (!label || !printLockKey) { return false; }
+    var labelFor = label.getAttribute('for') || '';
+    if (labelFor.indexOf('view-') !== 0) { return false; }
+    return labelFor.replace('view-', '') !== printLockKey;
+  }
+
+  function buildPdfPrintUrl(pdfUrl){
+    var raw = String(pdfUrl || '');
+    if (!raw) { return ''; }
+    var hashIndex = raw.indexOf('#');
+    var baseUrl = hashIndex >= 0 ? raw.slice(0, hashIndex) : raw;
+    var hash = hashIndex >= 0 ? raw.slice(hashIndex) : '';
+    if (!hash) {
+      hash = '#toolbar=0&navpanes=0&scrollbar=0&view=FitH';
+    }
+    return baseUrl + hash;
+  }
+
+  function createHiddenPdfFrame(idSuffix){
+    var frame = document.createElement('iframe');
+    frame.setAttribute('aria-hidden', 'true');
+    frame.setAttribute('tabindex', '-1');
+    frame.setAttribute('title', '');
+    frame.setAttribute('data-sc19-hidden-pdf-frame', idSuffix || '');
+    frame.style.position = 'fixed';
+    frame.style.right = '0';
+    frame.style.bottom = '0';
+    frame.style.width = '1px';
+    frame.style.height = '1px';
+    frame.style.border = '0';
+    frame.style.opacity = '0';
+    frame.style.pointerEvents = 'none';
+    frame.style.visibility = 'hidden';
+    frame.style.overflow = 'hidden';
+    return frame;
+  }
+
+  function getOrCreateWarmPdfFrame(key){
+    if (!key) { return null; }
+    if (pdfWarmFrames[key]) { return pdfWarmFrames[key]; }
+    var frame = createHiddenPdfFrame('warm-' + key);
+    frame.setAttribute('data-sc19-pdf-key', key);
+    if (document.body) {
+      document.body.appendChild(frame);
+    } else {
+      document.documentElement.appendChild(frame);
+    }
+    pdfWarmFrames[key] = frame;
+    pdfWarmReady[key] = false;
+    return frame;
+  }
+
+  function attemptPdfFramePrint(token, frameEl){
+    var targetFrame = frameEl || pdfPrintFrame;
+    if (!targetFrame || token !== pdfPrintToken) { return; }
+    var frameWindow = null;
+    try {
+      frameWindow = targetFrame.contentWindow;
+    } catch (e) {
+      frameWindow = null;
+    }
+    if (!frameWindow) {
+      schedulePdfPrintCleanup(180);
+      return;
+    }
+
+    [0, 180, 520].forEach(function(delay){
+      var timer = window.setTimeout(function(){
+        if (token !== pdfPrintToken) { return; }
+        try { frameWindow.focus(); } catch (e) {}
+        try { frameWindow.print(); } catch (e) {}
+      }, delay);
+      pdfPrintAttemptTimers.push(timer);
+    });
+
+    schedulePdfPrintCleanup(760);
+  }
+
+  function startPdfWarmupQueue(){
+    if (pdfWarmQueueStarted || !isDesktopPrintLockContext()) { return; }
+    pdfWarmQueueStarted = true;
+
+    var firstKey = selectedProfileKey();
+    var orderedKeys = [firstKey].concat(PROFILE_ORDER.filter(function(key){
+      return key !== firstKey;
+    }));
+
+    function loadNext(index){
+      if (index >= orderedKeys.length) { return; }
+      var key = orderedKeys[index];
+      var pdfUrl = buildPdfPrintUrl(PROFILE_PDF_MAP[key]);
+      if (!pdfUrl) {
+        loadNext(index + 1);
+        return;
+      }
+      var frame = getOrCreateWarmPdfFrame(key);
+      if (!frame) {
+        loadNext(index + 1);
+        return;
+      }
+      if (pdfWarmReady[key] && frame.getAttribute('src') === pdfUrl) {
+        loadNext(index + 1);
+        return;
+      }
+
+      frame.onload = function(){
+        pdfWarmReady[key] = true;
+        window.setTimeout(function(){
+          loadNext(index + 1);
+        }, 30);
+      };
+      frame.onerror = function(){
+        pdfWarmReady[key] = false;
+        window.setTimeout(function(){
+          loadNext(index + 1);
+        }, 120);
+      };
+
+      try {
+        frame.src = pdfUrl;
+      } catch (e) {
+        pdfWarmReady[key] = false;
+        window.setTimeout(function(){
+          loadNext(index + 1);
+        }, 120);
+      }
+    }
+
+    loadNext(0);
+  }
+
+  function schedulePdfWarmupStart(){
+    if (!isDesktopPrintLockContext() || pdfWarmQueueStarted) { return; }
+    var started = false;
+    function start(){
+      if (started) { return; }
+      started = true;
+      if (pdfWarmStartTimer) {
+        window.clearTimeout(pdfWarmStartTimer);
+        pdfWarmStartTimer = null;
+      }
+      startPdfWarmupQueue();
+    }
+
+    var bgVideo = document.querySelector('.bg-video video');
+    if (bgVideo) {
+      if ((bgVideo.readyState || 0) >= 2) {
+        start();
+        return;
+      }
+      bgVideo.addEventListener('loadeddata', start, { once: true });
+      bgVideo.addEventListener('canplay', start, { once: true });
+    }
+
+    pdfWarmStartTimer = window.setTimeout(start, 1400);
+  }
+
+  function triggerPdfPrint(key){
+    if (!isDesktopPrintLockContext()) { return false; }
+    var requestedKey = key || selectedProfileKey();
+    var pdfUrl = PROFILE_PDF_MAP[requestedKey];
+    if (!pdfUrl || !pdfPrintFrame) { return false; }
+
+    pdfPrintToken += 1;
+    pdfPrintInFlight = true;
+    clearPdfPrintAttemptTimers();
+    if (pdfPrintCleanupTimer){
+      window.clearTimeout(pdfPrintCleanupTimer);
+      pdfPrintCleanupTimer = null;
+    }
+
+    showPrintGuard();
+
+    var token = pdfPrintToken;
+    var warmFrame = pdfWarmFrames[requestedKey];
+    if (warmFrame && pdfWarmReady[requestedKey]) {
+      attemptPdfFramePrint(token, warmFrame);
+      return true;
+    }
+
+    if ((pdfPrintFrame.getAttribute('data-sc19-pdf-key') || '') === requestedKey) {
+      attemptPdfFramePrint(token, pdfPrintFrame);
+      return true;
+    }
+
+    pdfPrintFrame.onload = function(){
+      if (token !== pdfPrintToken) { return; }
+      pdfPrintFrame.setAttribute('data-sc19-pdf-key', requestedKey);
+      attemptPdfFramePrint(token, pdfPrintFrame);
+    };
+    pdfPrintFrame.onerror = function(){
+      if (token !== pdfPrintToken) { return; }
+      pdfPrintFrame.removeAttribute('data-sc19-pdf-key');
+      schedulePdfPrintCleanup(180);
+    };
+
+    try {
+      pdfPrintFrame.setAttribute('data-sc19-pdf-key', requestedKey);
+      pdfPrintFrame.src = buildPdfPrintUrl(pdfUrl);
+      return true;
+    } catch (e) {
+      pdfPrintFrame.removeAttribute('data-sc19-pdf-key');
+      pdfPrintInFlight = false;
+      hidePrintGuard();
+      return false;
+    }
+  }
+
   function triggerPrint(key){
     lastRequestedProfile = key || selectedProfileKey();
-    if (!fillPrintProfile(lastRequestedProfile)) { return; }
     var activeEl = document.activeElement;
     if (activeEl && typeof activeEl.blur === 'function') {
       try { activeEl.blur(); } catch (e) {}
     }
+
+    beginPrintLock(lastRequestedProfile);
+
+    if (triggerPdfPrint(lastRequestedProfile)) {
+      return;
+    }
+
+    clearPrintLock();
+    if (!fillPrintProfile(lastRequestedProfile)) { return; }
     enablePrintLite();
     window.requestAnimationFrame(function(){
       window.requestAnimationFrame(function(){
@@ -3861,6 +4254,12 @@ if (brandHome) {
       fillPrintProfile(selectedProfileKey());
     });
   });
+
+  if (document.readyState === 'complete') {
+    schedulePdfWarmupStart();
+  } else {
+    window.addEventListener('load', schedulePdfWarmupStart, { once: true });
+  }
 
   Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row[for]')).forEach(function(label){
     label.addEventListener('pointerenter', function(){
@@ -3896,6 +4295,45 @@ if (brandHome) {
     }
   }, true);
 
+  Array.prototype.slice.call(document.querySelectorAll('.team-grid .team-list.card label.member-row[for]')).forEach(function(label){
+    var releaseIfNeeded = function(){
+      if (!document.body || !document.body.classList.contains('sc19-print-lock-active') || document.body.classList.contains('sc19-print-lock-busy')) { return; }
+      if (shouldClearPrintLockForLabel(label)) {
+        clearPrintLock();
+      }
+    };
+    label.addEventListener('pointerenter', releaseIfNeeded, true);
+    label.addEventListener('mouseenter', releaseIfNeeded, true);
+    label.addEventListener('mousedown', releaseIfNeeded, true);
+    label.addEventListener('click', releaseIfNeeded, true);
+  });
+
+  var printLockTopPanel = document.querySelector('.services-card.card');
+  if (printLockTopPanel) {
+    var releaseFromTopPanel = function(){
+      if (!document.body || !document.body.classList.contains('sc19-print-lock-active') || document.body.classList.contains('sc19-print-lock-busy')) { return; }
+      clearPrintLock();
+    };
+    printLockTopPanel.addEventListener('pointerenter', releaseFromTopPanel, true);
+    printLockTopPanel.addEventListener('mouseenter', releaseFromTopPanel, true);
+    printLockTopPanel.addEventListener('mousedown', releaseFromTopPanel, true);
+  }
+
+  document.addEventListener('click', function(ev){
+    if (!document.body || !document.body.classList.contains('sc19-print-lock-active') || document.body.classList.contains('sc19-print-lock-busy')) { return; }
+    var target = ev.target;
+    if (!target) {
+      clearPrintLock();
+      return;
+    }
+    var insideLabel = !!(target.closest && target.closest('.team-grid .team-list.card label.member-row'));
+    var insideRight = !!(target.closest && target.closest('.team-grid .team-detail.card'));
+    var insideTop = !!(target.closest && target.closest('.services-card.card'));
+    if (!insideLabel && !insideRight && !insideTop) {
+      clearPrintLock();
+    }
+  }, true);
+
   window.addEventListener('beforeprint', function(){
     enablePrintLite();
     fillPrintProfile(lastRequestedProfile || selectedProfileKey());
@@ -3903,14 +4341,23 @@ if (brandHome) {
 
   window.addEventListener('afterprint', function(){
     restorePrintLite();
+    if (pdfPrintInFlight && !printLiteActive) {
+      finalizePrintLock();
+    }
   });
 
   window.addEventListener('focus', function(){
+    if (pdfPrintInFlight && !printLiteActive) {
+      finalizePrintLock();
+    }
     schedulePrintRestore();
   });
 
   document.addEventListener('visibilitychange', function(){
     if (document.visibilityState === 'visible'){
+      if (pdfPrintInFlight && !printLiteActive) {
+        finalizePrintLock();
+      }
       schedulePrintRestore();
     }
   });
