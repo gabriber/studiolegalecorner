@@ -1047,6 +1047,102 @@
 </article>
 </section>
 </main>
+<script id="sc19-daily-team-order-script">
+(function(){
+  var baseOrder = [
+    { key: "mauro", view: "view-mauro", mobile: "m-mauro", panel: "panel-mauro" },
+    { key: "nicola", view: "view-nicola", mobile: "m-nicola", panel: "panel-nicola" },
+    { key: "micaela", view: "view-micaela", mobile: "m-micaela", panel: "panel-micaela" },
+    { key: "agostino", view: "view-agostino", mobile: "m-agostino", panel: "panel-agostino" },
+    { key: "gabriele", view: "view-gabriele", mobile: "m-gabriele", panel: "panel-gabriele" }
+  ];
+
+  function getRomeDateParts(){
+    try {
+      var parts = new Intl.DateTimeFormat("en", {
+        timeZone: "Europe/Rome",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      var map = {};
+      parts.forEach(function(part){
+        if (part && part.type) map[part.type] = part.value;
+      });
+      return {
+        year: Number(map.year),
+        month: Number(map.month),
+        day: Number(map.day)
+      };
+    } catch (e) {
+      var now = new Date();
+      return {
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate()
+      };
+    }
+  }
+
+  function getDailyOrder(){
+    var parts = getRomeDateParts();
+    var todayUtc = Date.UTC(parts.year, parts.month - 1, parts.day);
+    var baseUtc = Date.UTC(2026, 2, 20);
+    var days = Math.floor((todayUtc - baseUtc) / 86400000);
+    var shift = ((days % baseOrder.length) + baseOrder.length) % baseOrder.length;
+    return baseOrder.slice(shift).concat(baseOrder.slice(0, shift));
+  }
+
+  var team = document.querySelector('.team');
+  if (!team) { return; }
+
+  var rotated = getDailyOrder();
+  var mobileTeam = team.querySelector('.mobile-team');
+  var teamList = team.querySelector('.team-list');
+  var teamDetail = team.querySelector('.team-detail');
+
+  if (mobileTeam) {
+    rotated.forEach(function(item){
+      var node = document.getElementById(item.mobile);
+      if (node && node.parentNode === mobileTeam) {
+        mobileTeam.appendChild(node);
+      }
+    });
+  }
+
+  if (teamList) {
+    rotated.forEach(function(item){
+      var node = teamList.querySelector('label[for="' + item.view + '"]');
+      if (node) {
+        teamList.appendChild(node);
+      }
+    });
+  }
+
+  if (teamDetail) {
+    rotated.forEach(function(item){
+      var node = document.getElementById(item.panel);
+      if (node && node.parentNode === teamDetail) {
+        teamDetail.appendChild(node);
+      }
+    });
+  }
+
+  rotated.forEach(function(item, index){
+    var radio = document.getElementById(item.view);
+    if (!radio) { return; }
+    radio.checked = index === 0;
+    if (index === 0) {
+      radio.setAttribute('checked', '');
+    } else {
+      radio.removeAttribute('checked');
+    }
+  });
+
+  window.SC19_DAILY_PROFILE_ORDER = rotated.map(function(item){ return item.view; });
+})();
+</script>
+
 <script>
       (function () {
         const STORAGE_KEY = "sc19-theme";
@@ -2265,7 +2361,7 @@ radios.forEach(function (r) {
           });
         });
 
-const PROFILE_ORDER = ["view-mauro", "view-nicola", "view-micaela", "view-agostino", "view-gabriele"];
+const PROFILE_ORDER = Array.isArray(window.SC19_DAILY_PROFILE_ORDER) && window.SC19_DAILY_PROFILE_ORDER.length ? window.SC19_DAILY_PROFILE_ORDER.slice() : ["view-mauro", "view-nicola", "view-micaela", "view-agostino", "view-gabriele"];
 
         const getCurrentProfileIndex = function () {
           for (let i = 0; i < PROFILE_ORDER.length; i++) {
@@ -3551,6 +3647,215 @@ if (brandHome) {
     if(!document.hidden) attemptPlay();
   });
 })();
+</script><script id="sc19-mobile-video-resume-script">
+(function(){
+  var desktopMq = null;
+  try {
+    desktopMq = window.matchMedia && window.matchMedia("(min-width: 901px) and (hover: hover) and (pointer: fine)");
+  } catch (e) { desktopMq = null; }
+
+  function isDesktopContext(){
+    return !!(desktopMq && desktopMq.matches);
+  }
+
+  if (isDesktopContext()) { return; }
+
+  var v = document.querySelector(".bg-video video");
+  if (!v) { return; }
+
+  try { v.muted = true; v.defaultMuted = true; v.setAttribute("muted", ""); } catch (e) {}
+  try { v.loop = true; v.setAttribute("loop", ""); } catch (e) {}
+  try {
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+  } catch (e) {}
+
+  var burstTimers = [];
+  var watchdogOuter = 0;
+  var progressWatchTimers = [];
+  var hardResumeInFlight = false;
+
+  function clearBurstTimers(){
+    while (burstTimers.length) {
+      try { window.clearTimeout(burstTimers.pop()); } catch (e) {}
+    }
+    if (watchdogOuter) {
+      try { window.clearTimeout(watchdogOuter); } catch (e) {}
+      watchdogOuter = 0;
+    }
+    while (progressWatchTimers.length) {
+      try { window.clearTimeout(progressWatchTimers.pop()); } catch (e) {}
+    }
+  }
+
+  function isPageVisible(){
+    return !document.hidden && document.visibilityState !== 'hidden';
+  }
+
+  function getCurrentTime(){
+    try {
+      var t = v.currentTime;
+      return (typeof t === 'number' && isFinite(t)) ? t : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function safePlay(){
+    try {
+      var p = v.play();
+      if (p && typeof p.catch === 'function') { p.catch(function(){}); }
+    } catch (e) {}
+  }
+
+  function tryResume(){
+    if (isDesktopContext() || !isPageVisible()) { return; }
+    try {
+      if (v.ended) { v.currentTime = 0; }
+    } catch (e) {}
+    safePlay();
+  }
+
+  function hardResume(){
+    if (hardResumeInFlight || isDesktopContext() || !isPageVisible()) { return; }
+    hardResumeInFlight = true;
+
+    var restartAt = getCurrentTime();
+    if (restartAt <= 0.15) { restartAt = 0; }
+
+    var onReady = function(){
+      v.removeEventListener('loadeddata', onReady);
+      v.removeEventListener('canplay', onReady);
+      if (restartAt > 0) {
+        try { v.currentTime = restartAt; } catch (e) {}
+      }
+      safePlay();
+      window.setTimeout(function(){
+        hardResumeInFlight = false;
+      }, 1100);
+    };
+
+    v.addEventListener('loadeddata', onReady, { once: true });
+    v.addEventListener('canplay', onReady, { once: true });
+
+    try { v.pause(); } catch (e) {}
+    try { v.load(); } catch (e) {
+      hardResumeInFlight = false;
+      safePlay();
+    }
+  }
+
+  function scheduleTimer(delay, fn, bucket){
+    var id = window.setTimeout(function(){
+      var idx = bucket.indexOf(id);
+      if (idx !== -1) { bucket.splice(idx, 1); }
+      fn();
+    }, delay);
+    bucket.push(id);
+  }
+
+  function needsHardResume(){
+    if (isDesktopContext() || !isPageVisible()) { return false; }
+    try {
+      if (v.ended) { return true; }
+      if (v.paused) { return true; }
+      if (v.readyState < 2) { return true; }
+    } catch (e) {
+      return true;
+    }
+    return false;
+  }
+
+  function scheduleProgressCheck(delay){
+    var t0 = getCurrentTime();
+    scheduleTimer(delay, function(){
+      if (isDesktopContext() || !isPageVisible()) { return; }
+      if (hardResumeInFlight) { return; }
+      var t1 = getCurrentTime();
+      if (needsHardResume()) {
+        hardResume();
+        return;
+      }
+      if ((t1 - t0) <= 0.02) {
+        hardResume();
+      }
+    }, progressWatchTimers);
+  }
+
+  function scheduleResumeBurst(){
+    if (isDesktopContext()) { return; }
+    clearBurstTimers();
+
+    tryResume();
+    scheduleTimer(160, tryResume, burstTimers);
+    scheduleTimer(520, tryResume, burstTimers);
+    scheduleTimer(1100, tryResume, burstTimers);
+    scheduleTimer(2200, tryResume, burstTimers);
+
+    scheduleProgressCheck(420);
+    scheduleProgressCheck(1200);
+    scheduleProgressCheck(2600);
+
+    watchdogOuter = window.setTimeout(function(){
+      watchdogOuter = 0;
+      if (needsHardResume()) {
+        hardResume();
+      }
+    }, 3200);
+  }
+
+  window.addEventListener('load', function(){
+    scheduleResumeBurst();
+  }, { once: true });
+
+  window.addEventListener('pageshow', function(){
+    scheduleResumeBurst();
+  });
+
+  window.addEventListener('focus', function(){
+    scheduleResumeBurst();
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden) {
+      scheduleResumeBurst();
+    }
+  });
+
+  v.addEventListener('pause', function(){
+    if (!hardResumeInFlight && isPageVisible()) {
+      scheduleResumeBurst();
+    }
+  });
+
+  v.addEventListener('stalled', function(){
+    if (isPageVisible()) {
+      scheduleResumeBurst();
+    }
+  });
+
+  v.addEventListener('suspend', function(){
+    if (isPageVisible()) {
+      scheduleResumeBurst();
+    }
+  });
+
+  if (desktopMq) {
+    var onMqChange = function(){
+      if (isDesktopContext()) {
+        clearBurstTimers();
+      } else {
+        scheduleResumeBurst();
+      }
+    };
+    if (desktopMq.addEventListener) {
+      desktopMq.addEventListener('change', onMqChange);
+    } else if (desktopMq.addListener) {
+      desktopMq.addListener(onMqChange);
+    }
+  }
+})();
 </script>
 <script id="sc19-print-profile-script">
 (function(){
@@ -3570,7 +3875,7 @@ if (brandHome) {
   var printRestoreTimer = null;
   var printGuardHideTimer = null;
   var printGuardUntilTs = 0;
-  var SC19_PRINT_GUARD_MS = 2000;
+  var SC19_PRINT_GUARD_MS = 1000;
   var printUiSnapshot = null;
   var pdfPrintToken = 0;
   var pdfPrintInFlight = false;

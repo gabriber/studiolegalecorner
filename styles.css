@@ -6487,3 +6487,15 @@ html.sc19-print-restoring .team-grid .team-detail::after{
     background-image: none !important;
   }
 }
+
+
+/* PC ONLY: prevent text cursor/selection on studio title and "Il team" heading */
+@media (min-width: 901px){
+  .hero > h1,
+  .team-grid .team-list.card > h2{
+    cursor: default;
+    -webkit-user-select: none;
+    user-select: none;
+    caret-color: transparent;
+  }
+}
