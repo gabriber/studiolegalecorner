@@ -508,7 +508,7 @@
 <h1>Studio Legale Corner</h1>
 <p class="subtitle">
 <span class="subline address"><a aria-label="Apri mappe per Via Marco Corner 19, 36016 Thiene (VI)" class="studio-address-iconlink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Via%20Marco%20Corner%2019%2C%2036016%20Thiene%20VI%2C%20Italia" rel="noopener" target="_blank"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-address-icon" src="assets/icons/icon_address.svg"/></span></a><span class="studio-address-text">Via Marco Corner 19, 36016 Thiene (VI)</span></span>
-<span class="subline phone"><span aria-hidden="true" class="studio-phone-iconlink"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-phone-icon" src="assets/icons/icon_phone_white.svg"/></span></span><span class="studio-phone-text">+39 0445 192 0134</span></span>
+<span class="subline phone"><span aria-hidden="true" class="studio-phone-iconlink"><span aria-hidden="true" class="studio-iconwrap"><img alt="" aria-hidden="true" class="studio-phone-icon" src="assets/icons/icon_phone_white.svg"/></span></span><span class="studio-phone-text">+39 0445 060 070</span></span>
 </p>
 </header>
 <main class="container">
@@ -1009,7 +1009,7 @@
 <div class="print-sheet-brand-copy">
 <p class="print-sheet-studio" id="print-sheet-studio">Studio Legale Corner</p>
 <p class="print-sheet-meta" id="print-sheet-address">Via Marco Corner 19, 36016 Thiene (VI)</p>
-<p class="print-sheet-meta" id="print-sheet-phone">+39 0445 192 0134</p>
+<p class="print-sheet-meta" id="print-sheet-phone">+39 0445 060 070</p>
 </div>
 </div>
 <div class="print-sheet-divider"></div>
@@ -2537,7 +2537,7 @@ const goHome = function () {
             if (e.stopImmediatePropagation) e.stopImmediatePropagation();
             if (e.stopPropagation) e.stopPropagation();
 
-            const telUrl = (studioPhoneIconLink.getAttribute("href") || "tel:+3904451920134").replace(/\s+/g, "");
+            const telUrl = (studioPhoneIconLink.getAttribute("href") || "tel:+390445060070").replace(/\s+/g, "");
 
             const SPIN_TOTAL_MS = 200;
             const nowTs = (window.performance && performance.now) ? performance.now() : Date.now();
@@ -4109,7 +4109,7 @@ if (brandHome) {
     var phoneNode = document.getElementById('print-sheet-phone');
     if (title) { title.textContent = text(studio) || 'Studio Legale Corner'; }
     if (addressNode) { addressNode.textContent = text(address) || 'Via Marco Corner 19, 36016 Thiene (VI)'; }
-    if (phoneNode) { phoneNode.textContent = text(phone) || '+39 0445 192 0134'; }
+    if (phoneNode) { phoneNode.textContent = text(phone) || '+39 0445 060 070'; }
   }
 
   function fillPrintProfile(key){
@@ -5243,7 +5243,7 @@ if (brandHome) {
     if (phoneIcon) {
       setupDesktopCopy(phoneIcon, function(){
         var ref = document.querySelector('.studio-phone-text');
-        return normalizePhone(ref ? ref.textContent : '+39 0445 192 0134');
+        return normalizePhone(ref ? ref.textContent : '+39 0445 060 070');
       }, 'Numero copiato');
     }
   }
