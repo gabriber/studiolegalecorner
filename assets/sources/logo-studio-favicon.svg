@@ -5,18 +5,51 @@
    viewBox="0 0 933.30382 933.30414"
    version="1.2"
    id="svg145"
+   sodipodi:docname="logo-studio-favicon.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   inkscape:export-filename="..\favicon\favicon-48x48.png"
+   inkscape:export-xdpi="5.6058869"
+   inkscape:export-ydpi="5.6058869"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview145"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.77287382"
+     inkscape:cx="263.94994"
+     inkscape:cy="453.50223"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg145" />
   <title
      id="title1">Qt SVG Document</title>
   <desc
      id="desc1">Generated with Qt</desc>
   <defs
      id="defs1" />
+  <rect
+     style="fill:#ffffff;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:0"
+     id="rect1"
+     width="932.30396"
+     height="932.3045"
+     x="-2.4868996e-14"
+     y="4.2632564e-14" />
   <g
      fill="none"
      stroke="#000000"
@@ -37,15 +70,7 @@
        font-size="13.625px"
        font-weight="400"
        font-style="normal"
-       id="g2">
-      <rect
-         style="fill:#ffffff;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:0"
-         id="rect145"
-         width="933.31189"
-         height="933.31189"
-         x="778.34406"
-         y="21.84404" />
-    </g>
+       id="g2" />
     <g
        fill="#000000"
        fill-opacity="0"
