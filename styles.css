@@ -1636,6 +1636,13 @@ html[data-theme="light"] #view-gabriele:checked ~ .team-grid .team-detail{
 
 }
 
+
+@media (max-width: 900px){
+  .team-view{
+    display: none !important;
+  }
+}
+
 /* ================== MOBILE (stack + accordion) ================== */
 .mobile-stack{
   display: none;
