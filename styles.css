@@ -3029,6 +3029,12 @@ html[data-theme="dark"] .bg-video::before{
   background: url("assets/sfondo-mobile.webp") top center / 100% auto no-repeat;
   filter: brightness(1.10) contrast(0.92);
   transform: translateZ(0);
+  opacity: 1;
+  transition: opacity 320ms ease;
+}
+
+html[data-theme="dark"] .bg-video.sc19-poster-hidden::before{
+  opacity: 0;
 }
 
 html[data-theme="dark"] .bg-video video{
@@ -4049,6 +4055,12 @@ a[href^="facetime-audio:"]{
     background: url("assets/sfondo-pc.webp") top center / cover no-repeat;
     filter: brightness(1.10) contrast(0.92);
     transform: translateZ(0);
+    opacity: 1;
+    transition: opacity 320ms ease;
+  }
+
+  html[data-theme="dark"] .bg-video.sc19-poster-hidden::before{
+    opacity: 0;
   }
 
   html[data-theme="dark"] .bg-video video{
@@ -6505,4 +6517,16 @@ html.sc19-print-restoring .team-grid .team-detail::after{
     user-select: none;
     caret-color: transparent;
   }
+}
+
+/* sc20: mobile PDF preview overlay above the site */
+.sc19-pdf-overlay{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;padding:10px;min-height:100svh}
+.sc19-pdf-overlay[hidden]{display:none !important}
+.sc19-pdf-overlay-backdrop{position:absolute;inset:0;background:rgba(8,10,14,0.56);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sc19-pdf-overlay-dialog{position:relative;z-index:1;width:min(100%,760px);display:flex;flex-direction:column;gap:0}
+.sc19-pdf-overlay-close{align-self:flex-end;min-width:84px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.14);background:rgba(15,17,21,0.72);color:rgba(255,255,255,0.94);font:inherit}
+.sc19-pdf-overlay-frame{width:100%;height:clamp(460px,82dvh,920px);height:clamp(460px,82svh,920px);max-height:calc(100dvh - 20px);max-height:calc(100svh - 20px);border:0;border-radius:18px;background:rgba(10,12,16,0.78);box-shadow:0 18px 44px rgba(0,0,0,0.32);overflow:hidden}
+body.sc19-pdf-overlay-open{overflow:hidden}
+@media (min-width: 901px){
+  .sc19-pdf-overlay{display:none !important}
 }

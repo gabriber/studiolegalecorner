@@ -488,6 +488,12 @@
 <body>
 <div aria-hidden="true" id="sc19-print-guard" style="display:none !important;opacity:0 !important;pointer-events:none !important;position:fixed;inset:0;z-index:2147483647;background:transparent;transition:none;"></div>
 <iframe aria-hidden="true" id="sc19-pdf-print-frame" tabindex="-1" title="Stampa PDF profilo" style="position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;visibility:hidden;overflow:hidden;"></iframe>
+<div aria-hidden="true" class="sc19-pdf-overlay" hidden id="sc19-pdf-overlay">
+<div class="sc19-pdf-overlay-backdrop" data-pdf-overlay-close="1"></div>
+<div aria-label="Anteprima PDF" class="sc19-pdf-overlay-dialog" role="dialog" aria-modal="true">
+<iframe class="sc19-pdf-overlay-frame" id="sc19-pdf-overlay-frame" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="Anteprima PDF profilo"></iframe>
+</div>
+</div>
 <div aria-hidden="true" class="bg-video">
 <video autoplay="" disablepictureinpicture="" loop="" muted="" playsinline="" poster="assets/sfondo-mobile.webp" preload="auto">
 <source src="assets/sfondo.mp4" type="video/mp4"/>
@@ -523,9 +529,148 @@
   source.setAttribute("src", pcSrc);
   try {
     video.load();
-    var p = video.play();
-    if (p && typeof p.catch === "function") { p.catch(function () {}); }
   } catch (e) {}
+})();
+</script>
+<script id="sc19-bg-video-bootstrap-script">
+(function(){
+  var bgVideo = document.querySelector('.bg-video');
+  var v = document.querySelector('.bg-video video');
+  if (!bgVideo || !v) { return; }
+  if (v.dataset && v.dataset.sc19PosterBootstrap === '1') { return; }
+  if (v.dataset) {
+    v.dataset.sc19PosterBootstrap = '1';
+    v.dataset.sc19PosterGate = 'locked';
+  }
+
+  var STILL_MS = 200;
+  var SLOW_RATE = 0.35;
+  var SLOW_MS = 900;
+  var SESSION_KEY = 'sc19BgVideoIntroDone';
+  var firstIntro = true;
+  var unlocked = false;
+  var revealTimer = 0;
+  var playTimer = 0;
+  var rateTimer = 0;
+
+  try {
+    firstIntro = !(window.sessionStorage && sessionStorage.getItem(SESSION_KEY) === '1');
+  } catch (e) {
+    firstIntro = true;
+  }
+
+  function markIntroDone(){
+    try {
+      if (window.sessionStorage) { sessionStorage.setItem(SESSION_KEY, '1'); }
+    } catch (e) {}
+  }
+
+  function safePause(){
+    try { v.pause(); } catch (e) {}
+  }
+
+  function setNormalRate(){
+    try { v.playbackRate = 1; } catch (e) {}
+    try { v.defaultPlaybackRate = 1; } catch (e) {}
+  }
+
+  function setSlowRate(){
+    try { v.playbackRate = SLOW_RATE; } catch (e) {}
+    try { v.defaultPlaybackRate = SLOW_RATE; } catch (e) {}
+  }
+
+  function holdFirstFrame(){
+    try { if (v.currentTime > 0.001) { v.currentTime = 0; } } catch (e) {}
+    setNormalRate();
+    safePause();
+  }
+
+  function startPlayback(){
+    try {
+      var p = v.play();
+      if (p && typeof p.catch === 'function') { p.catch(function(){}); }
+    } catch (e) {}
+  }
+
+  function finishUnlock(){
+    if (unlocked) { return; }
+    unlocked = true;
+    if (v.dataset) {
+      v.dataset.sc19PosterGate = 'open';
+      v.dataset.sc19PosterBootstrapDone = '1';
+    }
+    try { bgVideo.classList.add('sc19-poster-hidden'); } catch (e) {}
+    setNormalRate();
+    startPlayback();
+    markIntroDone();
+  }
+
+  function unlockAndPlay(){
+    if (unlocked) { return; }
+    try { bgVideo.classList.add('sc19-poster-hidden'); } catch (e) {}
+    if (!firstIntro) {
+      finishUnlock();
+      return;
+    }
+    setSlowRate();
+    startPlayback();
+    rateTimer = window.setTimeout(function(){
+      rateTimer = 0;
+      finishUnlock();
+    }, SLOW_MS);
+  }
+
+  function beginSequence(){
+    if (unlocked || revealTimer || playTimer || rateTimer) { return; }
+    holdFirstFrame();
+    if (!firstIntro) {
+      unlockAndPlay();
+      return;
+    }
+    revealTimer = window.requestAnimationFrame(function(){
+      revealTimer = 0;
+      try { bgVideo.classList.add('sc19-poster-hidden'); } catch (e) {}
+      playTimer = window.setTimeout(function(){
+        playTimer = 0;
+        unlockAndPlay();
+      }, STILL_MS);
+    });
+  }
+
+  function onFirstFrameReady(){
+    holdFirstFrame();
+    beginSequence();
+  }
+
+  try {
+    v.autoplay = false;
+    v.removeAttribute('autoplay');
+    v.preload = 'auto';
+    v.muted = true;
+    v.defaultMuted = true;
+    v.setAttribute('muted', '');
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    setNormalRate();
+  } catch (e) {}
+
+  if ((v.readyState || 0) >= 2) {
+    onFirstFrameReady();
+  } else {
+    v.addEventListener('loadeddata', onFirstFrameReady, { once: true });
+    v.addEventListener('canplay', onFirstFrameReady, { once: true });
+  }
+
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { return; }
+    if (!unlocked) {
+      holdFirstFrame();
+      return;
+    }
+    try { bgVideo.classList.add('sc19-poster-hidden'); } catch (e) {}
+    setNormalRate();
+  });
 })();
 </script>
 <header class="hero">
@@ -680,7 +825,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Mauro Poncini" class="linkedin social-print" data-print-profile="mauro" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Mauro Poncini" class="linkedin social-print" data-print-profile="mauro" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -714,7 +859,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Nicola Guerra" class="linkedin social-print" data-print-profile="nicola" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa profilo PDF di Nicola Guerra" class="linkedin social-print" data-print-profile="nicola" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -748,7 +893,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Micaela Plebani" class="linkedin social-print" data-print-profile="micaela" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Micaela Plebani" class="linkedin social-print" data-print-profile="micaela" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -781,7 +926,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Agostino Dal Zotto" class="linkedin social-print" data-print-profile="agostino" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Agostino Dal Zotto" class="linkedin social-print" data-print-profile="agostino" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -819,7 +964,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Gabriele Berto" class="linkedin social-print" data-print-profile="gabriele" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Gabriele Berto" class="linkedin social-print" data-print-profile="gabriele" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -914,7 +1059,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Mauro Poncini" class="linkedin social-print" data-print-profile="mauro" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Mauro Poncini" class="linkedin social-print" data-print-profile="mauro" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -943,7 +1088,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Nicola Guerra" class="linkedin social-print" data-print-profile="nicola" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Nicola Guerra" class="linkedin social-print" data-print-profile="nicola" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -972,7 +1117,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Micaela Plebani" class="linkedin social-print" data-print-profile="micaela" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Micaela Plebani" class="linkedin social-print" data-print-profile="micaela" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -1000,7 +1145,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Agostino Dal Zotto" class="linkedin social-print" data-print-profile="agostino" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Agostino Dal Zotto" class="linkedin social-print" data-print-profile="agostino" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -1033,7 +1178,7 @@
 <img alt="LinkedIn" onerror="if(!this.dataset.sc19li){this.dataset.sc19li='1';this.src='assets/icons/LinkedIn.png';}else if(this.dataset.sc19li==='1'){this.dataset.sc19li='2';this.src='assets/icons/Linkedin.png';}else{this.onerror=null;}" src="assets/icons/linkedin.png"/>
 </a>
 
-<button aria-label="Stampa profilo di Gabriele Berto" class="linkedin social-print" data-print-profile="gabriele" type="button"><img alt="Stampa" src="assets/icons/print.png"/></button>
+<button aria-label="Stampa PDF profilo di Gabriele Berto" class="linkedin social-print" data-print-profile="gabriele" type="button"><img alt="Stampa PDF" src="assets/icons/print.png"/></button>
 </div>
 </div>
 </div>
@@ -3495,13 +3640,14 @@ if (brandHome) {
   if (video.dataset) { video.dataset.sc19HoverSlow = "1"; }
 
   var prefersReduce = false; // background video behavior should remain premium even if the OS prefers reduced motion
-  // PC: use a single "container grande" that wraps the three riquadri.
-  // This way the effect stays active also when the pointer is in the empty gaps between panels.
-  var hoverTargets = [
-    document.querySelector("main.container")
+  // PC: use the real visual bounds of the three riquadri, not the outer padding of main.container.
+  // This keeps the pause exactly aligned with the "container grande" actually perceived on screen.
+  var hoverRectsTargets = [
+    document.querySelector(".services-card.card"),
+    document.querySelector(".team-grid")
   ].filter(Boolean);
 
-  if (!hoverTargets.length) { return; }
+  if (!hoverRectsTargets.length) { return; }
 
   // v438: alziamo la soglia minima per ridurre la "quantizzazione" del playbackRate su alcuni browser
   // e mascheriamo ulteriormente con un leggero incremento dell'overlay (senza mai far sparire il video).
@@ -3536,6 +3682,7 @@ if (brandHome) {
   }
 
   function playSafely(){
+    if (video.dataset && video.dataset.sc19PosterGate === "locked") { return; }
     try {
       var p = video.play();
       if (p && typeof p.catch === "function") { p.catch(function(){}); }
@@ -3636,20 +3783,70 @@ if (brandHome) {
     });
   }
 
-  function enter(){
-    hoverCount++;
-    if (hoverCount === 1){ goSlow(); }
+  function collectUnionRect(){
+    var rects = hoverRectsTargets.map(function(el){
+      if (!el || typeof el.getBoundingClientRect !== "function") { return null; }
+      var rect = el.getBoundingClientRect();
+      if (!rect || rect.width <= 0 || rect.height <= 0) { return null; }
+      return rect;
+    }).filter(Boolean);
+
+    if (!rects.length) { return null; }
+
+    return rects.reduce(function(acc, rect){
+      if (!acc) {
+        return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+      }
+      acc.left = Math.min(acc.left, rect.left);
+      acc.top = Math.min(acc.top, rect.top);
+      acc.right = Math.max(acc.right, rect.right);
+      acc.bottom = Math.max(acc.bottom, rect.bottom);
+      return acc;
+    }, null);
   }
 
-  function leave(){
-    hoverCount = Math.max(0, hoverCount - 1);
-    if (hoverCount === 0){ goNormal(); }
+  function pointInsideUnion(x, y){
+    if (!Number.isFinite(x) || !Number.isFinite(y)) { return false; }
+    var rect = collectUnionRect();
+    if (!rect) { return false; }
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
   }
 
-  hoverTargets.forEach(function(el){
-    el.addEventListener("pointerenter", enter, {passive:true});
-    el.addEventListener("pointerleave", leave, {passive:true});
-  });
+  function syncPointerState(x, y){
+    var inside = pointInsideUnion(x, y);
+    if (inside) {
+      if (hoverCount === 0){
+        hoverCount = 1;
+        goSlow();
+      }
+      return;
+    }
+    if (hoverCount !== 0){
+      hoverCount = 0;
+      goNormal();
+    }
+  }
+
+  window.addEventListener("pointermove", function(e){
+    syncPointerState(e.clientX, e.clientY);
+  }, {passive:true});
+
+  window.addEventListener("scroll", function(){
+    if (hoverCount === 0) { return; }
+    syncPointerState(window.__sc19LastPointerX, window.__sc19LastPointerY);
+  }, {passive:true});
+
+  window.addEventListener("pointerleave", function(){
+    if (hoverCount !== 0){
+      hoverCount = 0;
+      goNormal();
+    }
+  }, {passive:true});
+
+  window.addEventListener("pointermove", function(e){
+    window.__sc19LastPointerX = e.clientX;
+    window.__sc19LastPointerY = e.clientY;
+  }, {passive:true});
 })();
 </script>
 <script>
@@ -3664,6 +3861,7 @@ if (brandHome) {
 
   var tried = false;
   function attemptPlay(){
+    if (v.dataset && v.dataset.sc19PosterGate === "locked") { return; }
     // Avoid spamming play() calls
     if (tried && v.readyState < 2) return;
     tried = true;
@@ -3743,6 +3941,7 @@ if (brandHome) {
   }
 
   function safePlay(){
+    if (v.dataset && v.dataset.sc19PosterGate === 'locked') { return; }
     try {
       var p = v.play();
       if (p && typeof p.catch === 'function') { p.catch(function(){}); }
@@ -3911,6 +4110,9 @@ if (brandHome) {
   var siteStylesheet = document.getElementById('site-stylesheet');
   var printGuard = document.getElementById('sc19-print-guard');
   var pdfPrintFrame = document.getElementById('sc19-pdf-print-frame');
+  var pdfOverlay = document.getElementById('sc19-pdf-overlay');
+  var pdfOverlayFrame = document.getElementById('sc19-pdf-overlay-frame');
+  var pdfOverlayClose = document.getElementById('sc19-pdf-overlay-close');
   var printLiteActive = false;
   var printRestoreTimer = null;
   var printGuardHideTimer = null;
@@ -3926,6 +4128,172 @@ if (brandHome) {
   var pdfWarmReady = Object.create(null);
   var pdfWarmQueueStarted = false;
   var pdfWarmStartTimer = null;
+  var pdfOverlayScrollState = null;
+  var pdfOverlayPrinted = false;
+
+  function isMobileDirectPdfContext(){
+    try {
+      return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function restorePdfOverlayScrollState(){
+    var state = pdfOverlayScrollState;
+    pdfOverlayScrollState = null;
+    var body = document.body;
+    if (!body || !state) { return; }
+    try { body.style.position = ''; } catch (e) {}
+    try { body.style.top = ''; } catch (e) {}
+    try { body.style.left = ''; } catch (e) {}
+    try { body.style.right = ''; } catch (e) {}
+    try { body.style.width = ''; } catch (e) {}
+    try { body.style.overflow = ''; } catch (e) {}
+    try { body.style.touchAction = ''; } catch (e) {}
+    var restoreX = typeof state.x === 'number' ? state.x : 0;
+    var restoreY = typeof state.y === 'number' ? state.y : 0;
+    function apply(){
+      try { window.scrollTo(restoreX, restoreY); } catch (e) {}
+    }
+    apply();
+    window.requestAnimationFrame(function(){
+      apply();
+      window.setTimeout(apply, 120);
+      window.setTimeout(apply, 320);
+    });
+  }
+
+  function closePdfOverlay(){
+    if (!pdfOverlay || !pdfOverlayFrame) { return; }
+    pdfOverlay.hidden = true;
+    pdfOverlay.setAttribute('aria-hidden', 'true');
+    try { document.body.classList.remove('sc19-pdf-overlay-open'); } catch (e) {}
+    try { pdfOverlayFrame.removeAttribute('src'); } catch (e) {}
+    restorePdfOverlayScrollState();
+    pdfOverlayPrinted = false;
+  }
+
+  try {
+    window.sc19ClosePdfOverlay = closePdfOverlay;
+  } catch (e) {}
+
+  function requestPdfOverlayPrint(key){
+    var requestedKey = key || selectedProfileKey();
+    if (!requestedKey || !PROFILE_PDF_MAP[requestedKey]) { return false; }
+    pdfOverlayPrinted = true;
+    triggerPrint(requestedKey);
+    return true;
+  }
+
+  function requestPdfOverlayHtmlPrint(key){
+    var requestedKey = key || selectedProfileKey();
+    if (!requestedKey) { return false; }
+
+    lastRequestedProfile = requestedKey;
+    var activeEl = document.activeElement;
+    if (activeEl && typeof activeEl.blur === 'function') {
+      try { activeEl.blur(); } catch (e) {}
+    }
+
+    beginPrintLock(lastRequestedProfile);
+
+    if (!fillPrintProfile(lastRequestedProfile)) {
+      clearPrintLock();
+      return false;
+    }
+
+    enablePrintLite();
+
+    try { window.focus(); } catch (e) {}
+    try {
+      window.print();
+      return true;
+    } catch (e) {
+      window.requestAnimationFrame(function(){
+        try { window.print(); } catch (err) {}
+      });
+      return true;
+    }
+  }
+
+  try {
+    window.sc19TriggerPdfPrint = requestPdfOverlayPrint;
+  } catch (e) {}
+
+  try {
+    window.sc19TriggerOverlayHtmlPrint = requestPdfOverlayHtmlPrint;
+  } catch (e) {}
+
+  function openPdfDirect(key){
+    var requestedKey = key || selectedProfileKey();
+    var pdfUrl = PROFILE_PDF_MAP[requestedKey];
+    if (!requestedKey || !pdfUrl) { return false; }
+    var viewerUrl = 'pdf-viewer.html?file=' + encodeURIComponent(pdfUrl) + '&profile=' + encodeURIComponent(requestedKey);
+    if (isMobileDirectPdfContext() && pdfOverlay && pdfOverlayFrame) {
+      viewerUrl += '&overlay=1';
+      try {
+        var body = document.body;
+        if (body) {
+          var scrollX = window.pageXOffset || window.scrollX || 0;
+          var scrollY = window.pageYOffset || window.scrollY || 0;
+          pdfOverlayScrollState = { x: scrollX, y: scrollY };
+          body.style.position = 'fixed';
+          body.style.top = (-scrollY) + 'px';
+          body.style.left = '0';
+          body.style.right = '0';
+          body.style.width = '100%';
+          body.style.overflow = 'hidden';
+          body.style.touchAction = 'none';
+        }
+        pdfOverlayPrinted = false;
+        pdfOverlayFrame.src = viewerUrl;
+        pdfOverlay.hidden = false;
+        pdfOverlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('sc19-pdf-overlay-open');
+        return true;
+      } catch (e) {}
+    }
+    try {
+      window.location.assign(viewerUrl);
+      return true;
+    } catch (e) {
+      try {
+        window.location.href = viewerUrl;
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+  }
+
+  if (pdfOverlay) {
+    pdfOverlay.addEventListener('click', function(ev){
+      var t = ev.target;
+      if (t && t.getAttribute && t.getAttribute('data-pdf-overlay-close') === '1') {
+        closePdfOverlay();
+      }
+    });
+  }
+  window.addEventListener('message', function(ev){
+    if (!ev || ev.origin !== window.location.origin) { return; }
+    var data = ev.data || {};
+    if (data.type === 'sc19-close-pdf-overlay') {
+      closePdfOverlay();
+      return;
+    }
+    if (data.type === 'sc19-print-pdf-overlay') {
+      requestPdfOverlayPrint(typeof data.profile === 'string' ? data.profile : selectedProfileKey());
+    }
+  });
+  if (pdfOverlayClose) {
+    pdfOverlayClose.addEventListener('click', closePdfOverlay);
+  }
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && pdfOverlay && !pdfOverlay.hidden) {
+      closePdfOverlay();
+    }
+  });
 
   function clearPdfPrintCleanupTimer(){
     if (pdfPrintCleanupTimer){
@@ -3953,7 +4321,7 @@ if (brandHome) {
     if (theme === 'light') {
       printGuard.style.background = 'linear-gradient(180deg, #f7f7f7, #ececec)';
     } else {
-      printGuard.style.background = 'radial-gradient(circle at 50% 10%, rgba(120,160,255,0.16), rgba(0,0,0,0) 55%), #0f1115';
+      printGuard.style.background = 'radial-gradient(circle at 50% 10%, rgba(25,25,25,0.20), rgba(0,0,0,0) 55%), #0f1115';
     }
   }
 
@@ -3965,7 +4333,22 @@ if (brandHome) {
     }
     printGuardUntilTs = Date.now() + Math.max(0, SC19_PRINT_GUARD_MS || 0);
     printGuard.style.transition = 'none';
-    printGuard.style.background = 'transparent';
+    var useOpaqueMobileGuard = false;
+    try {
+      useOpaqueMobileGuard = !!(
+        window.matchMedia &&
+        window.matchMedia('(max-width: 900px)').matches &&
+        pdfOverlay &&
+        !pdfOverlay.hidden
+      );
+    } catch (e) {
+      useOpaqueMobileGuard = false;
+    }
+    if (useOpaqueMobileGuard) {
+      syncPrintGuardTheme();
+    } else {
+      printGuard.style.background = 'transparent';
+    }
     printGuard.style.opacity = '1';
     printGuard.style.display = 'block';
     printGuard.style.pointerEvents = 'auto';
@@ -4510,7 +4893,6 @@ if (brandHome) {
   }
 
   function triggerPdfPrint(key){
-    if (!isDesktopPrintLockContext()) { return false; }
     var requestedKey = key || selectedProfileKey();
     var pdfUrl = PROFILE_PDF_MAP[requestedKey];
     if (!pdfUrl || !pdfPrintFrame) { return false; }
@@ -4589,7 +4971,12 @@ if (brandHome) {
       if (btn && typeof btn.blur === 'function') {
         try { btn.blur(); } catch (e) {}
       }
-      triggerPrint(btn.getAttribute('data-print-profile'));
+      var requestedKey = btn.getAttribute('data-print-profile');
+      if (isMobileDirectPdfContext()) {
+        openPdfDirect(requestedKey);
+        return;
+      }
+      triggerPrint(requestedKey);
     });
   });
 

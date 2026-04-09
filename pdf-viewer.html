@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#0f1115"/>
+  <title>Anteprima PDF | Studio Legale Corner</title>
+  <link rel="stylesheet" href="pdf-viewer.css"/>
+</head>
+<body>
+  <header class="viewer-topbar">
+    <a class="viewer-btn viewer-btn-link" id="viewer-download" href="#" download>Salva PDF</a>
+    <button type="button" class="viewer-btn" id="viewer-print">Stampa</button>
+    <button type="button" class="viewer-btn" id="viewer-back">Chiudi</button>
+  </header>
+
+  <main class="viewer-shell">
+    <div class="viewer-status" id="viewer-status">Caricamento anteprima…</div>
+    <div class="viewer-error" id="viewer-error" hidden>Non è stato possibile visualizzare il PDF.</div>
+    <div class="viewer-pages" id="viewer-pages" hidden></div>
+  </main>
+
+  <script type="module">
+    import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.6.205/build/pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.6.205/build/pdf.worker.min.mjs';
+
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get('file') || '';
+    const profile = params.get('profile') || '';
+    const overlayMode = params.get('overlay') === '1';
+
+    const PROFILE_TITLES = {
+      mauro: 'Mauro Poncini',
+      nicola: 'Nicola Guerra',
+      micaela: 'Micaela Plebani',
+      agostino: 'Agostino Dal Zotto',
+      gabriele: 'Gabriele Berto'
+    };
+
+    const statusEl = document.getElementById('viewer-status');
+    const errorEl = document.getElementById('viewer-error');
+    const pagesEl = document.getElementById('viewer-pages');
+    const downloadEl = document.getElementById('viewer-download');
+    const printEl = document.getElementById('viewer-print');
+    const backEl = document.getElementById('viewer-back');
+
+    const title = 'Anteprima PDF';
+    document.title = title + ' | Studio Legale Corner';
+
+    if (file) {
+      downloadEl.href = file;
+      downloadEl.setAttribute('download', '');
+    }
+
+    function closeParentOverlay(){
+      if (!overlayMode) { return false; }
+      try {
+        if (window.parent && window.parent !== window && typeof window.parent.sc19ClosePdfOverlay === 'function') {
+          window.parent.sc19ClosePdfOverlay();
+          return true;
+        }
+      } catch (e) {}
+      try {
+        if (window.parent && window.parent !== window && typeof window.parent.postMessage === 'function') {
+          window.parent.postMessage({ type: 'sc19-close-pdf-overlay' }, window.location.origin);
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    backEl.addEventListener('click', function(){
+      if (closeParentOverlay()) {
+        return;
+      }
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = './';
+      }
+    });
+
+    function triggerParentOverlayHtmlPrint(){
+      if (!overlayMode || !profile) { return false; }
+      try {
+        if (window.parent && window.parent !== window && typeof window.parent.sc19TriggerOverlayHtmlPrint === 'function') {
+          return window.parent.sc19TriggerOverlayHtmlPrint(profile) === true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    function triggerParentPdfPrint(){
+      if (!overlayMode || !profile) { return false; }
+      try {
+        if (window.parent && window.parent !== window && typeof window.parent.sc19TriggerPdfPrint === 'function') {
+          return window.parent.sc19TriggerPdfPrint(profile) === true;
+        }
+      } catch (e) {}
+      try {
+        if (window.parent && window.parent !== window && typeof window.parent.postMessage === 'function') {
+          window.parent.postMessage({ type: 'sc19-print-pdf-overlay', profile: profile }, window.location.origin);
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    printEl.addEventListener('click', function(){
+      if (triggerParentOverlayHtmlPrint()) {
+        return;
+      }
+      if (triggerParentPdfPrint()) {
+        return;
+      }
+      try { window.focus(); } catch (e) {}
+      try { window.print(); } catch (e) {}
+    });
+
+    async function renderPdf() {
+      if (!file) {
+        throw new Error('Missing PDF file');
+      }
+      const loadingTask = pdfjsLib.getDocument({ url: file });
+      const pdf = await loadingTask.promise;
+      const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+      pagesEl.innerHTML = '';
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const containerWidth = Math.max(320, pagesEl.clientWidth || window.innerWidth || 360);
+        const horizontalPadding = 24;
+        const usableWidth = Math.max(240, containerWidth - horizontalPadding);
+        const scale = usableWidth / baseViewport.width;
+        const viewport = page.getViewport({ scale });
+
+        const wrapper = document.createElement('section');
+        wrapper.className = 'pdf-page';
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d', { alpha: false });
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = Math.floor(viewport.width) + 'px';
+        canvas.style.height = Math.floor(viewport.height) + 'px';
+
+        await page.render({
+          canvasContext: context,
+          viewport,
+          transform: dpr !== 1 ? [dpr, 0, 0, dpr, 0, 0] : null
+        }).promise;
+
+        wrapper.appendChild(canvas);
+        pagesEl.appendChild(wrapper);
+      }
+    }
+
+    renderPdf().then(function(){
+      statusEl.hidden = true;
+      errorEl.hidden = true;
+      pagesEl.hidden = false;
+    }).catch(function(){
+      statusEl.hidden = true;
+      pagesEl.hidden = true;
+      errorEl.hidden = false;
+    });
+  </script>
+</body>
+</html>
