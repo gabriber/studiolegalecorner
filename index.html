@@ -4133,8 +4133,35 @@ if (brandHome) {
   var pdfOverlayHistoryArmed = false;
   var pdfOverlaySuppressNextPop = false;
   var pdfOverlayClosingFromHistory = false;
+  var pdfOverlayReopenedDuringPendingClose = false;
   var pdfOverlayExpectedSrc = '';
   var pdfOverlayStateSeq = 0;
+
+  function handlePdfOverlayFrameLoad(){
+    if (!pdfOverlayFrame || !pdfOverlay || pdfOverlay.hidden || !pdfOverlayExpectedSrc || pdfOverlayClosingFromHistory) { return; }
+    try {
+      var loc = pdfOverlayFrame.contentWindow && pdfOverlayFrame.contentWindow.location;
+      var href = loc && typeof loc.href === 'string' ? loc.href : '';
+      if (href === 'about:blank' || href === 'about:srcdoc') {
+        closePdfOverlay();
+      }
+    } catch (e) {}
+  }
+
+  function bindPdfOverlayFrame(){
+    if (!pdfOverlayFrame) { return; }
+    pdfOverlayFrame.addEventListener('load', handlePdfOverlayFrameLoad);
+  }
+
+  function resetPdfOverlayFrame(){
+    if (!pdfOverlayFrame || !pdfOverlayFrame.parentNode) { return pdfOverlayFrame; }
+    var freshFrame = pdfOverlayFrame.cloneNode(false);
+    try { freshFrame.removeAttribute('src'); } catch (e) {}
+    pdfOverlayFrame.parentNode.replaceChild(freshFrame, pdfOverlayFrame);
+    pdfOverlayFrame = freshFrame;
+    bindPdfOverlayFrame();
+    return pdfOverlayFrame;
+  }
 
   function normalizePdfOverlayHistoryState(){
     try {
@@ -4184,19 +4211,22 @@ if (brandHome) {
     pdfOverlay.hidden = true;
     pdfOverlay.setAttribute('aria-hidden', 'true');
     try { document.body.classList.remove('sc19-pdf-overlay-open'); } catch (e) {}
-    try { pdfOverlayFrame.removeAttribute('src'); } catch (e) {}
     pdfOverlayExpectedSrc = '';
+    try { pdfOverlayFrame.removeAttribute('src'); } catch (e) {}
+    resetPdfOverlayFrame();
     restorePdfOverlayScrollState();
     pdfOverlayPrinted = false;
     if (viaHistory) {
       pdfOverlayHistoryArmed = false;
       pdfOverlayClosingFromHistory = false;
+      pdfOverlayReopenedDuringPendingClose = false;
       normalizePdfOverlayHistoryState();
       return;
     }
     if (pdfOverlayHistoryArmed) {
       pdfOverlayClosingFromHistory = true;
       pdfOverlaySuppressNextPop = true;
+      pdfOverlayReopenedDuringPendingClose = false;
       try { window.history.back(); } catch (e) { pdfOverlayHistoryArmed = false; pdfOverlayClosingFromHistory = false; }
     }
   }
@@ -4275,16 +4305,21 @@ if (brandHome) {
         }
         pdfOverlayPrinted = false;
         pdfOverlayExpectedSrc = viewerUrl;
+        if (pdfOverlaySuppressNextPop || pdfOverlayClosingFromHistory) {
+          pdfOverlayReopenedDuringPendingClose = true;
+        }
         if (!pdfOverlayHistoryArmed) {
           try {
             normalizePdfOverlayHistoryState();
             pdfOverlayStateSeq += 1;
             window.history.pushState({ sc19PdfOverlay: true, seq: pdfOverlayStateSeq }, '', window.location.href);
             pdfOverlayHistoryArmed = true;
+            pdfOverlayClosingFromHistory = false;
           } catch (e) {
             pdfOverlayHistoryArmed = false;
           }
         }
+        resetPdfOverlayFrame();
         pdfOverlayFrame.src = viewerUrl;
         pdfOverlay.hidden = false;
         pdfOverlay.setAttribute('aria-hidden', 'false');
@@ -4313,31 +4348,36 @@ if (brandHome) {
       }
     });
   }
-  if (pdfOverlayFrame) {
-    pdfOverlayFrame.addEventListener('load', function(){
-      if (!pdfOverlay || pdfOverlay.hidden || !pdfOverlayExpectedSrc || pdfOverlayClosingFromHistory) { return; }
-      try {
-        var loc = pdfOverlayFrame.contentWindow && pdfOverlayFrame.contentWindow.location;
-        var href = loc && typeof loc.href === 'string' ? loc.href : '';
-        if (href === 'about:blank' || href === 'about:srcdoc') {
-          closePdfOverlay();
-        }
-      } catch (e) {}
-    });
-  }
+  bindPdfOverlayFrame();
   window.addEventListener('popstate', function(){
     if (pdfOverlaySuppressNextPop) {
       pdfOverlaySuppressNextPop = false;
+      if (pdfOverlayReopenedDuringPendingClose && pdfOverlay && !pdfOverlay.hidden) {
+        pdfOverlayReopenedDuringPendingClose = false;
+        try {
+          pdfOverlayStateSeq += 1;
+          window.history.pushState({ sc19PdfOverlay: true, seq: pdfOverlayStateSeq }, '', window.location.href);
+          pdfOverlayHistoryArmed = true;
+          pdfOverlayClosingFromHistory = false;
+        } catch (e) {
+          pdfOverlayHistoryArmed = false;
+          pdfOverlayClosingFromHistory = false;
+        }
+        return;
+      }
+      pdfOverlayReopenedDuringPendingClose = false;
       pdfOverlayHistoryArmed = false;
       pdfOverlayClosingFromHistory = false;
       normalizePdfOverlayHistoryState();
       return;
     }
     if (pdfOverlay && !pdfOverlay.hidden) {
+      pdfOverlayReopenedDuringPendingClose = false;
       pdfOverlayClosingFromHistory = true;
       closePdfOverlay(true);
       normalizePdfOverlayHistoryState();
     } else {
+      pdfOverlayReopenedDuringPendingClose = false;
       pdfOverlayHistoryArmed = false;
       pdfOverlayClosingFromHistory = false;
       normalizePdfOverlayHistoryState();
